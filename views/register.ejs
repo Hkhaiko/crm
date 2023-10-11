@@ -4,25 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription</title>
-    <!-- Inclure des liens vers des fichiers CSS ou d'autres ressources si nécessaire -->
+    <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
-    <h1>Inscription</h1>
-    <form action="/api/register" method="POST"> <!-- Assurez-vous que l'action correspond à votre route d'inscription POST -->
+    <h1>Sign in</h1>
+    <form action="/api/register" method="POST"> 
         <label for="name">Name</label>
         <input type="text" id="name" name="name" required>
 
-        <label for="email">Adresse e-mail :</label>
+        <label for="email">Email :</label>
         <input type="email" id="email" name="email" required>
 
-        <label for="password">Mot de passe :</label>
+        <label for="password">Password</label>
         <input type="password" id="password" name="password" required>
 
-        <!-- <label for="confirmPassword">Confirmer le mot de passe :</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" required> -->
-
-        <button type="submit">S'inscrire</button>
+        <label for="confirmPassword">Confirmer le mot de passe :</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+        <p id="passwordError" style="color: red;"></p>
+        <button type="submit">Register</button>
     </form>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const passwordError = document.getElementById('passwordError');
+
+            confirmPasswordInput.addEventListener('input', () => {
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+
+                if (password !== confirmPassword) {
+                    passwordError.textContent = 'Passwords do not match';
+                } else {
+                    passwordError.textContent = ''; // Efface le message d'erreur s'ils correspondent
+                }
+            });
+        });
+    </script>
 </body>
 </html>
     

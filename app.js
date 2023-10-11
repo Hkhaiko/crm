@@ -7,12 +7,14 @@ const bcrypt = require('bcrypt');
 const userRoutes = require('./routes/userRoutes');
 const traningRoutes = require('./routes/traningRoutes');
 const authRoutes = require('./routes/authRoutes');
+const flash = require('connect-flash');
 
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 // Configuration de la session
 app.use(session({
@@ -20,6 +22,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }));
+
+app.use(flash());
 
 // Initialisation de Passport.js
 app.use(passport.initialize());
@@ -31,7 +35,7 @@ passport.use(new LocalStrategy(
     usernameField: 'email', // Champ de formulaire pour l'adresse e-mail
     passwordField: 'password', // Champ de formulaire pour le mot de passe
   },
-  (email, password, done) => {
+  (req,email, password, done) => {
     // Recherchez l'utilisateur correspondant à l'adresse e-mail dans la base de données
     const sql = 'SELECT * FROM user WHERE email = ?';
     db.query(sql, [email], (err, results) => {
@@ -41,7 +45,7 @@ passport.use(new LocalStrategy(
 
       if (results.length === 0) {
         // Aucun utilisateur trouvé avec cette adresse e-mail
-        return done(null, false, { message: 'Adresse e-mail incorrecte' });
+        return done(null, false, req.flash('error', 'Email is not correct'));
       }
 
       const user = results[0];
@@ -54,7 +58,7 @@ passport.use(new LocalStrategy(
 
         if (!isMatch) {
           // Le mot de passe ne correspond pas
-          return done(null, false, { message: 'Mot de passe incorrect' });
+          return done(null, false, req.flash('error', 'Password is not correct'));
         }
 
         // Authentification réussie
@@ -64,11 +68,33 @@ passport.use(new LocalStrategy(
   }
 ));
 
+// Sérialisation de l'utilisateur dans la session
+passport.serializeUser((user, done) => {
+  // user est l'objet utilisateur que vous souhaitez stocker dans la session
+  done(null, user.userId); // Stockez l'ID de l'utilisateur dans la session
+});
+
+// Désérialisation de l'utilisateur depuis la session
+passport.deserializeUser((id, done) => {
+  // Recherchez l'utilisateur dans la base de données en utilisant l'ID stocké dans la session
+  const sql = 'SELECT * FROM user WHERE userId = ?';
+  db.query(sql, [id], (err, results) => {
+    if (err) {
+      return done(err);
+    }
+    if (results.length === 0) {
+      return done(null, false); // Aucun utilisateur trouvé avec cet ID
+    }
+    const user = results[0];
+    done(null, user); // Renvoyez l'utilisateur trouvé
+  });
+});
+
 // Configuration du moteur de templates EJS
 app.set('view engine', 'ejs');
 
 // Servez les fichiers statiques depuis le dossier 'public'
-app.use(express.static('public'));
+app.use('/public', express.static(__dirname + '/public'));
 
 // Routes
 app.get('/', (req, res) => {

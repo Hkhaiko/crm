@@ -18,6 +18,7 @@ const bcrypt = require('bcrypt');
 exports.createUser = (req, res) => {
     const updatedUserData = req.body;
     const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
 
     // Hachez le mot de passe avant de l'enregistrer dans la base de données
     bcrypt.hash(password, 10, (err, hash) => {
@@ -36,7 +37,7 @@ exports.createUser = (req, res) => {
             res.status(500).send('Error password');
           } else {
             console.log('Created successfully');
-            res.status(201).send('User created successfully');
+            res.status(201).redirect('/login')
           }
         });
     });

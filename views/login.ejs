@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion</title>
-    <!-- Inclure des liens vers des fichiers CSS ou d'autres ressources si nécessaire -->
+    <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
-    <h1>Connexion</h1>
-    <form action="/login" method="POST"> <!-- Assurez-vous que l'action correspond à votre route de connexion POST -->
-        <label for="email">email :</label>
+    <h1>Login</h1>
+    <form action="/api/login" method="POST"> <!-- Assurez-vous que l'action correspond à votre route de connexion POST -->
+        <label for="email">Email :</label>
         <input type="text" id="email" name="email" required>
 
         <label for="password">Password :</label>
         <input type="password" id="password" name="password" required>
 
-        <button type="submit">Se connecter</button>
+        <button type="submit">Connect</button>
     </form>
 </body>
 </html>
