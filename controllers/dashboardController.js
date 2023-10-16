@@ -16,13 +16,13 @@ const passport = require('passport');
 // });
 
 exports.checkLogin = (req, res, next) => {
-  console.log(req.body)
   passport.authenticate('local', (err, user, info) => {
       if (err) {
           return next(err);
       }
       if (!user) {
-          return res.render('login');
+        const errorMessage = "Invalid email or password";
+        return res.render('login', { loginErrorMessage : errorMessage}); 
       }
       req.logIn(user, (err) => {  
           if (err) {
@@ -36,7 +36,7 @@ exports.checkLogin = (req, res, next) => {
 exports.addClient = (req, res) => {
   const traningClient = req.body;
   const sql = 'INSERT INTO traning (certificationCode, fullName, company, position, email, telephone, date, title, futureTopics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-  const values = [traningClient.certificationCode, traningClient.fullame, traningClient.company, traningClient.position, traningClient.email, traningClient.telephone, traningClient.date, traningClient.title, traningClient.futureTopics];
+  const values = [traningClient.certificationCode, traningClient.fullName, traningClient.company, traningClient.position, traningClient.email, traningClient.telephone, traningClient.date, traningClient.title, traningClient.futureTopics];
 
   console.log(req.body);
   db.query(sql, values, (err, result) =>{
@@ -49,7 +49,6 @@ exports.addClient = (req, res) => {
     }
   })
 }
-
 
 exports.createUser = (req, res) => {
     const updatedUserData = req.body;

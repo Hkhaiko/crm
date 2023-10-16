@@ -9,7 +9,6 @@
   const authRoutes = require('./routes/authRoutes');
   const bodyParser = require('body-parser');
 
-
   const app = express();
 
   // Middleware
@@ -105,8 +104,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  console.log("Here it works") // ici ça fonctionne dans le app.js
-  res.render('login'); 
+  res.render('login', {loginErrorMessage : ""}); 
 });
 
 app.get('/register', (req, res) => {
@@ -133,7 +131,6 @@ app.get('/dashboard', (req, res) => {
     }
   });
 });
-
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

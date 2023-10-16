@@ -8,13 +8,20 @@
 </head>
 <body>
     <h1>CRM DASHBOARD</h1>
+    <div id="popup" class="modal">
+      <div class="modal-content">
+          <span class="close" id="closeModalUser">&times;</span>
+          <div id="popup-content">
+          </div>
+      </div>
+  </div>
     <button id="addClientBoutton" class="btn btn-primary">Add client</button>
     <div id="addClientmodal" class="modal modal-dialog-scrollable" style="display: none;">
         <div class="modal-content">
           <span class="close" id="closeModal">&times;</span>
 
           <h2>Add client</h2>
-          <form action="/api/addClient" method="post">
+          <form action="/addClient" method="POST">
             <label for="certificationCode">Certification code :</label>
             <input type="text" id="certificationCode" name="certificationCode" required><br>
     
@@ -40,7 +47,7 @@
             <input type="text" id="title" name="title"><br>
     
             <label for="futureTopics">Future Topics:</label>
-            <textarea id="futureTopics" name="futureTopics"></textarea><br>
+            <input type="text" id="futureTopics" name="futureTopics"><br>
             <input type="submit" value="Add Client">
         </form>
         </div>
@@ -61,7 +68,7 @@
         </thead>
         <tbody>
             <% traning.forEach(traning => { %>
-            <tr>
+            <tr class="table-row">
                 <td><%= traning.certificationCode %></td>
                 <td><%= traning.fullName %></td>
                 <td><%= traning.company %></td>
@@ -77,6 +84,53 @@
         </table>
 
 <script>
+
+document.addEventListener('DOMContentLoaded', () => {
+    const tableRows = document.querySelectorAll('.table-row');
+    const popup = document.getElementById('popup');
+    const popupContent = document.getElementById('popup-content');
+    const closeModal = document.getElementById('closeModalUser');
+
+    closeModal.addEventListener('click', () => {
+      popup.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+      if (event.target === popup) {
+        popup.style.display = 'none';
+      }
+    });
+
+
+    tableRows.forEach((row) => {
+        row.addEventListener('click', () => {
+            const rowData = row.cells;
+            const certificationCode = rowData[0].textContent;
+            const fullName = rowData[1].textContent;
+            const company = rowData[2].textContent;
+            const position = rowData[3].textContent;
+            const email = rowData[4].textContent;
+            const telephone = rowData[5].textContent;
+            const date = rowData[6].textContent;
+            const title = rowData[7].textContent;
+            const futureTopics = rowData[8].textContent;
+
+            popupContent.innerHTML = `
+                <h2>${fullName}</h2>
+                <p>Certification Code: ${certificationCode}</p>
+                <p>Company: ${company}</p>
+                <p>Position: ${position}</p>
+                <p>Email: ${email}</p>
+                <p>Telephone: ${telephone}</p>
+                <p>Date: ${date}</p>
+                <p>Title: ${title}</p>
+                <p>Future Topics: ${futureTopics}</p>
+            `;
+            popup.style.display = 'block';
+        });
+    });
+});
+
     // Code JavaScript pour gérer l'ouverture et la fermeture de la boîte de dialogue
     const addClientBoutton = document.getElementById('addClientBoutton');
     const addClientModal = document.getElementById('addClientmodal');

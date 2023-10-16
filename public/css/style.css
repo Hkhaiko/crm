@@ -220,3 +220,14 @@ strong {
   background-color: #000000;
   color: #fff;
 }
+
+.error-login-message {
+  color: red;
+  margin-bottom: 4% ;
+}
+
+.table-row:hover {
+  cursor: pointer; /* Curseur de la souris en forme de main pour indiquer que c'est cliquable */
+  background-color: #ccc9c9; /* Changer la couleur de fond lorsqu'il est survolé */
+  color: rgb(24, 24, 155); /* Changer la couleur du texte en bleu lorsqu'il est survolé */
+} 
