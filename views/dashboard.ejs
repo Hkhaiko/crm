@@ -3,10 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/style.css">
     <title>DASHBOARD</title>
-    <!-- Inclure des liens vers des fichiers CSS ou d'autres ressources si nécessaire -->
 </head>
 <body>
-<div>><h1>THE DASHBOARD </h1>></div>
+    <h1>CRM DASHBOARD</h1>
+    <button id="addClientBoutton" class="btn btn-primary">Add client</button>
+    <div id="addClientmodal" class="modal modal-dialog-scrollable" style="display: none;">
+        <div class="modal-content">
+          <span class="close" id="closeModal">&times;</span>
+
+          <h2>Add client</h2>
+          <form action="/api/addClient" method="post">
+            <label for="certificationCode">Certification code :</label>
+            <input type="text" id="certificationCode" name="certificationCode" required><br>
+    
+            <label for="fullName">Fullname :</label>
+            <input type="text" id="fullName" name="fullName" required><br>
+    
+            <label for="company">Company:</label>
+            <input type="text" id="company" name="company"><br>
+    
+            <label for="position">Position :</label>
+            <input type="text" id="position" name="position"><br>
+    
+            <label for="email">Email :</label>
+            <input type="email" id="email" name="email" required><br>
+    
+            <label for="telephone">Telephone:</label>
+            <input type="tel" id="telephone" name="telephone"><br>
+    
+            <label for="date">Date :</label>
+            <input type="date" id="date" name="date"><br>
+    
+            <label for="title">Title :</label>
+            <input type="text" id="title" name="title"><br>
+    
+            <label for="futureTopics">Future Topics:</label>
+            <textarea id="futureTopics" name="futureTopics"></textarea><br>
+            <input type="submit" value="Add Client">
+        </form>
+        </div>
+</div>
+    <table>
+        <thead>
+            <tr>
+            <th>Certification Code</th>
+            <th>Fullname</th>
+            <th>Company</th>
+            <th>Position</th>
+            <th>Email</th>
+            <th>Telephone</th>
+            <th>Date</th>
+            <th>Title</th>
+            <th>Future Topics</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% traning.forEach(traning => { %>
+            <tr>
+                <td><%= traning.certificationCode %></td>
+                <td><%= traning.fullName %></td>
+                <td><%= traning.company %></td>
+                <td><%= traning.position %></td>
+                <td><%= traning.email %></td>
+                <td><%= traning.telephone %></td>
+                <td><%= traning.date %></td>
+                <td><%= traning.title %></td>
+                <td><%= traning.futureTopics %></td>
+            </tr>
+            <% }); %>
+        </tbody>
+        </table>
+
+<script>
+    // Code JavaScript pour gérer l'ouverture et la fermeture de la boîte de dialogue
+    const addClientBoutton = document.getElementById('addClientBoutton');
+    const addClientModal = document.getElementById('addClientmodal');
+    const closeModal = document.getElementById('closeModal');
+  
+    addClientBoutton.addEventListener('click', () => {
+      addClientModal.style.display = 'block';
+    });
+  
+    closeModal.addEventListener('click', () => {
+      addClientModal.style.display = 'none';
+    });
+  
+    // Fermer la boîte de dialogue lorsque l'utilisateur clique en dehors de la boîte
+    window.addEventListener('click', (event) => {
+      if (event.target === addClientModal) {
+        addClientModal.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>

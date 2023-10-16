@@ -52,6 +52,12 @@ exports.deleteTraningUsers = (req, res) =>{
     });
 };
 
+exports.test = (req, res) =>{  
+  // Exécutez une requête SQL pour sélectionner tous les utilisateurs de la base de données
+  console.log("test");
+  res.render('display', {test: "teaeaz"});
+};
+
 // Get All traningUsers
 exports.getTraningUsers = (req, res) =>{  
     // Exécutez une requête SQL pour sélectionner tous les utilisateurs de la base de données

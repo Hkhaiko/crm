@@ -13,8 +13,13 @@ form {
   h1 {
     text-align: center;
     color: #333;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    font-size: 2em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
-  
   /* Style du formulaire */
   form {
     background-color: #fff;
@@ -47,7 +52,7 @@ form {
   
   /* Style du bouton de soumission */
   button[type="submit"] {
-    background-color: #007bff;
+    background-color: #007bff; 
     color: #fff;
     border: none;
     border-radius: 3px;
@@ -121,4 +126,97 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
   background-color: #0056b3;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+thead {
+  background-color: #1E90FF;
+  color: #fff;
+  text-align: left;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  white-space: nowrap; /* Empêche le texte de passer à la ligne */
+  overflow: hidden; /* Masque le texte dépassant de la cellule */
+  text-overflow: ellipsis; /* Ajoute des points de suspension (...) pour le texte dépassant */
+  max-width: 150px; /* Définit la largeur maximale avant d'ajouter les points de suspension */
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #f0f0f0;
+}
+
+/* Style pour le texte en gras (comme le nom complet, la société, etc.) */
+strong {
+  font-weight: bold;
+}
+
+/* Styles pour la boîte modale */
+.modal {
+  display: none; /* Par défaut, la boîte modale est masquée */
+  position: fixed; /* Positionnement fixe pour couvrir toute la fenêtre */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Fond semi-transparent */
+}
+
+.modal-content {
+  background-color: #fff; /* Couleur de fond de la boîte modale */
+  margin: 1% auto; /* Centrer la boîte modale verticalement */
+  padding: 20px;
+  border: 1px solid #333; /* Bordure de la boîte modale */
+  border-radius: 5px;
+  width: 70%;
+  max-width: 400px; /* Largeur maximale de la boîte modale */
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333; /* Couleur de la croix pour fermer la boîte modale */
+}
+
+.modal-dialog-scrollable {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #000;
+}
+
+#addClientBoutton {
+  color: #000000;
+  background-color: #fff;
+  width: 70px;
+  height: 40px; 
+  margin-left: 94%;
+  border: 1px solid #000;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px #000;
+  transition: all 0.2s ease-in-out;
+}
+
+#addClientBoutton:hover {
+  background-color: #000000;
+  color: #fff;
 }

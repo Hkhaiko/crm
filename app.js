@@ -1,29 +1,30 @@
-const express = require('express');
-const db = require('./config/db');
-const session = require('express-session');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
-const userRoutes = require('./routes/userRoutes');
-const traningRoutes = require('./routes/traningRoutes');
-const authRoutes = require('./routes/authRoutes');
-const flash = require('connect-flash');
+  const express = require('express');
+  const db = require('./config/db');
+  const session = require('express-session');
+  const passport = require('passport');
+  const LocalStrategy = require('passport-local').Strategy;
+  const bcrypt = require('bcrypt');
+  const userRoutes = require('./routes/userRoutes');
+  const traningRoutes = require('./routes/traningRoutes');
+  const authRoutes = require('./routes/authRoutes');
+  const bodyParser = require('body-parser');
 
-const app = express();
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+  const app = express();
+
+  // Middleware
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+  app.use(express.static('public'));
 
 // Configuration de la session
 app.use(session({
-  secret: 'secret', // Remplacez par une clé secrète réelle
-  resave: false,
+  secret: 'MaCleSecreteSuperSecurisee1234', // Remplacez par une clé secrète réelle
   saveUninitialized: true,
+  resave: false
 }));
 
-app.use(flash());
 
 // Initialisation de Passport.js
 app.use(passport.initialize());
@@ -35,7 +36,7 @@ passport.use(new LocalStrategy(
     usernameField: 'email', // Champ de formulaire pour l'adresse e-mail
     passwordField: 'password', // Champ de formulaire pour le mot de passe
   },
-  (req,email, password, done) => {
+  (email, password, done) => {
     // Recherchez l'utilisateur correspondant à l'adresse e-mail dans la base de données
     const sql = 'SELECT * FROM user WHERE email = ?';
     db.query(sql, [email], (err, results) => {
@@ -45,7 +46,7 @@ passport.use(new LocalStrategy(
 
       if (results.length === 0) {
         // Aucun utilisateur trouvé avec cette adresse e-mail
-        return done(null, false, req.flash('error', 'Email is not correct'));
+        return done(null, false, { message: 'Email is not correct' });
       }
 
       const user = results[0];
@@ -58,7 +59,7 @@ passport.use(new LocalStrategy(
 
         if (!isMatch) {
           // Le mot de passe ne correspond pas
-          return done(null, false, req.flash('error', 'Password is not correct'));
+          return done(null, false, { message: 'Password is not correct' });
         }
 
         // Authentification réussie
@@ -92,9 +93,11 @@ passport.deserializeUser((id, done) => {
 
 // Configuration du moteur de templates EJS
 app.set('view engine', 'ejs');
-
-// Servez les fichiers statiques depuis le dossier 'public'
 app.use('/public', express.static(__dirname + '/public'));
+// Routes pour les API
+app.use('/', traningRoutes);
+app.use('/', authRoutes);
+app.use('/', userRoutes);
 
 // Routes
 app.get('/', (req, res) => {
@@ -102,21 +105,35 @@ app.get('/', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  res.render('login'); // 'login' est le nom de votre fichier HTML (sans l'extension)
+  console.log("Here it works") // ici ça fonctionne dans le app.js
+  res.render('login'); 
 });
 
 app.get('/register', (req, res) => {
-  res.render('register'); // Utilisez le nom du fichier EJS sans l'extension
+  res.render('register'); 
+});
+
+app.get('/display', (req, res) => {
+  res.render('display'); 
 });
 
 app.get('/dashboard', (req, res) => {
-  res.render('dashboard');
+  // Effectuez une requête SQL pour récupérer les informations des personnes depuis votre base de données
+  const sql = 'SELECT * FROM traning'; // Remplacez "personnes" par le nom de votre table
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération des données depuis la base de données:', err);
+      // Gérez l'erreur ici, par exemple, redirigez l'utilisateur vers une page d'erreur
+      res.render('error'); // Créez une vue error.ejs appropriée
+    } else {
+      const traning = results; // Les données des personnes sont stockées dans results
+      // Transmettez les données des personnes à votre modèle EJS pour le rendu
+      res.render('dashboard', { traning });
+    }
+  });
 });
 
-// Routes pour les API
-app.use('/api', authRoutes);
-app.use('/api', userRoutes);
-app.use('/api', traningRoutes);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

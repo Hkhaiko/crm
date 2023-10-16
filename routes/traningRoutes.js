@@ -7,6 +7,6 @@ router.post('/traning', traningController.createTraningUser);
 router.delete('/traning/:traningId', traningController.deleteTraningUsers);
 router.get('/traning', traningController.getTraningUsers);
 router.put('/traning/:traningId', traningController.updatedTraningUserData);
-
+router.get('/display', traningController.test);
 
 module.exports = router;
