@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>traning User</title>
+</head>
+<body>
+    <h1><%= traning.fullName %></h1>
+    <div class="container">
+      <form class="is-readonly" action="/traning-user/<%= traning.id %>" method="post">
+        <div class="form-group">
+          <label for="certificationCode">Certification Code</label>
+          <input type="text" class="form-control is-disabled" id="certificationCode" placeholder="<%- traning.certificationCode %>" value="<%- traning.certificationCode %>" name="certificationCode" disabled>
+        </div>
+      <div class="form-group">
+          <label for="fullName">Fullname</label>
+          <input type="text" class="form-control is-disabled" id="fullName" placeholder="fullName" value="<%- traning.fullName %>" name="fullName" disabled>
+        </div>
+        <div class="form-group">
+          <label for="company">Company</label>
+          <input type="text" class="form-control is-disabled" id="company" placeholder="<%- traning.company %>" value="<%- traning.company %>" name="company" disabled>
+        </div>
+        <div class="form-group">
+          <label for="position">Position</label>
+          <input type="text" class="form-control is-disabled" id="position" placeholder="<%- traning.position %>" value="<%- traning.position %>" name="position" disabled>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" class="form-control is-disabled" id="email" placeholder="<%- traning.email %>" value="<%- traning.email %>" name="email" disabled>
+        </div>
+        <div class="form-group">
+          <label for="telephone">Telephone</label>
+          <input type="text" class="form-control is-disabled" id="telephone" placeholder="<%- traning.telephone %>" value="<%- traning.telephone %>" name="telephone" disabled>
+        </div>
+        <div class="form-group">
+          <label for="date">date</label>
+          <input type="text" class="form-control is-disabled" id="date" placeholder="<%- traning.date %>" value="<%- traning.date %>" name="date" disabled>
+        </div>
+        <div class="form-group">
+          <label for="title">title</label>
+          <input type="text" class="form-control is-disabled" id="title" placeholder="<%- traning.title %>" value="<%- traning.title %>" name="title" disabled>
+        </div>
+        <div class="form-group">
+          <label for="futureTopics">Future Topics</label>
+          <input type="text" class="form-control is-disabled" id="futureTopics" placeholder="<%- traning.futureTopics %>" value="<%- traning.futureTopics %>" name="futureTopics" disabled>
+        </div>
+        <button type="button" class="btn btn-default btn-edit js-edit">Edit</button>
+        <input type="submit" value="Save">
+      </form>   
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const editButtons = document.querySelectorAll('.js-edit');
+  const saveButtons = document.querySelectorAll('.js-save');
+
+  editButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const form = this.closest('form');
+      form.classList.remove('is-readonly');
+      form.classList.add('is-editing');
+      form.querySelectorAll('input, textarea').forEach(input => input.removeAttribute('disabled'));
+    });
+  });
+
+  saveButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const form = this.closest('form');
+      form.classList.remove('is-editing');
+      form.classList.add('is-readonly');
+      form.querySelectorAll('input, textarea').forEach(input => input.setAttribute('disabled', 'disabled'));
+    });
+  });
+});
+</script>
+</body>
+</html>

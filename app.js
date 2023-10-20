@@ -4,14 +4,16 @@
   const passport = require('passport');
   const LocalStrategy = require('passport-local').Strategy;
   const bcrypt = require('bcrypt');
-  const userRoutes = require('./routes/userRoutes');
-  const traningRoutes = require('./routes/traningRoutes');
-  const authRoutes = require('./routes/authRoutes');
+  const userRoutes = require('./routes/user');
+  const traningRoutes = require('./routes/traning');
+  const authRoutes = require('./routes/auth');
+  const cors = require('cors');
   const bodyParser = require('body-parser');
 
   const app = express();
 
   // Middleware
+  app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(bodyParser.json());
@@ -112,8 +114,19 @@ app.get('/register', (req, res) => {
 });
 
 app.get('/display', (req, res) => {
-  res.render('display'); 
+  res.render('display', {test:""}); 
 });
+
+//==================TRANING===================
+
+app.get('/traning-user/:id' ,(req, res) => {
+  res.render('traningUser');
+});
+
+app.get('/test/:id', (req, res) => {
+  res.render('test');
+});
+
 
 app.get('/dashboard', (req, res) => {
   // Effectuez une requête SQL pour récupérer les informations des personnes depuis votre base de données

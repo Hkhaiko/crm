@@ -38,6 +38,7 @@ form {
     color: #333;
   }
   
+
   input[type="text"],
   input[type="email"],
   input[type="password"]
@@ -50,22 +51,6 @@ form {
     font-size: 16px;
   }
   
-  /* Style du bouton de soumission */
-  button[type="submit"] {
-    background-color: #007bff; 
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    padding: 10px 20px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #0056b3;
-  }
-
   /* Réinitialisation des styles par défaut du formulaire */
 form {
   margin: 0;
@@ -207,18 +192,69 @@ strong {
 #addClientBoutton {
   color: #000000;
   background-color: #fff;
-  width: 70px;
+  width: 90px;
   height: 40px; 
-  margin-left: 94%;
+  margin-left: 93%;
   border: 1px solid #000;
   border-radius: 5px;
   box-shadow: 0px 2px 4px #000;
   transition: all 0.2s ease-in-out;
+  cursor: -webkit-pointer;
+  cursor: pointer;
 }
 
 #addClientBoutton:hover {
   background-color: #000000;
   color: #fff;
+}
+
+
+#editUser{
+  color: #000000;
+  background-color: #fff;
+  width: 80px;
+  height: 30px; 
+  border: 1px solid #000;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px #000;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+
+#deleteUser:hover {
+  background-color: #000000;
+  color: #fff;
+}
+
+#deleteUser{
+  color: #000000;
+  background-color: #fff;
+  width: 80px;
+  height: 30px; 
+  border: 1px solid #000;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px #000;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  display:block;
+  margin-top: 1%;
+}
+
+
+#editUser:hover {
+  background-color: #000000;
+  color: #fff;
+}
+
+input[type="date"] {
+  background-color: #ffffff;
+  font-size: 16px;
+  font-family: sans-serif;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 1%;
+  margin-bottom: 4%;
 }
 
 .error-login-message {
@@ -231,3 +267,29 @@ strong {
   background-color: #ccc9c9; /* Changer la couleur de fond lorsqu'il est survolé */
   color: rgb(24, 24, 155); /* Changer la couleur du texte en bleu lorsqu'il est survolé */
 } 
+
+#addClientDashboard{
+  color: #000000;
+  background-color: #fff;
+  width: 90px;
+  height: 40px;
+  border: 0.5px solid #000;
+  border-radius: 5px;
+  box-shadow: 0px 1px 2px #000;
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+}
+
+form.is-readonly .btn-save {
+  display: none;
+}
+form.is-readonly input[disabled], form.is-readonly textarea[disabled] {
+  cursor: text;
+  background-color: #fff;
+  border-color: transparent;
+  outline-color: transparent;
+  box-shadow: none;
+}
+form.is-editing .btn-edit {
+  display: none;
+}

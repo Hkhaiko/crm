@@ -12,6 +12,31 @@
       <div class="modal-content">
           <span class="close" id="closeModalUser">&times;</span>
           <div id="popup-content">
+            <form class="is-editing"  id="editUserForm">
+              <label for="fullName">FullName :</label>
+              <input type="text" id="fullName" name="fullName" disabled><br>
+            
+              <label for="company">Company:</label>
+              <input type="text" id="company" name="company" disabled><br>
+            
+              <label for="position">Position :</label>
+              <input type="text" id="position" name="position" disabled><br>
+            
+              <label for="email">Email :</label>
+              <input type="email" id="email" name="email" disabled><br>
+            
+              <label for="telephone">Telephone:</label>
+              <input type="text" id="telephone" name="telephone" disabled><br>
+            
+              <label for="date">Date :</label>
+              <input type="date" id="date" name="date" disabled><br>
+            
+              <label for="title">Title :</label>
+              <input type="text" id="title" name="title" disabled><br>
+            
+              <label for="futureTopics">Future Topics:</label>
+              <input type="text" id="futureTopics" name="futureTopics" disabled><br>
+            </form>
           </div>
       </div>
   </div>
@@ -38,7 +63,7 @@
             <input type="email" id="email" name="email" required><br>
     
             <label for="telephone">Telephone:</label>
-            <input type="tel" id="telephone" name="telephone"><br>
+            <input type="text" id="telephone" name="telephone"><br>
     
             <label for="date">Date :</label>
             <input type="date" id="date" name="date"><br>
@@ -48,7 +73,7 @@
     
             <label for="futureTopics">Future Topics:</label>
             <input type="text" id="futureTopics" name="futureTopics"><br>
-            <input type="submit" value="Add Client">
+            <input type="submit" value="Add Client" id="addClientDashboard">
         </form>
         </div>
 </div>
@@ -84,72 +109,90 @@
         </table>
 
 <script>
-
 document.addEventListener('DOMContentLoaded', () => {
-    const tableRows = document.querySelectorAll('.table-row');
-    const popup = document.getElementById('popup');
-    const popupContent = document.getElementById('popup-content');
-    const closeModal = document.getElementById('closeModalUser');
+  const tableRows = document.querySelectorAll('.table-row');
+  const popup = document.getElementById('popup');
+  const popupContent = document.getElementById('popup-content');
+  const closeModalUser = document.getElementById('closeModalUser');
+  const editButtons = document.querySelectorAll('.js-edit');
+  const saveButtons = document.querySelectorAll('.js-save');
 
-    closeModal.addEventListener('click', () => {
+  editButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const form = this.closest('form');
+      form.classList.remove('is-readonly');
+      form.classList.add('is-editing');
+      form.querySelectorAll('input, textarea').forEach(input => input.removeAttribute('disabled'));
+    });
+  });
+
+  saveButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const form = this.closest('form');
+      form.classList.remove('is-editing');
+      form.classList.add('is-readonly');
+      form.querySelectorAll('input, textarea').forEach(input => input.setAttribute('disabled', 'disabled'));
+    });
+  });
+
+
+  closeModalUser.addEventListener('click', () => {
+    popup.style.display = 'none';
+  });
+
+  window.addEventListener('click', (event) => {
+    if (event.target === popup) {
       popup.style.display = 'none';
+    }
+  });
+
+  tableRows.forEach((row) => {
+    row.addEventListener('click', () => {
+      const rowData = row.cells;
+      const certificationCode = rowData[0].textContent;
+      const fullName = rowData[1].textContent;
+      const company = rowData[2].textContent;
+      const position = rowData[3].textContent;
+      const email = rowData[4].textContent;
+      const telephone = rowData[5].textContent;
+      const date = rowData[6].textContent;
+      const title = rowData[7].textContent;
+      const futureTopics = rowData[8].textContent;
+
+      popupContent.innerHTML = `
+        <h2>${fullName}</h2>
+        <p>Certification Code: ${certificationCode}</p>
+        <p>Company: ${company}</p>
+        <p>Position: ${position}</p>
+        <p>Email: ${email}</p>
+        <p>Telephone: ${telephone}</p>
+        <p>Date: ${date}</p>
+        <p>Title: ${title}</p>
+        <p>Future Topics: ${futureTopics}</p>
+      `;
+      popup.style.display = 'block';
     });
+  });
 
-    window.addEventListener('click', (event) => {
-      if (event.target === popup) {
-        popup.style.display = 'none';
-      }
-    });
+  const addClientButton = document.getElementById('addClientBoutton');
+  const addClientModal = document.getElementById('addClientmodal');
+  const closeModal = document.getElementById('closeModal');
 
+  addClientButton.addEventListener('click', () => {
+    addClientModal.style.display = 'block';
+  });
 
-    tableRows.forEach((row) => {
-        row.addEventListener('click', () => {
-            const rowData = row.cells;
-            const certificationCode = rowData[0].textContent;
-            const fullName = rowData[1].textContent;
-            const company = rowData[2].textContent;
-            const position = rowData[3].textContent;
-            const email = rowData[4].textContent;
-            const telephone = rowData[5].textContent;
-            const date = rowData[6].textContent;
-            const title = rowData[7].textContent;
-            const futureTopics = rowData[8].textContent;
+  closeModal.addEventListener('click', () => {
+    addClientModal.style.display = 'none';
+  });
 
-            popupContent.innerHTML = `
-                <h2>${fullName}</h2>
-                <p>Certification Code: ${certificationCode}</p>
-                <p>Company: ${company}</p>
-                <p>Position: ${position}</p>
-                <p>Email: ${email}</p>
-                <p>Telephone: ${telephone}</p>
-                <p>Date: ${date}</p>
-                <p>Title: ${title}</p>
-                <p>Future Topics: ${futureTopics}</p>
-            `;
-            popup.style.display = 'block';
-        });
-    });
+  window.addEventListener('click', (event) => {
+    if (event.target === addClientModal) {
+      addClientModal.style.display = 'none';
+    }
+  });
 });
 
-    // Code JavaScript pour gérer l'ouverture et la fermeture de la boîte de dialogue
-    const addClientBoutton = document.getElementById('addClientBoutton');
-    const addClientModal = document.getElementById('addClientmodal');
-    const closeModal = document.getElementById('closeModal');
-  
-    addClientBoutton.addEventListener('click', () => {
-      addClientModal.style.display = 'block';
-    });
-  
-    closeModal.addEventListener('click', () => {
-      addClientModal.style.display = 'none';
-    });
-  
-    // Fermer la boîte de dialogue lorsque l'utilisateur clique en dehors de la boîte
-    window.addEventListener('click', (event) => {
-      if (event.target === addClientModal) {
-        addClientModal.style.display = 'none';
-      }
-    });
-  </script>
+</script>
 </body>
 </html>

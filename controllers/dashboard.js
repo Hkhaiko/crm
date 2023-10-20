@@ -38,13 +38,13 @@ exports.addClient = (req, res) => {
   const sql = 'INSERT INTO traning (certificationCode, fullName, company, position, email, telephone, date, title, futureTopics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
   const values = [traningClient.certificationCode, traningClient.fullName, traningClient.company, traningClient.position, traningClient.email, traningClient.telephone, traningClient.date, traningClient.title, traningClient.futureTopics];
 
-  console.log(req.body);
   db.query(sql, values, (err, result) =>{
     if (err){
       console.log("Error :" + err.message);
       res.status(500).send('Error creating client');
     } else{
       res.redirect('/dashboard')
+      console.log(result)
       console.log('Created client successfully');
     }
   })
