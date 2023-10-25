@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/css/style.css">
+    <script src="../public/js/dashboard.js"></script>
+    <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
     <title>DASHBOARD</title>
 </head>
 <body>
@@ -77,6 +81,8 @@
         </form>
         </div>
 </div>
+<input type="text" id="searchInput" placeholder="Search">
+
     <table>
         <thead>
             <tr>
@@ -89,6 +95,8 @@
             <th>Date</th>
             <th>Title</th>
             <th>Future Topics</th>
+            <th>Profile</th>
+            <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -103,96 +111,156 @@
                 <td><%= traning.date %></td>
                 <td><%= traning.title %></td>
                 <td><%= traning.futureTopics %></td>
-            </tr>
+                <td><a href="/traning-user/<%= traning.id %>">See</a></td>
+                <td><a href="/delete-traning/<%= traning.id %>"><i class="fa fa-trash"></i></a></td>
             <% }); %>
         </tbody>
         </table>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const tableRows = document.querySelectorAll('.table-row');
-  const popup = document.getElementById('popup');
-  const popupContent = document.getElementById('popup-content');
-  const closeModalUser = document.getElementById('closeModalUser');
-  const editButtons = document.querySelectorAll('.js-edit');
-  const saveButtons = document.querySelectorAll('.js-save');
+        <form action="/import-excel" method="POST" enctype="multipart/form-data" id="importExel">
+          <label for="excelFile">Sélectionnez un fichier Excel :</label>
+          <input type="file" name="excelFile" id="excelFile" accept=".xlsx">
+          <button type="submit" id="import-excel-button">Importer Excel</button>
+      </form>
 
-  editButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      const form = this.closest('form');
-      form.classList.remove('is-readonly');
-      form.classList.add('is-editing');
-      form.querySelectorAll('input, textarea').forEach(input => input.removeAttribute('disabled'));
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tableRows = document.querySelectorAll('.table-row');
+    const popup = document.getElementById('popup');
+    const popupContent = document.getElementById('popup-content');
+    const closeModalUser = document.getElementById('closeModalUser');
+    const editButtons = document.querySelectorAll('.js-edit');
+    const saveButtons = document.querySelectorAll('.js-save');
+
+    const searchInput = document.querySelector('#searchInput');
+
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value;
+      const filteredRows = table.querySelectorAll('.table-row');
+
+      filteredRows.forEach((row) => {
+        const rowData = row.cells;
+        const fullName = rowData[1].textContent;
+
+        if (fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
+          row.style.display = 'table-row';
+        } else {
+          row.style.display = 'none';
+        }
+      });
     });
-  });
-
-  saveButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      const form = this.closest('form');
-      form.classList.remove('is-editing');
-      form.classList.add('is-readonly');
-      form.querySelectorAll('input, textarea').forEach(input => input.setAttribute('disabled', 'disabled'));
+  
+    editButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const form = this.closest('form');
+        form.classList.remove('is-readonly');
+        form.classList.add('is-editing');
+        form.querySelectorAll('input, textarea').forEach(input => input.removeAttribute('disabled'));
+      });
     });
-  });
-
-
-  closeModalUser.addEventListener('click', () => {
-    popup.style.display = 'none';
-  });
-
-  window.addEventListener('click', (event) => {
-    if (event.target === popup) {
+  
+    saveButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const form = this.closest('form');
+        form.classList.remove('is-editing');
+        form.classList.add('is-readonly');
+        form.querySelectorAll('input, textarea').forEach(input => input.setAttribute('disabled', 'disabled'));
+      });
+    });
+  
+  
+    closeModalUser.addEventListener('click', () => {
       popup.style.display = 'none';
-    }
-  });
-
-  tableRows.forEach((row) => {
-    row.addEventListener('click', () => {
-      const rowData = row.cells;
-      const certificationCode = rowData[0].textContent;
-      const fullName = rowData[1].textContent;
-      const company = rowData[2].textContent;
-      const position = rowData[3].textContent;
-      const email = rowData[4].textContent;
-      const telephone = rowData[5].textContent;
-      const date = rowData[6].textContent;
-      const title = rowData[7].textContent;
-      const futureTopics = rowData[8].textContent;
-
-      popupContent.innerHTML = `
-        <h2>${fullName}</h2>
-        <p>Certification Code: ${certificationCode}</p>
-        <p>Company: ${company}</p>
-        <p>Position: ${position}</p>
-        <p>Email: ${email}</p>
-        <p>Telephone: ${telephone}</p>
-        <p>Date: ${date}</p>
-        <p>Title: ${title}</p>
-        <p>Future Topics: ${futureTopics}</p>
-      `;
-      popup.style.display = 'block';
+    });
+  
+    window.addEventListener('click', (event) => {
+      if (event.target === popup) {
+        popup.style.display = 'none';
+      }
+    });
+  
+    tableRows.forEach((row) => {
+      row.addEventListener('click', () => {
+        const rowData = row.cells;
+        const certificationCode = rowData[0].textContent;
+        const fullName = rowData[1].textContent;
+        const company = rowData[2].textContent;
+        const position = rowData[3].textContent;
+        const email = rowData[4].textContent;
+        const telephone = rowData[5].textContent;
+        const date = rowData[6].textContent;
+        const title = rowData[7].textContent;
+        const futureTopics = rowData[8].textContent;
+  
+        popupContent.innerHTML = `
+          <h2>${fullName}</h2>
+          <p>Certification Code: ${certificationCode}</p>
+          <p>Company: ${company}</p>
+          <p>Position: ${position}</p>
+          <p>Email: ${email}</p>
+          <p>Telephone: ${telephone}</p>
+          <p>Date: ${date}</p>
+          <p>Title: ${title}</p>
+          <p>Future Topics: ${futureTopics}</p>
+        `;
+        popup.style.display = 'block';
+      });
+    });
+  
+    const addClientButton = document.getElementById('addClientBoutton');
+    const addClientModal = document.getElementById('addClientmodal');
+    const closeModal = document.getElementById('closeModal');
+  
+    addClientButton.addEventListener('click', () => {
+      addClientModal.style.display = 'block';
+    });
+  
+    closeModal.addEventListener('click', () => {
+      addClientModal.style.display = 'none';
+    });
+  
+    window.addEventListener('click', (event) => {
+      if (event.target === addClientModal) {
+        addClientModal.style.display = 'none';
+      }
     });
   });
+  
+  </script> -->
+<!-- 
+  <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
 
-  const addClientButton = document.getElementById('addClientBoutton');
-  const addClientModal = document.getElementById('addClientmodal');
-  const closeModal = document.getElementById('closeModal');
+  <script>
+    let input = document.getElementById('input')
+    input.addEventListener('change', function() {
+    readXlsxFile(input.files[0], {
+    }).then(function(rows) {
+    
+    // Obtenir le tableau HTML
+    const table = document.querySelector('table');
 
-  addClientButton.addEventListener('click', () => {
-    addClientModal.style.display = 'block';
-  });
+    // Parcourir les lignes du fichier Excel et les ajouter au tableau
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
 
-  closeModal.addEventListener('click', () => {
-    addClientModal.style.display = 'none';
-  });
+      // Créer une nouvelle ligne HTML
+      const newRow = document.createElement('tr');
 
-  window.addEventListener('click', (event) => {
-    if (event.target === addClientModal) {
-      addClientModal.style.display = 'none';
+      // Parcourir les cellules de la ligne et les ajouter à la nouvelle ligne HTML
+      for (let j = 0; j < row.length; j++) {
+        const cell = row[j];
+
+        const newCell = document.createElement('td');
+        newCell.textContent = cell;
+
+        newRow.appendChild(newCell);
+      }
+
+      // Ajouter la nouvelle ligne HTML au tableau
+      table.appendChild(newRow);
     }
-  });
-});
-
-</script>
+  })
+}) -->
+  </script>
 </body>
 </html>

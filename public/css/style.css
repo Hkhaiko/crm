@@ -257,9 +257,41 @@ input[type="date"] {
   margin-bottom: 4%;
 }
 
+#searchInput{
+  width: 90%;
+}
+
 .error-login-message {
   color: red;
   margin-bottom: 4% ;
+}
+
+input[type="file"] {
+  display: block;
+  width: 90%;
+  height: 30px;
+  
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #fff;
+
+  &:hover {
+    border-color: #000;
+  }
+
+  &::-webkit-file-upload-button {
+    display: none;
+  }
+
+  &:after {
+    content: "Choisir un fichier";
+    font-size: 12px;
+    color: #999;
+    margin-top: 10px;
+    margin-left: 2%;
+  }
 }
 
 .table-row:hover {
@@ -292,4 +324,12 @@ form.is-readonly input[disabled], form.is-readonly textarea[disabled] {
 }
 form.is-editing .btn-edit {
   display: none;
+}
+
+#importExel{
+  margin-top: 2%;
+}
+
+#import-excel-button{
+  margin-top: 2%;
 }

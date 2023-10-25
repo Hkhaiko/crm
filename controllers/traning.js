@@ -1,6 +1,7 @@
 // Fichier traningController.js dans le répertoire controllers
 const db = require('../config/db');
 
+
 // Fonction pour créer un nouvel utilisateur
 exports.createTraningUser = (req, res) => {
     const updatedUserData = req.body; // Les données de l'utilisateur à partir du corps de la demande

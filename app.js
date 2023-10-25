@@ -7,6 +7,7 @@
   const userRoutes = require('./routes/user');
   const traningRoutes = require('./routes/traning');
   const authRoutes = require('./routes/auth');
+  const dashboardRoutes = require('./routes/dashboard');
   const cors = require('cors');
   const bodyParser = require('body-parser');
 
@@ -99,6 +100,7 @@ app.use('/public', express.static(__dirname + '/public'));
 app.use('/', traningRoutes);
 app.use('/', authRoutes);
 app.use('/', userRoutes);
+app.use('/', dashboardRoutes);
 
 // Routes
 app.get('/', (req, res) => {
