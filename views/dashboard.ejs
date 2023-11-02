@@ -12,77 +12,45 @@
 </head>
 <body>
     <h1>CRM DASHBOARD</h1>
-    <div id="popup" class="modal">
-      <div class="modal-content">
-          <span class="close" id="closeModalUser">&times;</span>
-          <div id="popup-content">
-            <form class="is-editing"  id="editUserForm">
-              <label for="fullName">FullName :</label>
-              <input type="text" id="fullName" name="fullName" disabled><br>
-            
-              <label for="company">Company:</label>
-              <input type="text" id="company" name="company" disabled><br>
-            
-              <label for="position">Position :</label>
-              <input type="text" id="position" name="position" disabled><br>
-            
-              <label for="email">Email :</label>
-              <input type="email" id="email" name="email" disabled><br>
-            
-              <label for="telephone">Telephone:</label>
-              <input type="text" id="telephone" name="telephone" disabled><br>
-            
-              <label for="date">Date :</label>
-              <input type="date" id="date" name="date" disabled><br>
-            
-              <label for="title">Title :</label>
-              <input type="text" id="title" name="title" disabled><br>
-            
-              <label for="futureTopics">Future Topics:</label>
-              <input type="text" id="futureTopics" name="futureTopics" disabled><br>
-            </form>
-          </div>
-      </div>
-  </div>
-    <button id="addClientBoutton" class="btn btn-primary">Add client</button>
+    <div class="head-back">
+      <input type="text" id="searchInput" placeholder="Search" class="official-input">
+      <button id="addClientBoutton" class="btn btn-primary">Add client</button>
+    </div>
     <div id="addClientmodal" class="modal modal-dialog-scrollable" style="display: none;">
         <div class="modal-content">
           <span class="close" id="closeModal">&times;</span>
-
           <h2>Add client</h2>
-          <form action="/addClient" method="POST">
+          <form action="/addClient" method="POST" class="official-form">
             <label for="certificationCode">Certification code :</label>
-            <input type="text" id="certificationCode" name="certificationCode" required><br>
+            <input type="text" id="certificationCode" name="certificationCode" class="official-input" required><br>
     
             <label for="fullName">Fullname :</label>
-            <input type="text" id="fullName" name="fullName" required><br>
+            <input type="text" id="fullName" name="fullName" class="official-input" required><br>
     
             <label for="company">Company:</label>
-            <input type="text" id="company" name="company"><br>
+            <input type="text" id="company" name="company" class="official-input" ><br>
     
             <label for="position">Position :</label>
-            <input type="text" id="position" name="position"><br>
+            <input type="text" id="position" name="position" class="official-input" ><br>
     
             <label for="email">Email :</label>
-            <input type="email" id="email" name="email" required><br>
+            <input type="email" id="email" name="email" class="official-input" required><br>
     
             <label for="telephone">Telephone:</label>
-            <input type="text" id="telephone" name="telephone"><br>
+            <input type="text" id="telephone" name="telephone" class="official-input"><br>
     
             <label for="date">Date :</label>
-            <input type="date" id="date" name="date"><br>
+            <input type="date" id="date" name="date" class="official-input"><br>
     
             <label for="title">Title :</label>
-            <input type="text" id="title" name="title"><br>
+            <input type="text" id="title" name="title" class="official-input"><br>
     
             <label for="futureTopics">Future Topics:</label>
-            <input type="text" id="futureTopics" name="futureTopics"><br>
-            <input type="submit" value="Add Client" id="addClientDashboard">
+            <input type="text" id="futureTopics" name="futureTopics" class="official-input"><br>
+            <input type="submit" value="Add Client" id="addClientDashboard"  >
         </form>
         </div>
 </div>
-<input type="text" id="searchInput" placeholder="Search">
-
     <table>
         <thead>
             <tr>
@@ -111,13 +79,15 @@
                 <td><%= traning.date %></td>
                 <td><%= traning.title %></td>
                 <td><%= traning.futureTopics %></td>
-                <td><a href="/traning-user/<%= traning.id %>">See</a></td>
-                <td><a href="/delete-traning/<%= traning.id %>"><i class="fa fa-trash"></i></a></td>
+                <td><a href="/traning-user/<%= traning.traning_id %>">See</a></td>
+                <td><form action="/delete-traning/<%= traning.traning_id %>" method="post" class="official-form">
+                <button type="submit" id="delete-traning-dashboard">Delete</button>
+                </form></td>
             <% }); %>
         </tbody>
         </table>
 
-        <form action="/import-excel" method="POST" enctype="multipart/form-data" id="importExel">
+        <form action="/import-excel" method="POST" enctype="multipart/form-data" id="importExel" class="official-form">
           <label for="excelFile">Sélectionnez un fichier Excel :</label>
           <input type="file" name="excelFile" id="excelFile" accept=".xlsx">
           <button type="submit" id="import-excel-button">Importer Excel</button>

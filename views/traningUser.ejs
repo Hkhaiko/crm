@@ -3,57 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/style.css">
     <title>traning User</title>
 </head>
 <body>
-    <h1><%= traning.fullName %></h1>
-    <div class="container">
-      <form class="is-readonly" action="/traning-user/<%= traning.id %>" method="post">
+    <div class="header-background">
+    <img src="../public/img/unisexeAvatar.jpg" alt="Avatar" class="avatar">
+    <h1 class="full-name"><%= traning[0].fullName %></h1>
+
+      <div class="container">
+        <form class="is-readonly" action="/traning-user-update/<%= traning[0].traning_id %>" method="post">
+          <div class="form-group">
+            <label for="certificationCode">Certification Code</label>
+            <input type="text" class="form-control is-disabled" id="certificationCode" placeholder="<%= traning[0].certificationCode %>" value="<%- traning[0].certificationCode %>" name="certificationCode" disabled>
+          </div>
         <div class="form-group">
-          <label for="certificationCode">Certification Code</label>
-          <input type="text" class="form-control is-disabled" id="certificationCode" placeholder="<%- traning.certificationCode %>" value="<%- traning.certificationCode %>" name="certificationCode" disabled>
-        </div>
-      <div class="form-group">
-          <label for="fullName">Fullname</label>
-          <input type="text" class="form-control is-disabled" id="fullName" placeholder="fullName" value="<%- traning.fullName %>" name="fullName" disabled>
-        </div>
-        <div class="form-group">
-          <label for="company">Company</label>
-          <input type="text" class="form-control is-disabled" id="company" placeholder="<%- traning.company %>" value="<%- traning.company %>" name="company" disabled>
-        </div>
-        <div class="form-group">
-          <label for="position">Position</label>
-          <input type="text" class="form-control is-disabled" id="position" placeholder="<%- traning.position %>" value="<%- traning.position %>" name="position" disabled>
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="text" class="form-control is-disabled" id="email" placeholder="<%- traning.email %>" value="<%- traning.email %>" name="email" disabled>
-        </div>
-        <div class="form-group">
-          <label for="telephone">Telephone</label>
-          <input type="text" class="form-control is-disabled" id="telephone" placeholder="<%- traning.telephone %>" value="<%- traning.telephone %>" name="telephone" disabled>
-        </div>
-        <div class="form-group">
-          <label for="date">date</label>
-          <input type="text" class="form-control is-disabled" id="date" placeholder="<%- traning.date %>" value="<%- traning.date %>" name="date" disabled>
-        </div>
-        <div class="form-group">
-          <label for="title">title</label>
-          <input type="text" class="form-control is-disabled" id="title" placeholder="<%- traning.title %>" value="<%- traning.title %>" name="title" disabled>
-        </div>
-        <div class="form-group">
-          <label for="futureTopics">Future Topics</label>
-          <input type="text" class="form-control is-disabled" id="futureTopics" placeholder="<%- traning.futureTopics %>" value="<%- traning.futureTopics %>" name="futureTopics" disabled>
-        </div>
-        <button type="button" class="btn btn-default btn-edit js-edit">Edit</button>
-        <input type="submit" value="Save">
-      </form>   
+            <label for="fullName">Fullname</label>
+            <input type="text" class="form-control is-disabled" id="fullName" placeholder="<%= traning[0].fullName %>" value="<%- traning[0].fullName %>" name="fullName" disabled>
+          </div>
+          <div class="form-group">
+            <label for="company">Company</label>
+            <input type="text" class="form-control is-disabled" id="company" placeholder="<%= traning[0].company %>" value="<%- traning[0].company %>" name="company" disabled>
+          </div>
+          <div class="form-group">
+            <label for="position">Position</label>
+            <input type="text" class="form-control is-disabled" id="position" placeholder="<%= traning[0].position %>" value="<%- traning[0].position %>" name="position" disabled>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" class="form-control is-disabled" id="email" placeholder="<%= traning[0].email %>" value="<%- traning[0].email %>" name="email" disabled>
+          </div>
+          <div class="form-group">
+            <label for="telephone">Telephone</label>
+            <input type="text" class="form-control is-disabled" id="telephone" placeholder="<%= traning[0].telephone %>" value="<%- traning[0].telephone %>" name="telephone" disabled>
+          </div>
+          <div class="form-group">
+            <label for="date">Date</label>
+            <input type="text" class="form-control is-disabled" id="date" placeholder="<%= traning[0].date %>" value="<%- traning[0].date %>" name="date" disabled>
+          </div>
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control is-disabled" id="title" placeholder="<%= traning[0].title %>" value="<%- traning[0].title %>" name="title" disabled>
+          </div>
+          <div class="form-group">
+            <label for="futureTopics">Future Topics</label>
+            <input type="text" class="form-control is-disabled" id="futureTopics" placeholder="<%= traning[0].futureTopics %>" value="<%- traning[0].futureTopics %>" name="futureTopics" disabled>
+          </div>
+          <button type="button"  class="btn btn-default btn-edit js-edit">Edit</button>
+          <input type="submit" value="Save" >
+        </form>   
+      </div>
     </div>
 
+
+    <div class="main-background" id="main-profile">
+      <button class="main-boutton" role="button" id="experience-button"> Experience </button>
+      <button class="main-boutton" role="button" id="formation-button"> Formation </button>
+
+      <!-- Formation -->
+
+
+
+
+
+
+      <!-- Experience -->
+      
+      <div class="experience-container">
+        <h2 id="experience-title"> Experience :</h2>
+        <p id="hasNoExperienceText" style="display: none;"> You don't have experience ... let's add one </p>
+        <div class="experience-content">
+          <% for(let i=0; i < traning.length ; i++) {%>
+            <div class="experience-box">
+              <div class="job-title" id="job-title">
+                <%- traning[i].job_title %>
+              </div>
+              <div class="company-name">
+                <%- traning[i].company_name %>
+              </div>
+              <div class="start-date">
+                <%- traning[i].start_date %> <%- traning[i].end_date %> 
+              </div>
+              <div class="description">
+                <%- traning[i].description %> 
+              </div>
+              <form action="/delete-company-experience" method="post" id="delete-company-experience">
+                <input type="hidden" name="company_experience_id" value="<%= traning[0].company_experience_id %>">
+                <input type="hidden" name="traning_id" value="<%= traning[0].traning_id %>">
+                <button type="submit" id="delete-company-experience">Delete</button>
+              </form>
+            </div>
+            <%}; %>
+          <button  class="main-boutton" id="add-experience"> Add Experience</button>
+        </div>
+      </div>
+    </div>
+    <div id="addClientmodal" class="modal modal-dialog-scrollable" style="display: none;">
+      <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+          <h2>Add experience</h2>
+          <form action="/add-company-experience" method="post" class="is-editing"  id="editUserForm" class="official-form">
+            
+            <label for="company_name">Company:</label>
+            <input type="text" id="company_name" name="company_name" class="official-input" required><br>
+          
+            <label for="job_title">Job title :</label>
+            <input type="text" id="job_title" name="job_title" class="official-input" required><br>
+  
+            <label for="description"> Description :</label>
+            <input type="text" id="description" name="description" class="official-input" required><br>
+
+            <label for="start_date"> Start date :</label>
+            <input type="date" id="start_date" name="start_date" class="official-input" required><br>
+
+            <label for="end_date"> End date :</label>
+            <input type="date" id="end_date" name="end_date" class="official-input" required><br>
+
+            <input type="hidden" name="traning_id" value="<%= traning[0].traning_id %>">
+
+            <input type="submit" value="Save" class="main-boutton" id="add_experience"  >
+          </form>
+    </div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const editButtons = document.querySelectorAll('.js-edit');
   const saveButtons = document.querySelectorAll('.js-save');
+  const addExperience = document.getElementById('add-experience');
+  const modalContent = document.querySelector('.modal-content');
+  const closeModal = document.getElementById('closeModal');
+  const addClientModal = document.getElementById('addClientmodal');
+  const popup = document.getElementById('popup');
+  const experienceBox = document.querySelector('.experience-box');
+  const hasNoExperienceText = document.getElementById('hasNoExperienceText');
+  const isEmpty = document.getElementById('job-title').innerText;
+  const experienceContainer = document.querySelector('.experience-container');
+  const editForm = document.querySelector('.container');
+  const formationButton = document.getElementById('formation-button');
+  const experienceButton = document.getElementById('experience-button'); 
+
+
+// Si la box ne contient pas d'expérience, masquez-la
+  if (!isEmpty) {
+  experienceBox.style.display = 'none';
+  hasNoExperienceText.style.display = 'block'
+  }
+
+  formationButton.addEventListener('click', () => {
+    experienceContainer.style.display = 'none';
+    editForm.style.display = 'none';
+    
+  })
+
+  experienceButton.addEventListener('click', () => {
+    experienceContainer.style.display = 'block';
+    editForm.style.display = 'block';
+
+  })
+
 
   editButtons.forEach(button => {
     button.addEventListener('click', function() {
@@ -71,6 +177,15 @@ document.addEventListener('DOMContentLoaded', function() {
       form.classList.add('is-readonly');
       form.querySelectorAll('input, textarea').forEach(input => input.setAttribute('disabled', 'disabled'));
     });
+  });
+
+
+  addExperience.addEventListener('click', ()=>{
+    addClientModal.style.display = 'block';
+  })
+
+  closeModal.addEventListener('click', () => {
+      addClientModal.style.display = 'none';
   });
 });
 </script>

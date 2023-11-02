@@ -8,6 +8,7 @@
   const traningRoutes = require('./routes/traning');
   const authRoutes = require('./routes/auth');
   const dashboardRoutes = require('./routes/dashboard');
+  const companyExperienceRoutes = require('./routes/company_experience');
   const cors = require('cors');
   const bodyParser = require('body-parser');
 
@@ -101,6 +102,7 @@ app.use('/', traningRoutes);
 app.use('/', authRoutes);
 app.use('/', userRoutes);
 app.use('/', dashboardRoutes);
+app.use('/',companyExperienceRoutes);
 
 // Routes
 app.get('/', (req, res) => {
@@ -121,14 +123,27 @@ app.get('/display', (req, res) => {
 
 //==================TRANING===================
 
-app.get('/traning-user/:id' ,(req, res) => {
-  res.render('traningUser');
-});
 
 app.get('/test/:id', (req, res) => {
   res.render('test');
 });
 
+app.get('/traning-user/:id', (req, res) => {
+  // Effectuez une requête SQL pour récupérer les informations des personnes depuis votre base de données
+  const sql = 'SELECT * FROM company_experience';
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération des données depuis la base de données:', err);
+      // Gérez l'erreur ici, par exemple, redirigez l'utilisateur vers une page d'erreur
+      res.render('error'); // Créez une vue error.ejs appropriée
+    } else {
+      const companyExperience = results; // Les données des personnes sont stockées dans results
+      // Transmettez les données des personnes à votre modèle EJS pour le rendu
+      res.render('traningUser', { companyExperience });
+    }
+  });
+});
 
 app.get('/dashboard', (req, res) => {
   // Effectuez une requête SQL pour récupérer les informations des personnes depuis votre base de données
