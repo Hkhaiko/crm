@@ -1,23 +1,23 @@
 //authRoutes.js
-const express = require('express');
-const passport = require('passport');
-const dashboardController = require('../controllers/dashboard');
+const express = require("express");
+const passport = require("passport");
+const dashboardController = require("../controllers/dashboard");
 
 const router = express.Router();
 
 // Route de connexion
-router.post('/login', dashboardController.checkLogin);
+router.post("/login", dashboardController.checkLogin);
 
 // Route d'inscription
-router.post('/register', dashboardController.createUser);
+router.post("/register", dashboardController.createUser);
 
 // Route add new client to dashboard
-router.post('/addClient', dashboardController.addClient);
-  
+router.post("/addClient", dashboardController.addClient);
+
 // Route de déconnexion
-router.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect('/');
-  });
+router.get("/logout", (req, res) => {
+  req.logout();
+  res.redirect("/");
+});
 
 module.exports = router;

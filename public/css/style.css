@@ -1,51 +1,68 @@
 form {
-    margin: 0;
-    padding: 0;
-    border: none;
-  }
-  
-  /* Style de la page */
-  body {
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
-  }
-  
-  h1 {
-    text-align: center;
-    color: #333;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-    font-size: 2em;
-    font-weight: bold;
-    letter-spacing: 1px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  /* Style du formulaire */
-  .official-form { 
-    background-color: #fff;
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  /* Style des étiquettes et des champs de formulaire */
-  label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-    color: #333;
-  }
-  
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/* Style de la page */
+body {
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  font-size: 2em;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#login-form {
+  background-color: #fff;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#register-form {
+  background-color: #fff;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.official-form {
+  background-color: #fff;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+/* Style des étiquettes et des champs de formulaire */
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
 .official-input {
-    width: 95%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 16px;
-  }
-  
+  width: 95%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 16px;
+}
 
 /* Style de la page */
 body {
@@ -57,15 +74,6 @@ h1 {
   text-align: center;
   color: #333;
 }
-
-/* Login style*/
-label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: bold;
-  color: #333;
-}
-
 
 /* Style du bouton de soumission */
 button[type="submit"] {
@@ -99,12 +107,13 @@ table {
 }
 
 thead {
-  background-color: #1E90FF;
+  background-color: #1e90ff;
   color: #fff;
   text-align: left;
 }
 
-th, td {
+th,
+td {
   padding: 10px;
   border-bottom: 1px solid #ccc;
   white-space: nowrap; /* Empêche le texte de passer à la ligne */
@@ -154,16 +163,16 @@ strong {
 }
 
 .modal-dialog-scrollable {
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #ccc #000;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #000;
 }
 
 #addClientBoutton {
   color: #000000;
   background-color: #fff;
   width: 90px;
-  height: 40px; 
+  height: 40px;
   border: 1px solid #000;
   border-radius: 5px;
   box-shadow: 0px 2px 4px #000;
@@ -177,46 +186,43 @@ strong {
   color: #fff;
 }
 
-#add-experience{
+#add-experience {
   margin-top: 2%;
   width: 20%;
   height: 13%;
   box-shadow: 0 0 4px #888;
 }
 
-
-#editUser{
+#editUser {
   color: #000000;
   background-color: #fff;
   width: 80px;
-  height: 30px; 
+  height: 30px;
   border: 1px solid #000;
   border-radius: 5px;
   box-shadow: 0px 2px 4px #000;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
 }
-
 
 #deleteUser:hover {
   background-color: #000000;
   color: #fff;
 }
 
-#deleteUser{
+#deleteUser {
   color: #000000;
   background-color: #fff;
   width: 80px;
-  height: 30px; 
+  height: 30px;
   border: 1px solid #000;
   border-radius: 5px;
   box-shadow: 0px 2px 4px #000;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
-  display:block;
+  display: block;
   margin-top: 1%;
 }
-
 
 #editUser:hover {
   background-color: #000000;
@@ -233,18 +239,16 @@ input[type="date"] {
   margin-bottom: 4%;
 }
 
-
-
 .error-login-message {
   color: red;
-  margin-bottom: 4% ;
+  margin-bottom: 4%;
 }
 
 input[type="file"] {
   display: block;
   width: 90%;
   height: 30px;
-  
+
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -271,10 +275,14 @@ input[type="file"] {
 .table-row:hover {
   cursor: pointer; /* Curseur de la souris en forme de main pour indiquer que c'est cliquable */
   background-color: #ccc9c9; /* Changer la couleur de fond lorsqu'il est survolé */
-  color: rgb(24, 24, 155); /* Changer la couleur du texte en bleu lorsqu'il est survolé */
-} 
+  color: rgb(
+    24,
+    24,
+    155
+  ); /* Changer la couleur du texte en bleu lorsqu'il est survolé */
+}
 
-#addClientDashboard{
+#addClientDashboard {
   color: #000000;
   background-color: #fff;
   width: 90px;
@@ -286,7 +294,7 @@ input[type="file"] {
   cursor: pointer;
 }
 
-.container{
+.container {
   margin-top: 32%;
   margin-left: 2%;
 }
@@ -294,28 +302,27 @@ input[type="file"] {
 form.is-readonly .btn-save {
   display: none;
   z-index: 1000;
-
 }
 
-form.is-readonly input[disabled], form.is-readonly textarea[disabled] {
+form.is-readonly input[disabled],
+form.is-readonly textarea[disabled] {
   cursor: text;
   background-color: #fff;
   border-color: transparent;
   outline-color: transparent;
   box-shadow: none;
   font-size: large;
-  margin-bottom: 3%;  
+  margin-bottom: 3%;
 }
 form.is-editing .btn-edit {
   display: none;
 }
 
-
-#importExel{
+#importExel {
   margin-top: 2%;
 }
 
-#import-excel-button{
+#import-excel-button {
   margin-top: 2%;
 }
 
@@ -365,7 +372,7 @@ form.is-editing .btn-edit {
   display: flex;
   flex-direction: column;
   box-shadow: 3px 3px 3px #ccc;
-  height:auto;
+  height: auto;
   min-height: 65vh;
 }
 
@@ -373,19 +380,18 @@ form.is-editing .btn-edit {
   margin-top: 10px;
 }
 
-.main-boutton{
+.main-boutton {
   height: 8%;
   width: 14%;
   z-index: 10;
   margin-left: 1%;
-
 }
 
 .main-boutton {
   align-items: center;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
   box-sizing: border-box;
   color: rgba(0, 0, 0, 0.85);
@@ -397,7 +403,7 @@ form.is-editing .btn-edit {
   line-height: 1.25;
   margin: 0;
   min-height: 3rem;
-  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+  padding: calc(0.875rem - 1px) calc(1.5rem - 1px);
   position: relative;
   text-decoration: none;
   transition: all 250ms;
@@ -422,7 +428,7 @@ form.is-editing .btn-edit {
 }
 
 .main-boutton:active {
-  background-color: #F0F0F1;
+  background-color: #f0f0f1;
   border-color: rgba(0, 0, 0, 0.15);
   box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
   color: rgba(0, 0, 0, 0.65);
@@ -437,7 +443,7 @@ form.is-editing .btn-edit {
   padding: 2%;
   border-radius: 4%;
   width: 40%;
-  margin-top: 3% ;
+  margin-top: 3%;
 }
 
 .start-date,
@@ -447,7 +453,7 @@ form.is-editing .btn-edit {
   font-weight: 400;
 }
 
-#experience-title{
+#experience-title {
   margin-right: 87%;
   font-size: 150%;
 }
@@ -474,17 +480,17 @@ form.is-editing .btn-edit {
   margin-bottom: 2%;
 }
 
-.head-back{
-  display:block;
+.head-back {
+  display: block;
   width: 100%;
   align-items: center;
 }
 
-#searchInput{
+#searchInput {
   width: 77%;
   margin-right: 16%;
 }
 
-#delete-company-experience{
+#delete-company-experience {
   margin-left: 55%;
 }
