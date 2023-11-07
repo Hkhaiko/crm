@@ -41,7 +41,7 @@ h1 {
 
 .official-form {
   background-color: #fff;
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
   padding: 20px;
   border-radius: 5px;
@@ -187,6 +187,13 @@ strong {
 }
 
 #add-experience {
+  margin-top: 2%;
+  width: 20%;
+  height: 13%;
+  box-shadow: 0 0 4px #888;
+}
+
+#add-formation {
   margin-top: 2%;
   width: 20%;
   height: 13%;
@@ -380,6 +387,17 @@ form.is-editing .btn-edit {
   margin-top: 10px;
 }
 
+.experience-modal {
+  background-color: #fff; /* Couleur de fond de la boîte modale */
+  margin: 1% auto; /* Centrer la boîte modale verticalement */
+  padding: 20px;
+  border: 1px solid #333; /* Bordure de la boîte modale */
+  border-radius: 5px;
+  width: 70%;
+  max-width: 400px; /* Largeur maximale de la boîte modale */
+  position: relative;
+}
+
 .main-boutton {
   height: 8%;
   width: 14%;
@@ -443,6 +461,15 @@ form.is-editing .btn-edit {
   padding: 2%;
   border-radius: 4%;
   width: 40%;
+  margin-top: 3%;
+}
+
+.formation-box {
+  background-color: #fefefe;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  padding: 2%;
+  border-radius: 4%;
+  width: 45%;
   margin-top: 3%;
 }
 

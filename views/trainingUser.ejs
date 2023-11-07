@@ -4,17 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/public/css/style.css" />
-    <title>traning User</title>
+    <title>training User</title>
   </head>
   <body>
     <div class="header-background">
       <img src="../public/img/unisexeAvatar.jpg" alt="Avatar" class="avatar" />
-      <h1 class="full-name"><%= traning[0].fullName %></h1>
+      <h1 class="full-name"><%= training[0].fullName %></h1>
 
       <div class="container">
         <form
           class="is-readonly"
-          action="/traning-user-update/<%= traning[0].traning_id %>"
+          action="/training-user-update/<%= training[0].training_id %>"
           method="post"
         >
           <div class="form-group">
@@ -23,8 +23,8 @@
               type="text"
               class="form-control is-disabled"
               id="certificationCode"
-              placeholder="<%= traning[0].certificationCode %>"
-              value="<%- traning[0].certificationCode %>"
+              placeholder="<%= training[0].certificationCode %>"
+              value="<%- training[0].certificationCode %>"
               name="certificationCode"
               disabled
             />
@@ -35,8 +35,8 @@
               type="text"
               class="form-control is-disabled"
               id="fullName"
-              placeholder="<%= traning[0].fullName %>"
-              value="<%- traning[0].fullName %>"
+              placeholder="<%= training[0].fullName %>"
+              value="<%- training[0].fullName %>"
               name="fullName"
               disabled
             />
@@ -47,8 +47,8 @@
               type="text"
               class="form-control is-disabled"
               id="company"
-              placeholder="<%= traning[0].company %>"
-              value="<%- traning[0].company %>"
+              placeholder="<%= training[0].company %>"
+              value="<%- training[0].company %>"
               name="company"
               disabled
             />
@@ -59,8 +59,8 @@
               type="text"
               class="form-control is-disabled"
               id="position"
-              placeholder="<%= traning[0].position %>"
-              value="<%- traning[0].position %>"
+              placeholder="<%= training[0].position %>"
+              value="<%- training[0].position %>"
               name="position"
               disabled
             />
@@ -71,8 +71,8 @@
               type="text"
               class="form-control is-disabled"
               id="email"
-              placeholder="<%= traning[0].email %>"
-              value="<%- traning[0].email %>"
+              placeholder="<%= training[0].email %>"
+              value="<%- training[0].email %>"
               name="email"
               disabled
             />
@@ -83,8 +83,8 @@
               type="text"
               class="form-control is-disabled"
               id="telephone"
-              placeholder="<%= traning[0].telephone %>"
-              value="<%- traning[0].telephone %>"
+              placeholder="<%= training[0].telephone %>"
+              value="<%- training[0].telephone %>"
               name="telephone"
               disabled
             />
@@ -95,8 +95,8 @@
               type="text"
               class="form-control is-disabled"
               id="date"
-              placeholder="<%= traning[0].date %>"
-              value="<%- traning[0].date %>"
+              placeholder="<%= training[0].date %>"
+              value="<%- training[0].date %>"
               name="date"
               disabled
             />
@@ -107,8 +107,8 @@
               type="text"
               class="form-control is-disabled"
               id="title"
-              placeholder="<%= traning[0].title %>"
-              value="<%- traning[0].title %>"
+              placeholder="<%= training[0].title %>"
+              value="<%- training[0].title %>"
               name="title"
               disabled
             />
@@ -119,8 +119,8 @@
               type="text"
               class="form-control is-disabled"
               id="futureTopics"
-              placeholder="<%= traning[0].futureTopics %>"
-              value="<%- traning[0].futureTopics %>"
+              placeholder="<%= training[0].futureTopics %>"
+              value="<%- training[0].futureTopics %>"
               name="futureTopics"
               disabled
             />
@@ -143,35 +143,37 @@
 
       <!-- Formation -->
 
+      <!-- Formation box -->
+
       <div class="formation-container" style="display: none">
         <h2 id="formation-title">Formation :</h2>
         <p id="hasNoFormationText" style="display: none">
           You don't have formation ... let's add one
         </p>
         <div class="formation-content">
-          <% for(let i=0; i < traning.length ; i++) {%>
+          <% for(let i=0; i < training.length ; i++) {%>
           <div class="formation-box">
             <div class="formation-title" id="formation-title">
-              <%- traning[i].formation %>
+              <%- training[i].formation %>
             </div>
-            <div class="trainer-name"><%- traning[i].company_name %></div>
+            <div class="trainer-name"><%- training[i].company_name %></div>
             <div class="start-date">
-              <%- traning[i].start_date %> <%- traning[i].end_date %>
+              <%- training[i].start_date %> <%- training[i].end_date %>
             </div>
             <form
-              action="/delete-company-experience"
+              action="/delete-formation"
               method="post"
               id="delete-company-experience"
             >
               <input
                 type="hidden"
                 name="formation_id"
-                value="<%= traning[0].formation_id %>"
+                value="<%= training[0].formation_id %>"
               />
               <input
                 type="hidden"
-                name="traning_id"
-                value="<%= traning[0].traning_id %>"
+                name="training_id"
+                value="<%= training[0].training_id %>"
               />
               <button type="submit" id="delete-company-formation">
                 Delete
@@ -183,74 +185,9 @@
         </div>
       </div>
 
-      <div
-        id="add-formation-modal"
-        class="modal modal-dialog-scrollable"
-        style="display: none"
-      >
-        <div class="formation-modal">
-          <span class="close" id="close-formation-modal">&times;</span>
-          <h2>Add experience</h2>
-          <form
-            action="/add-formation"
-            method="post"
-            class="is-editing"
-            id="editUserForm"
-            class="official-form"
-          >
-            <label for="title">Company:</label>
-            <input
-              type="text"
-              id="title"
-              name="company_name"
-              class="official-input"
-              required
-            /><br />
-
-            <label for="trainer">Trainer :</label>
-            <input
-              type="text"
-              id="job_title"
-              name="job_title"
-              class="official-input"
-              required
-            /><br />
-
-            <label for="start_date"> Start date :</label>
-            <input
-              type="date"
-              id="start_date"
-              name="start_date"
-              class="official-input"
-              required
-            /><br />
-
-            <label for="end_date"> End date :</label>
-            <input
-              type="date"
-              id="end_date"
-              name="end_date"
-              class="official-input"
-              required
-            /><br />
-
-            <input
-              type="hidden"
-              name="traning_id"
-              value="<%= traning[0].traning_id %>"
-            />
-
-            <input
-              type="submit"
-              value="Save"
-              class="main-boutton"
-              id="add_formation"
-            />
-          </form>
-        </div>
-      </div>
-
       <!-- Experience -->
+
+      <!-- Experience box -->
 
       <div class="experience-container">
         <h2 id="experience-title">Experience :</h2>
@@ -258,16 +195,16 @@
           You don't have experience ... let's add one
         </p>
         <div class="experience-content">
-          <% for(let i=0; i < traning.length ; i++) {%>
+          <% for(let i=0; i < training.length ; i++) {%>
           <div class="experience-box">
             <div class="job-title" id="job-title">
-              <%- traning[i].job_title %>
+              <%- training[i].job_title %>
             </div>
-            <div class="company-name"><%- traning[i].company_name %></div>
+            <div class="company-name"><%- training[i].company_name %></div>
             <div class="start-date">
-              <%- traning[i].start_date %> <%- traning[i].end_date %>
+              <%- training[i].start_date %> <%- training[i].end_date %>
             </div>
-            <div class="description"><%- traning[i].description %></div>
+            <div class="description"><%- training[i].description %></div>
             <form
               action="/delete-company-experience"
               method="post"
@@ -276,12 +213,12 @@
               <input
                 type="hidden"
                 name="company_experience_id"
-                value="<%= traning[0].company_experience_id %>"
+                value="<%= training[0].company_experience_id %>"
               />
               <input
                 type="hidden"
-                name="traning_id"
-                value="<%= traning[0].traning_id %>"
+                name="training_id"
+                value="<%= training[0].training_id %>"
               />
               <button type="submit" id="delete-company-experience">
                 Delete
@@ -296,12 +233,14 @@
       </div>
     </div>
 
+    <!-- Form Add Experience   -->
+
     <div
-      id="add-experience-modal"
       class="modal modal-dialog-scrollable"
       style="display: none"
+      id="add-experience-modal"
     >
-      <div class="modal-content">
+      <div class="experience-modal">
         <span class="close" id="close-modal-experience">&times;</span>
         <h2>Add experience</h2>
         <form
@@ -358,8 +297,8 @@
 
           <input
             type="hidden"
-            name="traning_id"
-            value="<%= traning[0].traning_id %>"
+            name="training_id"
+            value="<%= training[0].training_id %>"
           />
 
           <input
@@ -372,12 +311,81 @@
       </div>
     </div>
 
+    <!-- Form Add formation  -->
+
+    <div
+      id="add-formation-modal"
+      class="modal modal-dialog-scrollable"
+      style="display: none"
+    >
+      <div class="experience-modal">
+        <span class="close" id="close-formation-modal">&times;</span>
+        <h2>Add formation</h2>
+        <form
+          action="/add-formation"
+          method="post"
+          class="is-editing"
+          id="editUserForm"
+          class="official-form"
+        >
+          <label for="title">Title:</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            class="official-input"
+            required
+          /><br />
+
+          <label for="trainer">Trainer :</label>
+          <input
+            type="text"
+            id="formation-trainer"
+            name="trainer"
+            class="official-input"
+            required
+          /><br />
+
+          <label for="start_date"> Start date :</label>
+          <input
+            type="date"
+            id="formation-start-date"
+            name="formation_start_date"
+            class="official-input"
+            required
+          /><br />
+
+          <label for="end_date"> End date :</label>
+          <input
+            type="date"
+            id="formation-end-date"
+            name="formation_end_date"
+            class="official-input"
+            required
+          /><br />
+
+          <input
+            type="hidden"
+            name="training_id"
+            value="<%= training[0].training_id %>"
+          />
+
+          <input
+            type="submit"
+            value="Save"
+            class="main-boutton"
+            id="add_formation"
+          />
+        </form>
+      </div>
+    </div>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const editButtons = document.querySelectorAll(".js-edit");
         const saveButtons = document.querySelectorAll(".js-save");
         const addExperience = document.getElementById("add-experience");
-        const modalContent = document.querySelector(".modal-content");
+        const modalContent = document.querySelector(".experience-modal");
         const closeModalFormation = document.getElementById(
           "close-formation-modal"
         );
@@ -454,7 +462,6 @@
 
         closeModalFormation.addEventListener("click", () => {
           addFormationModal.style.display = "none";
-          console.log("ici");
         });
 
         //Experience
@@ -464,7 +471,6 @@
 
         closeModalExperience.addEventListener("click", () => {
           addExperienceModal.style.display = "none";
-          console.log("ici");
         });
       });
     </script>

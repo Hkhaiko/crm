@@ -1,4 +1,4 @@
-// Fichier traningController.js dans le répertoire controllers
+// Fichier trainingController.js dans le répertoire controllers
 const db = require("../config/db");
 
 // Fonction pour créer un nouvel utilisateur
@@ -24,7 +24,7 @@ exports.createTraningUser = (req, res) => {
 
   // Exécutez une requête SQL pour insérer l'utilisateur dans la base de données
   const sql =
-    "INSERT INTO traning (certificationCode, fullname, company, position, email, telephone, date, title, futureTopics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO training (certificationCode, fullname, company, position, email, telephone, date, title, futureTopics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const values = [
     updatedUserData.certificationCode,
     updatedUserData.fullname,
@@ -39,19 +39,19 @@ exports.createTraningUser = (req, res) => {
 
   db.query(sql, values, (err, result) => {
     if (err) {
-      console.error("Error creating traning: " + err.message);
-      res.status(500).send("Error creating traning");
+      console.error("Error creating training: " + err.message);
+      res.status(500).send("Error creating training");
     } else {
-      console.log("traning created successfully");
-      res.status(201).send("traning created successfully");
+      console.log("training created successfully");
+      res.status(201).send("training created successfully");
     }
   });
 };
 
 exports.deleteTraningUsers = (req, res) => {
-  const traningId = req.params.id;
-  const sql = "DELETE FROM traning WHERE traning_id = ?";
-  const values = [traningId];
+  const trainingId = req.params.id;
+  const sql = "DELETE FROM training WHERE training_id = ?";
+  const values = [trainingId];
   db.query(sql, values, (err, result) => {
     if (err) {
       console.error("Error deleting Traningser:" + err.message);
@@ -64,10 +64,10 @@ exports.deleteTraningUsers = (req, res) => {
 };
 
 exports.teste = (req, res) => {
-  const traningId = req.params.traningId;
-  const sql = "SELECT * FROM traning WHERE id = 12";
+  const trainingId = req.params.trainingId;
+  const sql = "SELECT * FROM training WHERE id = 12";
   const results = db.query(sql);
-  console.log(db.query(sql, [traningId]));
+  console.log(db.query(sql, [trainingId]));
   // Si la requête renvoie une erreur, renvoyez une erreur
   if (results.length === 0) {
     return null;
@@ -81,10 +81,10 @@ exports.test = (req, res) => {
   res.render("display", { test: "teaeaz" });
 };
 
-// Get All traningUsers
+// Get All trainingUsers
 exports.getTraningUsers = (req, res) => {
   // Exécutez une requête SQL pour sélectionner tous les utilisateurs de la base de données
-  const sql = "SELECT * FROM traning";
+  const sql = "SELECT * FROM training";
   db.query(sql, (err, results) => {
     if (err) {
       console.error(
@@ -92,24 +92,24 @@ exports.getTraningUsers = (req, res) => {
       );
       res.status(500).send("Erreur lors de la lecture des utilisateurs");
     } else {
-      const traning = results;
-      console.log(traning);
+      const training = results;
+      console.log(training);
       console.log("Utilisateurs lus avec succès");
       res.status(200).json(results); // Renvoie les résultats au format JSON
-      res.render("traningUser", { traning });
+      res.render("trainingUser", { training });
     }
   });
 };
 
 exports.updatedTraningUserData = (req, res) => {
-  const traningId = req.params.id;
-  const redirectUrl = `/traning-user/${encodeURIComponent(traningId)}`;
+  const trainingId = req.params.id;
+  const redirectUrl = `/training-user/${encodeURIComponent(trainingId)}`;
 
   const updatedUserData = req.body; // Les données mises à jour de l'utilisateur à partir du corps de la demande
   console.log(updatedUserData);
   // Exécutez une requête SQL pour mettre à jour l'utilisateur dans la base de données
   const sql =
-    "UPDATE traning SET certificationCode = ?, fullName = ?, company = ?, position = ?, email = ?, telephone = ?, date = ?, title = ?, futureTopics = ? WHERE traning_id = ?";
+    "UPDATE training SET certificationCode = ?, fullName = ?, company = ?, position = ?, email = ?, telephone = ?, date = ?, title = ?, futureTopics = ? WHERE training_id = ?";
   const values = [
     updatedUserData.certificationCode,
     updatedUserData.fullName,
@@ -120,7 +120,7 @@ exports.updatedTraningUserData = (req, res) => {
     updatedUserData.date,
     updatedUserData.title,
     updatedUserData.futureTopics,
-    traningId,
+    trainingId,
   ];
 
   db.query(sql, values, (err, results) => {
@@ -130,8 +130,8 @@ exports.updatedTraningUserData = (req, res) => {
       );
       res.status(500).send("Erreur lors de la mise à jour de l'utilisateur");
     } else {
-      const traningUpdate = results;
-      console.log(traningUpdate);
+      const trainingUpdate = results;
+      console.log(trainingUpdate);
       console.log("Utilisateur mis à jour avec succès");
       res.redirect(redirectUrl);
     }
@@ -139,57 +139,68 @@ exports.updatedTraningUserData = (req, res) => {
 };
 
 exports.getTraningUserById = (req, res, next) => {
-  const sqlCompany = `SELECT * FROM traning JOIN company_experience ON traning.traning_id = company_experience.traning_id WHERE traning.traning_id = ?`;
-  const sqlFormation = `SELECT * FROM traning JOIN formation ON traning.traning_id = formation.traning_id WHERE traning.traning_id = ?`;
-  const sqlTraning = `SELECT * FROM traning WHERE traning_id = ?`;
+  const sqlCompany = `SELECT * FROM training JOIN company_experience ON training.training_id = company_experience.training_id WHERE training.training_id = ?`;
+  const sqlFormation = `SELECT * FROM training JOIN formation ON training.training_id = formation.training_id WHERE training.training_id = ?`;
+  const sqlTraning = `SELECT * FROM training WHERE training_id = ?`;
   const values = req.params.id;
-  const redirectUrl = `/traning-user/${encodeURIComponent(values)}`;
+  const redirectUrl = `/training-user/${encodeURIComponent(values)}`;
 
-  let traningResults;
+  let trainingResults;
   let companyResults;
+  let formationResults;
 
   // Variable pour suivre si la réponse a déjà été rendue
   let responseRendered = false;
 
-  db.query(sqlCompany, values, (err, results) => {
+  db.query(sqlFormation, values, (err, results) => {
     if (err) {
       return next(err);
     }
-    companyResults = results;
-    // Quand Y a rien
-    if (companyResults.length === 0) {
-      db.query(sqlTraning, values, (err, results) => {
+    formationResults = results;
+    console.log(formationResults);
+
+    console.log("qdsdqssddssd");
+
+    if (formationResults.length === 0) {
+      db.query(sqlCompany, values, (err, results) => {
         if (err) {
           return next(err);
         }
-        traningResults = results;
+        companyResults = results;
+        // Quand Y a rien
+        if (companyResults.length === 0) {
+          db.query(sqlTraning, values, (err, results) => {
+            if (err) {
+              return next(err);
+            }
+            trainingResults = results;
 
-        console.log("ici first");
-        console.log(traningResults);
+            if (trainingResults.length === 0) {
+              return res.status(404).send("User not found");
+            }
 
-        if (traningResults.length === 0) {
-          return res.status(404).send("User not found");
-        }
+            // Rend la réponse si elle n'a pas encore été rendue
+            if (!responseRendered) {
+              const training = trainingResults;
+              res.render("trainingUser", { training });
+              responseRendered = true;
+            }
+          });
+        } else {
+          // Quand Y a une carte
+          // Rend la réponse si elle n'a pas encore été rendue
+          if (!responseRendered) {
+            const training = companyResults;
 
-        // Rend la réponse si elle n'a pas encore été rendue
-        if (!responseRendered) {
-          const traning = traningResults;
-          console.log("la");
-          console.log(traning);
-          res.render("traningUser", { traning });
-          responseRendered = true;
+            res.render("trainingUser", { training });
+            responseRendered = true;
+          }
         }
       });
     } else {
-      // Quand Y a une carte
-      // Rend la réponse si elle n'a pas encore été rendue
-      if (!responseRendered) {
-        const traning = companyResults;
-        console.log(traning);
-
-        res.render("traningUser", { traning });
-        responseRendered = true;
-      }
+      const training = formationResults;
+      res.render("trainingUser", { training });
+      responseRendered = true;
     }
   });
 };

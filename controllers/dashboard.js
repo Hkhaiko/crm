@@ -35,19 +35,19 @@ exports.checkLogin = (req, res, next) => {
 };
 
 exports.addClient = (req, res) => {
-  const traningClient = req.body;
+  const trainingClient = req.body;
   const sql =
-    "INSERT INTO traning (certificationCode, fullName, company, position, email, telephone, date, title, futureTopics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO training (certificationCode, fullName, company, position, email, telephone, date, title, futureTopics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const excelData = [
-    traningClient.certificationCode,
-    traningClient.fullName,
-    traningClient.company,
-    traningClient.position,
-    traningClient.email,
-    traningClient.telephone,
-    traningClient.date,
-    traningClient.title,
-    traningClient.futureTopics,
+    trainingClient.certificationCode,
+    trainingClient.fullName,
+    trainingClient.company,
+    trainingClient.position,
+    trainingClient.email,
+    trainingClient.telephone,
+    trainingClient.date,
+    trainingClient.title,
+    trainingClient.futureTopics,
   ];
 
   db.query(sql, excelData, (err, result) => {
@@ -63,7 +63,7 @@ exports.addClient = (req, res) => {
 };
 
 exports.importExcel = (req, res) => {
-  const sql = "SELECT * FROM traning";
+  const sql = "SELECT * FROM training";
 
   if (!req.file) {
     return res.status(400).send("No file has been downloaded");
@@ -89,7 +89,7 @@ exports.importExcel = (req, res) => {
 
         // Exécutez une requête SQL d'insertion
         const sql =
-          "INSERT INTO traning (certificationCode, fullName, company, position, email, telephone, date, title, futureTopics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+          "INSERT INTO training (certificationCode, fullName, company, position, email, telephone, date, title, futureTopics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         const values = [
           excelData.certificationCode,
           excelData.fullName,
@@ -124,9 +124,9 @@ exports.importExcel = (req, res) => {
           // Gérez l'erreur ici, par exemple, redirigez l'utilisateur vers une page d'erreur
           res.render("error"); // Créez une vue error.ejs appropriée
         } else {
-          const traning = results; // Les données des personnes sont stockées dans results
+          const training = results; // Les données des personnes sont stockées dans results
           // Transmettez les données des personnes à votre modèle EJS pour le rendu
-          res.render("dashboard", { traning });
+          res.render("dashboard", { training });
         }
       });
     })

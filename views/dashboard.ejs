@@ -68,20 +68,20 @@
             </tr>
         </thead>
         <tbody>
-            <% traning.forEach(traning => { %>
+            <% training.forEach(training => { %>
             <tr class="table-row">
-                <td><%= traning.certificationCode %></td>
-                <td><%= traning.fullName %></td>
-                <td><%= traning.company %></td>
-                <td><%= traning.position %></td>
-                <td><%= traning.email %></td>
-                <td><%= traning.telephone %></td>
-                <td><%= traning.date %></td>
-                <td><%= traning.title %></td>
-                <td><%= traning.futureTopics %></td>
-                <td><a href="/traning-user/<%= traning.traning_id %>">See</a></td>
-                <td><form action="/delete-traning/<%= traning.traning_id %>" method="post" class="official-form">
-                <button type="submit" id="delete-traning-dashboard">Delete</button>
+                <td><%= training.certificationCode %></td>
+                <td><%= training.fullName %></td>
+                <td><%= training.company %></td>
+                <td><%= training.position %></td>
+                <td><%= training.email %></td>
+                <td><%= training.telephone %></td>
+                <td><%= training.date %></td>
+                <td><%= training.title %></td>
+                <td><%= training.futureTopics %></td>
+                <td><a href="/training-user/<%= training.training_id %>">See</a></td>
+                <td><form action="/delete-training/<%= training.training_id %>" method="post" class="official-form">
+                <button type="submit" id="delete-training-dashboard">Delete</button>
                 </form></td>
             <% }); %>
         </tbody>

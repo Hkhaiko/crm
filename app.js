@@ -5,10 +5,12 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const userRoutes = require("./routes/user");
-const traningRoutes = require("./routes/traning");
+const trainingRoutes = require("./routes/training");
 const authRoutes = require("./routes/auth");
 const dashboardRoutes = require("./routes/dashboard");
 const companyExperienceRoutes = require("./routes/company_experience");
+const formationRoutes = require("./routes/formation");
+
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
@@ -101,11 +103,12 @@ passport.deserializeUser((id, done) => {
 app.set("view engine", "ejs");
 app.use("/public", express.static(__dirname + "/public"));
 // Routes pour les API
-app.use("/", traningRoutes);
+app.use("/", trainingRoutes);
 app.use("/", authRoutes);
 app.use("/", userRoutes);
 app.use("/", dashboardRoutes);
 app.use("/", companyExperienceRoutes);
+app.use("/", formationRoutes);
 
 // Routes
 app.get("/", (req, res) => {
@@ -124,13 +127,13 @@ app.get("/display", (req, res) => {
   res.render("display", { test: "" });
 });
 
-//==================TRANING===================
+//==================TRAINING===================
 
 app.get("/test/:id", (req, res) => {
   res.render("test");
 });
 
-app.get("/traning-user/:id", (req, res) => {
+app.get("/training-user/:id", (req, res) => {
   // Effectuez une requête SQL pour récupérer les informations des personnes depuis votre base de données
   const sql = "SELECT * FROM company_experience";
 
@@ -145,14 +148,14 @@ app.get("/traning-user/:id", (req, res) => {
     } else {
       const companyExperience = results; // Les données des personnes sont stockées dans results
       // Transmettez les données des personnes à votre modèle EJS pour le rendu
-      res.render("traningUser", { companyExperience });
+      res.render("trainingUser", { companyExperience });
     }
   });
 });
 
 app.get("/dashboard", (req, res) => {
   // Effectuez une requête SQL pour récupérer les informations des personnes depuis votre base de données
-  const sql = "SELECT * FROM traning"; // Remplacez "personnes" par le nom de votre table
+  const sql = "SELECT * FROM training"; // Remplacez "personnes" par le nom de votre table
 
   db.query(sql, (err, results) => {
     if (err) {
@@ -163,9 +166,9 @@ app.get("/dashboard", (req, res) => {
       // Gérez l'erreur ici, par exemple, redirigez l'utilisateur vers une page d'erreur
       res.render("error"); // Créez une vue error.ejs appropriée
     } else {
-      const traning = results; // Les données des personnes sont stockées dans results
+      const training = results; // Les données des personnes sont stockées dans results
       // Transmettez les données des personnes à votre modèle EJS pour le rendu
-      res.render("dashboard", { traning });
+      res.render("dashboard", { training });
     }
   });
 });
