@@ -2,7 +2,9 @@ const db = require("../config/db");
 
 exports.addCompanyExperience = (req, res) => {
   const companyExperienceData = req.body;
-  console.log("ici");
+  const traning_id = req.params;
+  console.log(traning_id);
+  console.log("Console company controller addCompanyExperienece()");
   console.log(companyExperienceData);
   console.log(companyExperienceData.training_id);
 
@@ -40,9 +42,7 @@ exports.deleteCompanyExperience = (req, res) => {
   )}`;
   const sql = "DELETE FROM company_experience WHERE company_experience_id = ?";
   const values = companyExperienceData.company_experience_id;
-  console.log("ici");
   console.log(companyExperienceData.company_experience_id);
-  console.log("ici");
 
   db.query(sql, values, (err, result) => {
     if (err) {

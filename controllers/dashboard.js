@@ -27,6 +27,8 @@ exports.checkLogin = (req, res, next) => {
     }
     req.logIn(user, (err) => {
       if (err) {
+        //L'erreur est ICI !!
+        console.log("login error");
         return next(err);
       }
       return res.redirect("/dashboard");

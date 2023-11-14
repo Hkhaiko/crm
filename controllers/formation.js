@@ -1,4 +1,5 @@
 const db = require("../config/db");
+const multer = require("multer");
 
 exports.addFormation = (req, res) => {
   const formationData = req.body;
@@ -48,6 +49,57 @@ exports.deleteFormation = (req, res) => {
       res.status(500).send("Error deleting company experience");
     } else {
       console.log("Successfully deleted");
+      res.redirect(redirectUrl);
+    }
+  });
+};
+
+exports.downloadFormationPDF = (req, res) => {
+  const formationId = req.params.formation_id;
+  const sql = `SELECT path FROM pdf WHERE formation_id = ?`;
+  console.log(formationId);
+
+  db.query(sql, formationId, (err, result) => {
+    if (err) {
+      console.error("Error downloading pdf:" + err.message);
+      res.status(500).send("Error downloading pdf");
+    } else {
+      const pdfPath = result;
+      res.download(pdfPath[0].path);
+      console.log(pdfPath[0].path);
+      console.log("Successfully PDF");
+    }
+  });
+};
+
+exports.importFormationPdf = (req, res) => {
+  if (!req.file) {
+    return res.status(400).send("No file has been downloaded");
+  }
+  const formationData = req.body;
+
+  const redirectUrl = `/training-user/${encodeURIComponent(
+    formationData.training_id
+  )}`;
+  const fileBuffer = req.file.buffer;
+
+  console.log(formationData.formation_id);
+
+  const fs = require("fs");
+  const filePath = "C:/xampp/htdocs/pdf/" + req.file.originalname;
+
+  fs.writeFileSync(filePath, fileBuffer);
+
+  const sql = "INSERT INTO pdf (path, formation_id) VALUES (?, ?)";
+
+  const values = [filePath, formationData.formation_id];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error importing pdf :" + err.message);
+      res.status(500).send("Error importing pdf");
+    } else {
+      console.log("Successfully imported");
       res.redirect(redirectUrl);
     }
   });

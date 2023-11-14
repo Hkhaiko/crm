@@ -139,8 +139,8 @@ exports.updatedTraningUserData = (req, res) => {
 };
 
 exports.getTraningUserById = (req, res, next) => {
-  const sqlCompany = `SELECT * FROM training JOIN company_experience ON training.training_id = company_experience.training_id WHERE training.training_id = ?`;
-  const sqlFormation = `SELECT * FROM training JOIN formation ON training.training_id = formation.training_id WHERE training.training_id = ?`;
+  const sqlCompany = `SELECT * FROM company_experience WHERE training_id = ?`;
+  const sqlFormation = `SELECT * FROM formation WHERE training_id = ?`;
   const sqlTraning = `SELECT * FROM training WHERE training_id = ?`;
   const values = req.params.id;
   const redirectUrl = `/training-user/${encodeURIComponent(values)}`;
@@ -149,58 +149,54 @@ exports.getTraningUserById = (req, res, next) => {
   let companyResults;
   let formationResults;
 
-  // Variable pour suivre si la réponse a déjà été rendue
-  let responseRendered = false;
-
-  db.query(sqlFormation, values, (err, results) => {
-    if (err) {
-      return next(err);
-    }
-    formationResults = results;
-    console.log(formationResults);
-
-    console.log("qdsdqssddssd");
-
-    if (formationResults.length === 0) {
-      db.query(sqlCompany, values, (err, results) => {
+  // Utilisez Promises ou async/await pour gérer les requêtes de manière asynchrone
+  Promise.all([
+    new Promise((resolve, reject) => {
+      db.query(sqlFormation, values, (err, results) => {
         if (err) {
-          return next(err);
-        }
-        companyResults = results;
-        // Quand Y a rien
-        if (companyResults.length === 0) {
-          db.query(sqlTraning, values, (err, results) => {
-            if (err) {
-              return next(err);
-            }
-            trainingResults = results;
-
-            if (trainingResults.length === 0) {
-              return res.status(404).send("User not found");
-            }
-
-            // Rend la réponse si elle n'a pas encore été rendue
-            if (!responseRendered) {
-              const training = trainingResults;
-              res.render("trainingUser", { training });
-              responseRendered = true;
-            }
-          });
+          reject(err);
         } else {
-          // Quand Y a une carte
-          // Rend la réponse si elle n'a pas encore été rendue
-          if (!responseRendered) {
-            const training = companyResults;
-
-            res.render("trainingUser", { training });
-            responseRendered = true;
-          }
+          formationResults = results;
+          resolve(formationResults);
         }
       });
-    } else {
-      const training = formationResults;
-      res.render("trainingUser", { training });
-      responseRendered = true;
-    }
-  });
+    }),
+    new Promise((resolve, reject) => {
+      db.query(sqlCompany, values, (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          companyResults = results;
+          resolve(companyResults);
+        }
+      });
+    }),
+    new Promise((resolve, reject) => {
+      db.query(sqlTraning, values, (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          trainingResults = results;
+          resolve(trainingResults);
+        }
+      });
+    }),
+  ])
+    .then(() => {
+      // Une fois que toutes les requêtes sont terminées, vous pouvez appeler res.render
+      const data = {
+        trainingFormation: formationResults,
+        trainingCompany: companyResults,
+        trainingProfile: trainingResults,
+      };
+      console.log("CONSOLE DATA ");
+      console.log(data);
+      res.render("trainingUser", { data });
+    })
+    .catch((err) => {
+      console.error(
+        "Erreur lors de la lecture des utilisateurs : " + err.message
+      );
+      // Gérez l'erreur ici en fonction de votre besoin
+    });
 };

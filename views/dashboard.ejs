@@ -80,7 +80,7 @@
                 <td><%= training.title %></td>
                 <td><%= training.futureTopics %></td>
                 <td><a href="/training-user/<%= training.training_id %>">See</a></td>
-                <td><form action="/delete-training/<%= training.training_id %>" method="post" class="official-form">
+                <td><form action="/delete-training/<%= training.training_id %>" method="post">
                 <button type="submit" id="delete-training-dashboard">Delete</button>
                 </form></td>
             <% }); %>

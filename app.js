@@ -80,13 +80,13 @@ passport.use(
 // Sérialisation de l'utilisateur dans la session
 passport.serializeUser((user, done) => {
   // user est l'objet utilisateur que vous souhaitez stocker dans la session
-  done(null, user.userId); // Stockez l'ID de l'utilisateur dans la session
+  done(null, user.user_id); // Stockez l'ID de l'utilisateur dans la session
 });
 
 // Désérialisation de l'utilisateur depuis la session
 passport.deserializeUser((id, done) => {
   // Recherchez l'utilisateur dans la base de données en utilisant l'ID stocké dans la session
-  const sql = "SELECT * FROM user WHERE userId = ?";
+  const sql = "SELECT * FROM user WHERE user_id = ?";
   db.query(sql, [id], (err, results) => {
     if (err) {
       return done(err);

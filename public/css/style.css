@@ -18,7 +18,7 @@ h1 {
   font-weight: bold;
   letter-spacing: 1px;
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 #login-form {
@@ -70,13 +70,19 @@ body {
   font-family: Arial, sans-serif;
 }
 
-h1 {
-  text-align: center;
-  color: #333;
-}
-
 /* Style du bouton de soumission */
 button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#submit-save {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -92,7 +98,6 @@ button[type="submit"]:hover {
 }
 
 h2 {
-  text-align: center;
   color: #333;
 }
 
@@ -171,7 +176,7 @@ strong {
 #addClientBoutton {
   color: #000000;
   background-color: #fff;
-  width: 90px;
+  width: 122px;
   height: 40px;
   border: 1px solid #000;
   border-radius: 5px;
@@ -302,27 +307,76 @@ input[type="file"] {
 }
 
 .container {
-  margin-top: 32%;
-  margin-left: 2%;
+  margin-top: 5%;
+  margin-left: 20%;
+  font-size: 16px;
+  background-color: #fff; /* Set background color to white */
+  padding: 20px; /* Add padding for better spacing */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+  border-radius: 10px; /* Add rounded corners */
 }
 
+/* Add some styling for the form */
+form {
+  max-width: 400px; /* Limit form width for better readability */
+  margin: auto; /* Center the form */
+}
+
+/* Style input fields */
+.form-control {
+  font-size: 16px;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Style the Edit button */
+.btn-edit {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Style the Save button */
+.btn-save {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Hide the Save button by default */
 form.is-readonly .btn-save {
   display: none;
-  z-index: 1000;
 }
 
-form.is-readonly input[disabled],
-form.is-readonly textarea[disabled] {
-  cursor: text;
-  background-color: #fff;
-  border-color: transparent;
-  outline-color: transparent;
-  box-shadow: none;
-  font-size: large;
-  margin-bottom: 3%;
+/* Style the form when in editing mode */
+form.is-editing {
+  background-color: #f8f9fa; /* Light gray background for editing mode */
 }
-form.is-editing .btn-edit {
-  display: none;
+
+/* Style disabled input fields in editing mode */
+form.is-editing .form-control:disabled {
+  background-color: #fff;
+  border-color: #ddd;
+}
+
+/* Style the form-group labels */
+.form-group label {
+  font-weight: bold;
+}
+
+/* Center the buttons */
+button {
+  display: block;
 }
 
 #importExel {
@@ -366,7 +420,7 @@ form.is-editing .btn-edit {
 
 .main-background {
   background-color: #fff;
-  margin: 1% auto; /* Centrer la boîte modale verticalement */
+  margin: 2% auto; /* Centrer la boîte modale verticalement */
   padding: 20px;
   border-radius: 5px;
   width: 60vw;
@@ -460,7 +514,7 @@ form.is-editing .btn-edit {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   padding: 2%;
   border-radius: 4%;
-  width: 40%;
+  width: auto;
   margin-top: 3%;
 }
 
@@ -470,6 +524,15 @@ form.is-editing .btn-edit {
   padding: 2%;
   border-radius: 4%;
   width: 45%;
+  margin-top: 3%;
+}
+
+#pdf-panel {
+  background-color: #fefefe;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  padding: 2%;
+  border-radius: 4%;
+  width: 35%;
   margin-top: 3%;
 }
 
@@ -508,16 +571,35 @@ form.is-editing .btn-edit {
 }
 
 .head-back {
-  display: block;
   width: 100%;
-  align-items: center;
+  display: flex;
 }
 
 #searchInput {
-  width: 77%;
-  margin-right: 16%;
+  width: 100%;
+  margin-right: 2%;
 }
 
 #delete-company-experience {
   margin-left: 55%;
+}
+
+.flex-experience-form {
+  display: flex;
+}
+
+.flex-formation-pdf {
+  display: flex;
+}
+
+#formation-title {
+  margin-bottom: 5px;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+#trainer-name {
+  font-size: 23px;
+  font-weight: 450;
+  margin-bottom: 10px;
 }

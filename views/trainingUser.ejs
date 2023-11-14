@@ -9,128 +9,7 @@
   <body>
     <div class="header-background">
       <img src="../public/img/unisexeAvatar.jpg" alt="Avatar" class="avatar" />
-      <h1 class="full-name"><%= training[0].fullName %></h1>
-
-      <div class="container">
-        <form
-          class="is-readonly"
-          action="/training-user-update/<%= training[0].training_id %>"
-          method="post"
-        >
-          <div class="form-group">
-            <label for="certificationCode">Certification Code</label>
-            <input
-              type="text"
-              class="form-control is-disabled"
-              id="certificationCode"
-              placeholder="<%= training[0].certificationCode %>"
-              value="<%- training[0].certificationCode %>"
-              name="certificationCode"
-              disabled
-            />
-          </div>
-          <div class="form-group">
-            <label for="fullName">Fullname</label>
-            <input
-              type="text"
-              class="form-control is-disabled"
-              id="fullName"
-              placeholder="<%= training[0].fullName %>"
-              value="<%- training[0].fullName %>"
-              name="fullName"
-              disabled
-            />
-          </div>
-          <div class="form-group">
-            <label for="company">Company</label>
-            <input
-              type="text"
-              class="form-control is-disabled"
-              id="company"
-              placeholder="<%= training[0].company %>"
-              value="<%- training[0].company %>"
-              name="company"
-              disabled
-            />
-          </div>
-          <div class="form-group">
-            <label for="position">Position</label>
-            <input
-              type="text"
-              class="form-control is-disabled"
-              id="position"
-              placeholder="<%= training[0].position %>"
-              value="<%- training[0].position %>"
-              name="position"
-              disabled
-            />
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              type="text"
-              class="form-control is-disabled"
-              id="email"
-              placeholder="<%= training[0].email %>"
-              value="<%- training[0].email %>"
-              name="email"
-              disabled
-            />
-          </div>
-          <div class="form-group">
-            <label for="telephone">Telephone</label>
-            <input
-              type="text"
-              class="form-control is-disabled"
-              id="telephone"
-              placeholder="<%= training[0].telephone %>"
-              value="<%- training[0].telephone %>"
-              name="telephone"
-              disabled
-            />
-          </div>
-          <div class="form-group">
-            <label for="date">Date</label>
-            <input
-              type="text"
-              class="form-control is-disabled"
-              id="date"
-              placeholder="<%= training[0].date %>"
-              value="<%- training[0].date %>"
-              name="date"
-              disabled
-            />
-          </div>
-          <div class="form-group">
-            <label for="title">Title</label>
-            <input
-              type="text"
-              class="form-control is-disabled"
-              id="title"
-              placeholder="<%= training[0].title %>"
-              value="<%- training[0].title %>"
-              name="title"
-              disabled
-            />
-          </div>
-          <div class="form-group">
-            <label for="futureTopics">Future Topics</label>
-            <input
-              type="text"
-              class="form-control is-disabled"
-              id="futureTopics"
-              placeholder="<%= training[0].futureTopics %>"
-              value="<%- training[0].futureTopics %>"
-              name="futureTopics"
-              disabled
-            />
-          </div>
-          <button type="button" class="btn btn-default btn-edit js-edit">
-            Edit
-          </button>
-          <input type="submit" value="Save" />
-        </form>
-      </div>
+      <h1 class="full-name"><%= data.trainingProfile[0].fullName %></h1>
     </div>
 
     <div class="main-background" id="main-profile">
@@ -145,90 +24,258 @@
 
       <!-- Formation box -->
 
-      <div class="formation-container" style="display: none">
-        <h2 id="formation-title">Formation :</h2>
-        <p id="hasNoFormationText" style="display: none">
-          You don't have formation ... let's add one
-        </p>
-        <div class="formation-content">
-          <% for(let i=0; i < training.length ; i++) {%>
-          <div class="formation-box">
-            <div class="formation-title" id="formation-title">
-              <%- training[i].formation %>
+      <div class="flex-formation-pdf">
+        <div class="formation-container" style="display: none">
+          <h2 id="formation-title">Formation :</h2>
+          <p id="hasNoFormationText" style="display: none">
+            You don't have formation ... let's add one
+          </p>
+          <div class="formation-content">
+            <% for(let i=0; i < data.trainingFormation.length ; i++) {%>
+            <div class="formation-box">
+              <div class="formation-title" id="formation-title">
+                <%- data.trainingFormation[i].title %>
+              </div>
+              <div id="trainer-name">
+                <%- data.trainingFormation[i].trainer %>
+              </div>
+              <div class="start-date">
+                <%- data.trainingFormation[i].start_date %> <%-
+                data.trainingFormation[i].end_date %>
+              </div>
+              <form
+                action="/delete-formation"
+                method="post"
+                id="delete-company-experience"
+              >
+                <input
+                  type="hidden"
+                  name="formation_id"
+                  value="<%= data.trainingFormation[0].formation_id %>"
+                />
+                <input
+                  type="hidden"
+                  name="training_id"
+                  value="<%= data.trainingFormation[0].training_id %>"
+                />
+                <button type="submit" id="delete-company-formation">
+                  Delete
+                </button>
+                <button id="pdf-button" class="official-form">
+                  <a
+                    href="/download-formation-pdf/<%= data.trainingFormation[i].formation_id %>"
+                    >Télécharger</a
+                  >
+                </button>
+              </form>
             </div>
-            <div class="trainer-name"><%- training[i].company_name %></div>
-            <div class="start-date">
-              <%- training[i].start_date %> <%- training[i].end_date %>
-            </div>
-            <form
-              action="/delete-formation"
-              method="post"
-              id="delete-company-experience"
-            >
-              <input
-                type="hidden"
-                name="formation_id"
-                value="<%= training[0].formation_id %>"
-              />
-              <input
-                type="hidden"
-                name="training_id"
-                value="<%= training[0].training_id %>"
-              />
-              <button type="submit" id="delete-company-formation">
-                Delete
-              </button>
-            </form>
+            <%}; %>
+            <button class="main-boutton" id="add-formation">
+              Add formation
+            </button>
           </div>
-          <%}; %>
-          <button class="main-boutton" id="add-formation">Add formation</button>
+        </div>
+        <div id="pdf-panel" style="display: none">
+          <h2>Generate certificate</h2>
+          <form
+            action="/import-certificate-pdf"
+            method="POST"
+            enctype="multipart/form-data"
+            id="importe-cetificate-pdf"
+            class="official-form"
+          >
+            <label for="pdfFile">Select certificate :</label>
+            <input
+              type="hidden"
+              name="training_id"
+              value="<%= data.trainingFormation[0] ? data.trainingFormation[0].training_id : '' %>"
+            />
+            <select name="formation_id">
+              <% for (i=0; i < data.trainingFormation.length ; i++) { %>
+              <option value="<%=  data.trainingFormation[i].formation_id  %>">
+                <%= data.trainingFormation[i].title %>
+              </option>
+              <% } %>
+            </select>
+            <input type="file" name="pdfFile" id="pdfFile" accept=".pdf" />
+            <button type="submit" id="import-pdf-certifiacte-button">
+              Import certificate
+            </button>
+          </form>
         </div>
       </div>
 
-      <!-- Experience -->
+      <!-- FLEX EXPERIENCE AND FORM -->
+      <div class="flex-experience-form">
+        <!-- Experience box -->
 
-      <!-- Experience box -->
-
-      <div class="experience-container">
-        <h2 id="experience-title">Experience :</h2>
-        <p id="hasNoExperienceText" style="display: none">
-          You don't have experience ... let's add one
-        </p>
-        <div class="experience-content">
-          <% for(let i=0; i < training.length ; i++) {%>
-          <div class="experience-box">
-            <div class="job-title" id="job-title">
-              <%- training[i].job_title %>
+        <div class="experience-container">
+          <h2 id="experience-title">Experience</h2>
+          <p id="hasNoExperienceText" style="display: none">
+            You don't have experience ... let's add one
+          </p>
+          <div class="experience-content">
+            <% for(let i=0; i < data.trainingCompany.length ; i++) {%>
+            <div class="experience-box">
+              <div class="job-title" id="job-title">
+                <%- data.trainingCompany[i].job_title %>
+              </div>
+              <div class="company-name">
+                <%- data.trainingCompany[i].company_name %>
+              </div>
+              <div class="start-date">
+                <%- data.trainingCompany[i].start_date %> <%-
+                data.trainingCompany[i].end_date %>
+              </div>
+              <div class="description">
+                <%- data.trainingCompany[i].description %>
+              </div>
+              <form
+                action="/delete-company-experience"
+                method="post"
+                id="delete-company-experience"
+              >
+                <input
+                  type="hidden"
+                  name="company_experience_id"
+                  value="<%=  data.trainingCompany[0].company_experience_id %>"
+                />
+                <input
+                  type="hidden"
+                  name="training_id"
+                  value="<%= data.trainingCompany[0].training_id %>"
+                />
+                <button type="submit" id="delete-company-experience">
+                  Delete
+                </button>
+              </form>
             </div>
-            <div class="company-name"><%- training[i].company_name %></div>
-            <div class="start-date">
-              <%- training[i].start_date %> <%- training[i].end_date %>
-            </div>
-            <div class="description"><%- training[i].description %></div>
-            <form
-              action="/delete-company-experience"
-              method="post"
-              id="delete-company-experience"
-            >
-              <input
-                type="hidden"
-                name="company_experience_id"
-                value="<%= training[0].company_experience_id %>"
-              />
-              <input
-                type="hidden"
-                name="training_id"
-                value="<%= training[0].training_id %>"
-              />
-              <button type="submit" id="delete-company-experience">
-                Delete
-              </button>
-            </form>
+            <%}; %>
+            <button class="main-boutton" id="add-experience">
+              Add Experience
+            </button>
           </div>
-          <%}; %>
-          <button class="main-boutton" id="add-experience">
-            Add Experience
-          </button>
+        </div>
+
+        <div class="container">
+          <form
+            class="is-readonly"
+            action="/training-user-update/<%= data.trainingProfile[0].training_id %>"
+            method="post"
+          >
+            <div class="form-group">
+              <label for="certificationCode">Certification Code</label>
+              <input
+                type="text"
+                class="form-control is-disabled"
+                id="certificationCode"
+                placeholder="<%= data.trainingProfile[0].certificationCode %>"
+                value="<%- data.trainingProfile[0].certificationCode %>"
+                name="certificationCode"
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label for="fullName">Fullname</label>
+              <input
+                type="text"
+                class="form-control is-disabled"
+                id="fullName"
+                placeholder="<%= data.trainingProfile[0].fullName %>"
+                value="<%- data.trainingProfile[0].fullName %>"
+                name="fullName"
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label for="company">Company</label>
+              <input
+                type="text"
+                class="form-control is-disabled"
+                id="company"
+                placeholder="<%= data.trainingProfile[0].company %>"
+                value="<%- data.trainingProfile[0].company %>"
+                name="company"
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label for="position">Position</label>
+              <input
+                type="text"
+                class="form-control is-disabled"
+                id="position"
+                placeholder="<%= data.trainingProfile[0].position %>"
+                value="<%- data.trainingProfile[0].position %>"
+                name="position"
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="text"
+                class="form-control is-disabled"
+                id="email"
+                placeholder="<%= data.trainingProfile[0].email %>"
+                value="<%- data.trainingProfile[0].email %>"
+                name="email"
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label for="telephone">Telephone</label>
+              <input
+                type="text"
+                class="form-control is-disabled"
+                id="telephone"
+                placeholder="<%= data.trainingProfile[0].telephone %>"
+                value="<%- data.trainingProfile[0].telephone %>"
+                name="telephone"
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label for="date">Date</label>
+              <input
+                type="text"
+                class="form-control is-disabled"
+                id="date"
+                placeholder="<%= data.trainingProfile[0].date %>"
+                value="<%- data.trainingProfile[0].date %>"
+                name="date"
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label for="title">Title</label>
+              <input
+                type="text"
+                class="form-control is-disabled"
+                id="title"
+                placeholder="<%= data.trainingProfile[0].title %>"
+                value="<%- data.trainingProfile[0].title %>"
+                name="title"
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label for="futureTopics">Future Topics</label>
+              <input
+                type="text"
+                class="form-control is-disabled"
+                id="futureTopics"
+                placeholder="<%= data.trainingProfile[0].futureTopics %>"
+                value="<%- data.trainingProfile[0].futureTopics %>"
+                name="futureTopics"
+                disabled
+              />
+            </div>
+            <button type="button" class="btn btn-default btn-edit js-edit">
+              Edit
+              <input type="submit" value="Save" id="submit-save" />
+            </button>
+          </form>
         </div>
       </div>
     </div>
@@ -298,7 +345,7 @@
           <input
             type="hidden"
             name="training_id"
-            value="<%= training[0].training_id %>"
+            value="<%= data.trainingProfile[0].training_id %>"
           />
 
           <input
@@ -367,7 +414,7 @@
           <input
             type="hidden"
             name="training_id"
-            value="<%= training[0].training_id %>"
+            value="<%= data.trainingProfile[0].training_id %>"
           />
 
           <input
@@ -386,6 +433,7 @@
         const saveButtons = document.querySelectorAll(".js-save");
         const addExperience = document.getElementById("add-experience");
         const modalContent = document.querySelector(".experience-modal");
+        const pdfPAnel = document.getElementById("pdf-panel");
         const closeModalFormation = document.getElementById(
           "close-formation-modal"
         );
@@ -397,10 +445,17 @@
         );
         const popup = document.getElementById("popup");
         const experienceBox = document.querySelector(".experience-box");
+        const formationBox = document.querySelector(".formation-box");
+
         const hasNoExperienceText = document.getElementById(
           "hasNoExperienceText"
         );
-        const isEmpty = document.getElementById("job-title").innerText;
+
+        const hasNoFormationText =
+          document.getElementById("hasNoFormationText");
+
+        const jobTitleElement = document.getElementById("job-title");
+
         const experienceContainer = document.querySelector(
           ".experience-container"
         );
@@ -415,22 +470,42 @@
         );
         const addFormation = document.getElementById("add-formation");
 
+        const downLoadButton = document.getElementById("pdf-button");
+
         // Si la box ne contient pas d'expérience, masquez-la
-        if (!isEmpty) {
-          experienceBox.style.display = "none";
+        if (jobTitleElement) {
+          console.log("gtesdqqqqqqqqqqqqqqqqqqqq");
+          const isEmpty = jobTitleElement.innerText;
+          if (!isEmpty || isEmpty === null) {
+            experienceBox.style.display = "none";
+            hasNoExperienceText.style.display = "block";
+          }
+        } else {
+          console.log(jobTitleElement);
           hasNoExperienceText.style.display = "block";
+        }
+
+        if (jobTitleElement) {
+          const isEmptyFormation = jobTitleElement.innerText;
+          if (!isEmptyFormation || isEmptyFormation === null) {
+            formationBox.style.display = "none";
+          }
+        } else {
+          hasNoFormationText.style.display = "block";
         }
 
         formationButton.addEventListener("click", () => {
           experienceContainer.style.display = "none";
           editForm.style.display = "none";
           formationContainer.style.display = "block";
+          pdfPAnel.style.display = "block";
         });
 
         experienceButton.addEventListener("click", () => {
           experienceContainer.style.display = "block";
           editForm.style.display = "block";
           formationContainer.style.display = "none";
+          pdfPAnel.style.display = "none";
         });
 
         editButtons.forEach((button) => {
