@@ -45,7 +45,7 @@ exports.deleteFormation = (req, res) => {
   console.log(values);
   db.query(sql, values, (err, result) => {
     if (err) {
-      console.error("Error deleting company experience:" + err.message);
+      console.error("Error deleting company experience:" + err);
       res.status(500).send("Error deleting company experience");
     } else {
       console.log("Successfully deleted");
