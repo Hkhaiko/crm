@@ -10,6 +10,7 @@ const authRoutes = require("./routes/auth");
 const dashboardRoutes = require("./routes/dashboard");
 const companyExperienceRoutes = require("./routes/company_experience");
 const formationRoutes = require("./routes/formation");
+const comapanyProfile = require("./routes/company");
 
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -109,10 +110,11 @@ app.use("/", userRoutes);
 app.use("/", dashboardRoutes);
 app.use("/", companyExperienceRoutes);
 app.use("/", formationRoutes);
+app.use("/", comapanyProfile);
 
 // Routes
 app.get("/", (req, res) => {
-  res.send("Welcome to your CRM Mix Application");
+  res.send("Welcome to your CRM Mix Application !");
 });
 
 app.get("/login", (req, res) => {
@@ -128,10 +130,6 @@ app.get("/display", (req, res) => {
 });
 
 //==================TRAINING===================
-
-app.get("/test/:id", (req, res) => {
-  res.render("test");
-});
 
 app.get("/training-user/:id", (req, res) => {
   // Effectuez une requête SQL pour récupérer les informations des personnes depuis votre base de données
@@ -166,12 +164,35 @@ app.get("/dashboard", (req, res) => {
       // Gérez l'erreur ici, par exemple, redirigez l'utilisateur vers une page d'erreur
       res.render("error"); // Créez une vue error.ejs appropriée
     } else {
-      const training = results; // Les données des personnes sont stockées dans results
-      // Transmettez les données des personnes à votre modèle EJS pour le rendu
+      const training = results;
       res.render("dashboard", { training });
     }
   });
 });
+
+//==========Company========
+
+app.get("/company-dashboard", (req, res) => {
+  const sql = "SELECT * FROM company_profile";
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(
+        "Erreur lors de la récupération des données depuis la base de données:",
+        err
+      );
+      res.render("error"); // Créez une vue error.ejs appropriée
+    } else {
+      const companyProfile = results;
+      res.render("companyDashboard", { companyProfile });
+    }
+  });
+});
+
+app.get("/company-profile/:id", (req, res) => {
+  res.render("companyProfile");
+});
+
+//=========SERVER=========
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

@@ -603,3 +603,29 @@ button {
   font-weight: 450;
   margin-bottom: 10px;
 }
+
+#popup-information {
+  display: none;
+  position: fixed;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #007bff; /* Couleur de fond verte */
+  padding: 35px;
+  font-size: 130%;
+  border-radius: 10px;
+  color: #fff; /* Couleur du texte en blanc */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Ombre légère */
+}
+
+#button-to-dashboard {
+  margin-top: 46%;
+  margin-right: 94%;
+  width: 60%;
+  font-size: 180%;
+  cursor: pointer;
+}
+
+#contact-box {
+  width: 40%;
+}

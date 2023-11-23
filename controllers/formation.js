@@ -3,7 +3,6 @@ const multer = require("multer");
 
 exports.addFormation = (req, res) => {
   const formationData = req.body;
-  console.log("ici");
   console.log(formationData);
   console.log(formationData.training_id);
 
@@ -38,11 +37,21 @@ exports.deleteFormation = (req, res) => {
   const redirectUrl = `/training-user/${encodeURIComponent(
     formationData.training_id
   )}`;
+  const sqlPdf = "DELETE FROM pdf WHERE formation_id = ?";
   const sql = "DELETE FROM formation WHERE formation_id = ?";
   const values = formationData.formation_id;
   console.log("Delete formation controllers");
   console.log(formationData.formation_id);
   console.log(values);
+
+  db.query(sqlPdf, values, (err, result) => {
+    if (err) {
+      console.error("Error deleting company experience:" + err);
+      res.status(500).send("Error deleting company experience");
+    } else {
+      console.log("Successfully deleted");
+    }
+  });
   db.query(sql, values, (err, result) => {
     if (err) {
       console.error("Error deleting company experience:" + err);
@@ -57,7 +66,6 @@ exports.deleteFormation = (req, res) => {
 exports.downloadFormationPDF = (req, res) => {
   const formationId = req.params.formation_id;
   const sql = `SELECT path FROM pdf WHERE formation_id = ?`;
-  console.log(formationId);
 
   db.query(sql, formationId, (err, result) => {
     if (err) {
@@ -65,9 +73,8 @@ exports.downloadFormationPDF = (req, res) => {
       res.status(500).send("Error downloading pdf");
     } else {
       const pdfPath = result;
-      res.download(pdfPath[0].path);
-      console.log(pdfPath[0].path);
-      console.log("Successfully PDF");
+      res.download(pdfPath[pdfPath.length - 1].path);
+      console.log("Successfully download PDF");
     }
   });
 };

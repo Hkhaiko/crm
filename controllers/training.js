@@ -51,29 +51,50 @@ exports.createTraningUser = (req, res) => {
 exports.deleteTraningUsers = (req, res) => {
   const trainingId = req.params.id;
   const sql = "DELETE FROM training WHERE training_id = ?";
-  const values = [trainingId];
+  const sqlPdf =
+    "DELETE FROM pdf WHERE formation_id IN (SELECT formation_id FROM formation WHERE training_id = ?)";
+  const sqlFormation = "DELETE FROM formation WHERE training_id = ?";
+  const sqlCompany = "DELETE FROM company_experience WHERE training_id = ?";
+
+  const values = [trainingId, trainingId, trainingId, trainingId];
+  const redirectUrl = `/dashboard`;
+
+  db.query(sqlPdf, values, (err, result) => {
+    if (err) {
+      console.error("Error deleting pdf:" + err.message);
+      res.status(500).send("Error deleting pdf");
+    } else {
+      console.log("User pdf deleted");
+    }
+  });
+
+  db.query(sqlFormation, values, (err, result) => {
+    if (err) {
+      console.error("Error deleting Formation:" + err.message);
+      res.status(500).send("Error deleting Formation");
+    } else {
+      console.log("Formation successfully deleted");
+    }
+  });
+
+  db.query(sqlCompany, values, (err, result) => {
+    if (err) {
+      console.error("Error deleting Company:" + err.message);
+      res.status(500).send("Error deleting Company");
+    } else {
+      console.log("Company successfully deleted");
+    }
+  });
+
   db.query(sql, values, (err, result) => {
     if (err) {
       console.error("Error deleting Traningser:" + err.message);
       res.status(500).send("Error deleting TraningUser");
     } else {
       console.log("User successfully deleted");
-      res.status(200).send("User successfully deleted");
+      res.redirect(redirectUrl);
     }
   });
-};
-
-exports.teste = (req, res) => {
-  const trainingId = req.params.trainingId;
-  const sql = "SELECT * FROM training WHERE id = 12";
-  const results = db.query(sql);
-  console.log(db.query(sql, [trainingId]));
-  // Si la requête renvoie une erreur, renvoyez une erreur
-  if (results.length === 0) {
-    return null;
-  }
-  // Sinon, renvoyez les résultats
-  return results[0];
 };
 
 exports.test = (req, res) => {

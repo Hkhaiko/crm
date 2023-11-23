@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/public/css/style.css" />
+    <title>training User</title>
+  </head>
+  <body>
+    <div class="header-background">
+      <img src="../public/img/unisexeAvatar.jpg" alt="Avatar" class="avatar" />
+      <h1 class="full-name"><%= data.companyProfileResult[0].name %></h1>
+      
+    </div>
+
+    <div class="main-background" id="main-profile">
+      <button class="main-boutton" role="button" id="experience-button">
+        Contact
+      </button>
+      <button class="main-boutton" role="button" id="formation-button">
+        Completed project
+      </button>
+      <button class="main-boutton" role="button" id="experience-button">
+        Opportunities
+      </button>
+
+      <div class="experience-content" id="contact-box">
+        <% for(let i=0; i < data.contactResult.length ; i++) {%>
+        <div class="experience-box">
+          <div class="job-title">
+            <%- data.contactResult[i].name %>
+          </div>
+          <div class="company-name"><%- data.contactResult[i].position %></div>
+          <div class="start-date"><%- data.contactResult[i].telephone %></div>
+          <div class="description"><%- data.contactResult[i].email %></div>
+          <form
+            action="/delete-company-contact/<%= data.companyProfileResult[0].company_profile_id %>"
+            method="post"
+            id="delete-company-experience"
+          >
+          <input
+          type="hidden"
+          name="company_contact_id"
+          value="<%= data.contactResult[i].company_contact_id %>"
+          />
+          <button type="submit" id="delete-company-experience">Delete</button>
+          </form>
+        </div>
+        <%}; %>
+        <button class="main-boutton" id="add-contact-button">
+          Add contact
+        </button>
+      </div>
+    </div>
+    <div
+      class="modal modal-dialog-scrollable"
+      style="display: none"
+      id="add-contact-modal"
+    >
+      <div class="experience-modal">
+        <span class="close" id="close-modal-experience">&times;</span>
+        <h2>Add contact</h2>
+        <form
+          action="/add-company-contact/<%= data.companyProfileResult[0].company_profile_id %>"
+          method="post"
+          class="is-editing
+          id="editUserForm"
+          class="official-form"
+        >
+          <label for="company_name">Name :</label>
+          <input
+            type="text"
+            id="company_name"
+            name="name"
+            class="official-input"
+            required
+          /><br />
+
+          <label for="job_title">Position :</label>
+          <input
+            type="text"
+            id="job_title"
+            name="position"
+            class="official-input"
+            required
+          /><br />
+
+          <label for="description"> Telephone :</label>
+          <input
+            type="text"
+            id="description"
+            name="telephone"
+            class="official-input"
+            required
+          /><br />
+
+          <label for="start_date"> email :</label>
+          <input
+            type="text"
+            id="start_date"
+            name="email"
+            class="official-input"
+            required
+          /><br />
+
+          <input
+            type="submit"
+            value="Save"
+            class="main-boutton"
+            id="add_experience"
+          />
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const addContactButton = document.getElementById("add-contact-button");
+    const addContactModal = document.getElementById("add-contact-modal");
+
+    addContactButton.addEventListener("click", () => {
+      addContactModal.style.display = "block";
+    });
+  });
+</script>

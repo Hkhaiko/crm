@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="../public/js/trainingUser.js"></script>
     <link rel="stylesheet" href="/public/css/style.css" />
     <title>training User</title>
   </head>
@@ -12,6 +13,11 @@
       <h1 class="full-name"><%= data.trainingProfile[0].fullName %></h1>
     </div>
 
+    <!-- Redirect Dashboard -->
+    <a href="/dashboard">
+      <button id="button-to-dashboard" class="official-form">Dashboard</button>
+    </a>
+
     <div class="main-background" id="main-profile">
       <button class="main-boutton" role="button" id="experience-button">
         Experience
@@ -19,6 +25,10 @@
       <button class="main-boutton" role="button" id="formation-button">
         Formation
       </button>
+
+      <div id="popup-information" style="display: none">
+        <p>Import succeeds !</p>
+      </div>
 
       <!-- Formation -->
 
@@ -88,7 +98,7 @@
             <input
               type="hidden"
               name="training_id"
-              value="<%= data.trainingFormation[0] ? data.trainingFormation[0].training_id : '' %>"
+              value="<%= data.trainingProfile[0].training_id %>"
             />
             <select name="formation_id">
               <% for (i=0; i < data.trainingFormation.length ; i++) { %>
@@ -97,7 +107,7 @@
               </option>
               <% } %>
             </select>
-            <input type="file" name="pdfFile" id="pdfFile" accept=".pdf" />
+            <input type="file" name="pdfFile" id="pdf-file" accept=".pdf" />
             <button type="submit" id="import-pdf-certifiacte-button">
               Import certificate
             </button>
@@ -433,7 +443,7 @@
         const saveButtons = document.querySelectorAll(".js-save");
         const addExperience = document.getElementById("add-experience");
         const modalContent = document.querySelector(".experience-modal");
-        const pdfPAnel = document.getElementById("pdf-panel");
+        const pdfPanel = document.getElementById("pdf-panel");
         const closeModalFormation = document.getElementById(
           "close-formation-modal"
         );
@@ -472,9 +482,13 @@
 
         const downLoadButton = document.getElementById("pdf-button");
 
+        const popupInformation = document.getElementById("popup-information");
+        const importCertificateButton = document.getElementById(
+          "import-pdf-certifiacte-button"
+        );
+
         // Si la box ne contient pas d'expérience, masquez-la
         if (jobTitleElement) {
-          console.log("gtesdqqqqqqqqqqqqqqqqqqqq");
           const isEmpty = jobTitleElement.innerText;
           if (!isEmpty || isEmpty === null) {
             experienceBox.style.display = "none";
@@ -498,14 +512,14 @@
           experienceContainer.style.display = "none";
           editForm.style.display = "none";
           formationContainer.style.display = "block";
-          pdfPAnel.style.display = "block";
+          pdfPanel.style.display = "block";
         });
 
         experienceButton.addEventListener("click", () => {
           experienceContainer.style.display = "block";
           editForm.style.display = "block";
           formationContainer.style.display = "none";
-          pdfPAnel.style.display = "none";
+          pdfPanel.style.display = "none";
         });
 
         editButtons.forEach((button) => {
@@ -546,6 +560,37 @@
 
         closeModalExperience.addEventListener("click", () => {
           addExperienceModal.style.display = "none";
+        });
+
+        importCertificateButton.addEventListener("click", () => {
+          popupInformation.style.display = "block";
+        });
+
+        importCertificateButton.addEventListener("click", function (event) {
+          event.preventDefault(); // Empêche le comportement par défaut du formulaire
+
+          // Récupérez le formulaire et créez un objet FormData
+          let formData = new FormData(
+            document.getElementById("importe-cetificate-pdf")
+          );
+
+          fetch("/import-certificate-pdf", {
+            method: "POST",
+            body: formData,
+          })
+            .then((data) => {
+              popupInformation.style.display = "block";
+              setTimeout(() => {
+                popupInformation.style.display = "none";
+              }, 1500);
+            })
+            .catch((error) => {
+              // La requête a échoué, affichez un message d'erreur si nécessaire
+              console.error(
+                "There has been a problem with your fetch operation:",
+                error
+              );
+            });
         });
       });
     </script>
