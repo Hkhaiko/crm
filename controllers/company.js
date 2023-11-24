@@ -2,11 +2,11 @@ const db = require("../config/db");
 
 exports.getCompanyUserById = (req, res) => {
   const sqlContact = `SELECT * FROM company_contact WHERE company_profile_id = ?`;
-  const sqlProject = `SELECT * FROM completed_project WHERE company_profile_id = ?`;
+  const sqlProject = `SELECT * FROM company_project WHERE company_profile_id = ?`;
   const sqlOpportunities = `SELECT * FROM company_opportunities WHERE company_profile_id = ?`;
   const sqlCompanyProfile = `SELECT * FROM company_profile WHERE company_profile_id = ?`;
-
   const values = req.params.id;
+  console.log("value", values);
   let contactResults;
   let projectResults;
   let opportunitesResults;
@@ -59,7 +59,7 @@ exports.getCompanyUserById = (req, res) => {
       // Une fois que toutes les requêtes sont terminées, vous pouvez appeler res.render
       const data = {
         contactResult: contactResults,
-        projectCompany: projectResults,
+        projectResult: projectResults,
         opportunitesResult: opportunitesResults,
         companyProfileResult: comapanyProfileResults,
       };
@@ -75,6 +75,7 @@ exports.getCompanyUserById = (req, res) => {
     });
 };
 
+//Contact
 exports.deleteCompanyContact = (req, res) => {
   const company_profile_id = req.params.id;
   const company_contact_id = req.body.company_contact_id;
@@ -99,7 +100,7 @@ exports.deleteCompanyContact = (req, res) => {
   });
 };
 
-exports.createContact = (req, res) => {
+exports.createCompanyContact = (req, res) => {
   const contactData = req.body;
   const company_id = req.params.id;
   console.log(contactData);
@@ -112,6 +113,89 @@ exports.createContact = (req, res) => {
     contactData.position,
     contactData.telephone,
     contactData.email,
+    company_id,
+  ];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.log("Error :" + err.message);
+      res.status(500).send("Error creating contact");
+    } else {
+      console.log("Contact successfully created");
+      console.log(result);
+      res.redirect(redirectUrl);
+    }
+  });
+};
+
+//Project
+exports.createCompanyProject = (req, res) => {
+  const projectData = req.body;
+  const company_id = req.params.id;
+  console.log(projectData);
+
+  const redirectUrl = `/company-profile/${encodeURIComponent(company_id)}`;
+  const sql =
+    "INSERT INTO company_project (title, start_date, end_date, description, company_profile_id) VALUES (?, ?, ?, ?, ?)";
+  const values = [
+    projectData.title,
+    projectData.start_date,
+    projectData.end_date,
+    projectData.description,
+    company_id,
+  ];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.log("Error :" + err.message);
+      res.status(500).send("Error creating contact");
+    } else {
+      console.log("Contact successfully created");
+      console.log(result);
+      res.redirect(redirectUrl);
+    }
+  });
+};
+
+exports.deleteCompanyProject = (req, res) => {
+  const company_profile_id = req.body.company_profile_id;
+  const company_project_id = req.body.company_project_id;
+  const sqlDeleteProject =
+    "DELETE FROM company_project WHERE company_project_id = ?";
+
+  const values = company_project_id;
+
+  console.log();
+  const redirectUrl = `/company-profile/${encodeURIComponent(
+    company_profile_id
+  )}`;
+
+  db.query(sqlDeleteProject, values, (err, result) => {
+    if (err) {
+      console.error("Error deleting project:" + err.message);
+      res.status(500).send("Error deleting project");
+    } else {
+      console.log(res);
+      console.log("Project successfully deleted");
+      res.redirect(redirectUrl);
+    }
+  });
+};
+
+//Opportunities
+exports.createCompanyOpportunities = (req, res) => {
+  const projectData = req.body;
+  const company_id = req.params.id;
+  console.log(projectData);
+
+  const redirectUrl = `/company-profile/${encodeURIComponent(company_id)}`;
+  const sql =
+    "INSERT INTO company_opportunities (title, consultant, certification, history, company_profile_id) VALUES (?, ?, ?, ?, ?)";
+  const values = [
+    projectData.title,
+    projectData.consultant,
+    projectData.certification,
+    projectData.history,
     company_id,
   ];
 

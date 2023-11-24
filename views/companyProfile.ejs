@@ -10,26 +10,24 @@
     <div class="header-background">
       <img src="../public/img/unisexeAvatar.jpg" alt="Avatar" class="avatar" />
       <h1 class="full-name"><%= data.companyProfileResult[0].name %></h1>
-      
     </div>
 
     <div class="main-background" id="main-profile">
-      <button class="main-boutton" role="button" id="experience-button">
+      <button class="main-boutton" role="button" id="contact-button">
         Contact
       </button>
-      <button class="main-boutton" role="button" id="formation-button">
+      <button class="main-boutton" role="button" id="project-button">
         Completed project
       </button>
-      <button class="main-boutton" role="button" id="experience-button">
+      <button class="main-boutton" role="button" id="opportunities-button">
         Opportunities
       </button>
 
-      <div class="experience-content" id="contact-box">
+      <!-- Contact Box -->
+      <div class="contact-content">
         <% for(let i=0; i < data.contactResult.length ; i++) {%>
-        <div class="experience-box">
-          <div class="job-title">
-            <%- data.contactResult[i].name %>
-          </div>
+        <div class="contact-box">
+          <div class="job-title"><%- data.contactResult[i].name %></div>
           <div class="company-name"><%- data.contactResult[i].position %></div>
           <div class="start-date"><%- data.contactResult[i].telephone %></div>
           <div class="description"><%- data.contactResult[i].email %></div>
@@ -38,12 +36,12 @@
             method="post"
             id="delete-company-experience"
           >
-          <input
-          type="hidden"
-          name="company_contact_id"
-          value="<%= data.contactResult[i].company_contact_id %>"
-          />
-          <button type="submit" id="delete-company-experience">Delete</button>
+            <input
+              type="hidden"
+              name="company_contact_id"
+              value="<%= data.contactResult[i].company_contact_id %>"
+            />
+            <button type="submit" id="delete-company-experience">Delete</button>
           </form>
         </div>
         <%}; %>
@@ -51,54 +49,189 @@
           Add contact
         </button>
       </div>
+
+      <!-- Project Box -->
+      <div class="project-content" style="display: none">
+        <% for(let i=0; i < data.projectResult.length ; i++) {%>
+        <div class="project-box">
+          <div class="job-title"><%- data.projectResult[i].title %></div>
+          <div class="company-name">
+            <%- data.projectResult[i].start_date %>
+          </div>
+          <div class="start-date"><%- data.projectResult[i].end_date %></div>
+          <div class="description">
+            <%- data.projectResult[i].description %>
+          </div>
+          <form
+            action="/delete-company-project"
+            method="post"
+            id="delete-company-project"
+          >
+            <input
+              type="hidden"
+              name="company_profile_id"
+              value="<%= data.companyProfileResult[i].company_profile_id %>"
+            />
+            <input
+              type="hidden"
+              name="company_project_id"
+              value="<%= data.projectResult[i].company_project_id %>"
+            />
+            <button type="submit" id="delete-company-experience">Delete</button>
+          </form>
+        </div>
+        <%}; %>
+        <button class="main-boutton" id="add-opportunities-button">
+          Add project
+        </button>
+      </div>
+      <!-- Opportunities Box -->
+      <div class="opportunities-content" style="display: none">
+        <% for(let i=0; i < data.opportunitesResult.length ; i++) {%>
+        <div class="opportunities-box">
+          <div class="job-title"><%- data.opportunitesResult[i].title %></div>
+          <div class="company-name">
+            <%- data.opportunitesResult[i].consultant %>
+          </div>
+          <div class="start-date">
+            <%- data.opportunitesResult[i].certification %>
+          </div>
+          <div class="description">
+            <%- data.opportunitesResult[i].history %>
+          </div>
+          <form
+            action="/delete-company-project"
+            method="post"
+            id="delete-company-project"
+          >
+            <input
+              type="hidden"
+              name="company_profile_id"
+              value="<%= data.companyProfileResult[i].company_profile_id %>"
+            />
+            <input
+              type="hidden"
+              name="company_project_id"
+              value="<%= data.projectResult[i].company_project_id %>"
+            />
+            <button type="submit" id="delete-company-experience">Delete</button>
+          </form>
+        </div>
+        <%}; %>
+        <button class="main-boutton" id="add--button">Add opportunities</button>
+      </div>
     </div>
+    <!-- Contact Modal -->
     <div
       class="modal modal-dialog-scrollable"
       style="display: none"
       id="add-contact-modal"
     >
-      <div class="experience-modal">
-        <span class="close" id="close-modal-experience">&times;</span>
+      <div class="contact-modal">
+        <span class="close" id="close-modal-contact">&times;</span>
         <h2>Add contact</h2>
         <form
-          action="/add-company-contact/<%= data.companyProfileResult[0].company_profile_id %>"
+          action="/add-company-contact/<%=
+        data.companyProfileResult[0].company_profile_id %>"
           method="post"
-          class="is-editing
-          id="editUserForm"
+          class="is-editing"
           class="official-form"
+          id="editUserForm"
         >
-          <label for="company_name">Name :</label>
+          <label for="contact-name">Name :</label>
           <input
             type="text"
-            id="company_name"
+            id="contact-name"
             name="name"
             class="official-input"
             required
           /><br />
 
-          <label for="job_title">Position :</label>
+          <label for="contact-position">Position :</label>
           <input
             type="text"
-            id="job_title"
+            id="contact-position"
             name="position"
             class="official-input"
             required
           /><br />
 
-          <label for="description"> Telephone :</label>
+          <label for="contact-description"> Telephone :</label>
           <input
             type="text"
-            id="description"
+            id="contact-description"
             name="telephone"
             class="official-input"
             required
           /><br />
 
-          <label for="start_date"> email :</label>
+          <label for="contact-email"> email :</label>
           <input
             type="text"
-            id="start_date"
+            id="contact-email"
             name="email"
+            class="official-input"
+            required
+          /><br />
+
+          <input
+            type="submit"
+            value="Save"
+            class="main-boutton"
+            id="add_experience"
+          />
+        </form>
+      </div>
+    </div>
+    <!-- Project Modal -->
+    <div
+      class="modal modal-dialog-scrollable"
+      style="display: none"
+      id="add-project-modal"
+    >
+      <div class="project-modal">
+        <span class="close" id="close-modal-project">&times;</span>
+        <h2>Add Project</h2>
+        <form
+          action="/add-company-project/<%=
+      data.companyProfileResult[0].company_profile_id %>"
+          method="post"
+          class="is-editing"
+          class="official-form"
+          id="editUserForm"
+        >
+          <label for="title">title :</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            class="official-input"
+            required
+          /><br />
+
+          <label for="start-date">Start date :</label>
+          <input
+            type="date"
+            id="start-date"
+            name="start_date"
+            class="official-input"
+            required
+          /><br />
+
+          <label for="end-date"> End date :</label>
+          <input
+            type="date"
+            id="end-date"
+            name="end_date"
+            class="official-input"
+            required
+          /><br />
+
+          <label for="description"> Description :</label>
+          <input
+            type="text"
+            id="description"
+            name="description"
             class="official-input"
             required
           /><br />
@@ -117,11 +250,76 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+    //Button
     const addContactButton = document.getElementById("add-contact-button");
-    const addContactModal = document.getElementById("add-contact-modal");
+    const addProjectButton = document.getElementById("add-project-button");
+    const addOpportunitiesButton = document.getElementById(
+      "add-opportunities-button"
+    );
+    const contactButton = document.getElementById("contact-button");
+    const projectButton = document.getElementById("project-button");
+    const opportunitesButton = document.getElementById("opportunities-button");
 
+    //Box
+    const contactBox = document.querySelector(".contact-content");
+    const projectBox = document.querySelector(".project-content");
+    const opportunitiesBox = document.querySelector(".opportunities-content");
+    //Modal
+    const addContactModal = document.getElementById("add-contact-modal");
+    const addProjectModal = document.getElementById("add-project-modal");
+    const addOpportunitiesModal = document.getElementById("add--modal");
+    const closeModalContact = document.getElementById("close-modal-contact");
+    const closeModalProject = document.getElementById("close-modal-project");
+
+    //Add element
     addContactButton.addEventListener("click", () => {
       addContactModal.style.display = "block";
     });
+
+    addProjectButton.addEventListener("click", () => {
+      addProjectModal.style.display = "block";
+    });
+
+    addOpportunitiesButton.addEventListener("click", () => {
+      add.style.display = "block";
+    });
+
+    //Display or not
+    contactButton.addEventListener("click", () => {
+      contactBox.style.display = "block";
+      projectBox.style.display = "none";
+    });
+
+    projectButton.addEventListener("click", () => {
+      projectBox.style.display = "block";
+      contactBox.style.display = "none";
+    });
+
+    //Close modal
+    closeModalContact.addEventListener("click", () => {
+      addContactModal.style.display = "none";
+    });
+
+    window.onclick = (event) => {
+      if (event.target === addContactModal) {
+        addContactModal.style.display = "none";
+      }
+      if (event.target === addProjectModal) {
+        addProjectModal.style.display = "none";
+      }
+    };
+
+    closeModalProject.addEventListener("click", () => {
+      addProjectModal.style.display = "none";
+    });
+
+    // let formData = new FormData(
+    //   document.getElementById("delete-company-project")
+    // );
+
+    // fetch("/delete-company-project", {
+    //   method: "POST",
+    //   body: formData,
+    // });
   });
 </script>

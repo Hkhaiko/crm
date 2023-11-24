@@ -4,11 +4,22 @@ const companyController = require("../controllers/company");
 const router = express.Router();
 
 router.get("/company-profile/:id", companyController.getCompanyUserById);
+
+//Contact
+router.post("/add-company-contact/:id", companyController.createCompanyContact);
 router.post(
   "/delete-company-contact/:id",
   companyController.deleteCompanyContact
 );
 
-router.post("/add-company-contact/:id", companyController.createContact);
+//Project
+router.post("/add-company-project/:id", companyController.createCompanyProject);
+router.post("/delete-company-project", companyController.deleteCompanyProject);
+
+//Opportunites
+router.post(
+  "/add-company-project/:id",
+  companyController.createCompanyOpportunities
+);
 
 module.exports = router;
