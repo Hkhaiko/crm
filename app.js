@@ -146,7 +146,7 @@ app.get("/training-user/:id", (req, res) => {
     } else {
       const companyExperience = results; // Les données des personnes sont stockées dans results
       // Transmettez les données des personnes à votre modèle EJS pour le rendu
-      res.render("trainingUser", { companyExperience });
+      res.render("training_user", { companyExperience });
     }
   });
 });
@@ -184,13 +184,13 @@ app.get("/company-dashboard", (req, res) => {
     } else {
       const companyProfile = results;
       console.log(companyProfile);
-      res.render("companyDashboard", { companyProfile });
+      res.render("company_dashboard", { companyProfile });
     }
   });
 });
 
 app.get("/company-profile/:id", (req, res) => {
-  res.render("companyProfile");
+  res.render("company_profile");
 });
 
 //=========SERVER=========

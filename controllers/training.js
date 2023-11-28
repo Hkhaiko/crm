@@ -135,7 +135,7 @@ exports.getTraningUsers = (req, res) => {
       console.log(training);
       console.log("Utilisateurs lus avec succès");
       res.status(200).json(results);
-      res.render("trainingUser", { training });
+      res.render("training_user", { training });
     }
   });
 };
@@ -176,7 +176,7 @@ exports.updatedTraningUserData = (req, res) => {
   });
 };
 
-exports.getTraningUserById = (req, res, next) => {
+exports.getTraningUserById = (req, res) => {
   const sqlCompany = `SELECT * FROM company_experience WHERE training_id = ?`;
   const sqlFormation = `SELECT * FROM formation WHERE training_id = ?`;
   const sqlTraning = `SELECT * FROM training WHERE training_id = ?`;
@@ -229,7 +229,7 @@ exports.getTraningUserById = (req, res, next) => {
       };
       console.log("CONSOLE DATA ");
       console.log(data);
-      res.render("trainingUser", { data });
+      res.render("training_user", { data });
     })
     .catch((err) => {
       console.error(

@@ -64,7 +64,7 @@ exports.getCompanyUserById = (req, res) => {
       };
       console.log("CONSOLE DATA ");
       console.log(data);
-      res.render("companyProfile", { data });
+      res.render("company_profile", { data });
     })
     .catch((err) => {
       console.error(
