@@ -6,7 +6,6 @@ exports.getCompanyUserById = (req, res) => {
   const sqlOpportunities = `SELECT * FROM company_opportunities WHERE company_profile_id = ?`;
   const sqlCompanyProfile = `SELECT * FROM company_profile WHERE company_profile_id = ?`;
   const values = req.params.id;
-  console.log("value", values);
   let contactResults;
   let projectResults;
   let opportunitesResults;
@@ -73,6 +72,76 @@ exports.getCompanyUserById = (req, res) => {
       );
       // Gérez l'erreur ici en fonction de votre besoin
     });
+};
+
+//Profile
+exports.deleteCompanyProfile = (req, res) => {
+  const company_contact_id = req.params.id;
+  const sqlDeleteProfile = `DELETE FROM company_profile WHERE company_profile_id = ?`;
+  const sqlDeleteOpportunities = `DELETE FROM company_opportunities WHERE company_profile_id = ?`;
+  const sqlDeleteContact = `DELETE FROM company_contact WHERE company_profile_id = ?`;
+  const sqlDeleteProject = `DELETE FROM company_project WHERE company_profile_id = ?`;
+
+  const values = [company_contact_id];
+  const redirectUrl = `/company-dashboard`;
+
+  db.beginTransaction((err) => {
+    if (err) {
+      console.error("Error starting transaction:" + err.message);
+      return res.status(500).send("Error starting transaction");
+    }
+
+    db.query(sqlDeleteProject, values, (err, result) => {
+      if (err) {
+        return db.rollback(() => {
+          console.error("Error deleting project user:" + err.message);
+          res.status(500).send("Error deleting project user");
+        });
+      }
+      console.log("Project successfully deleted");
+
+      db.query(sqlDeleteContact, values, (err, result) => {
+        if (err) {
+          return db.rollback(() => {
+            console.error("Error deleting contact user:" + err.message);
+            res.status(500).send("Error deleting contact user");
+          });
+        }
+        console.log("Contact successfully deleted");
+
+        db.query(sqlDeleteOpportunities, values, (err, result) => {
+          if (err) {
+            return db.rollback(() => {
+              console.error("Error deleting opportunities user:" + err.message);
+              res.status(500).send("Error deleting opportunities user");
+            });
+          }
+          console.log("Opportunities successfully deleted");
+
+          db.query(sqlDeleteProfile, values, (err, result) => {
+            if (err) {
+              return db.rollback(() => {
+                console.error("Error deleting profile user:" + err.message);
+                res.status(500).send("Error deleting profile user");
+              });
+            }
+            console.log("Profile successfully deleted");
+
+            db.commit((err) => {
+              if (err) {
+                return db.rollback(() => {
+                  console.error("Error committing transaction:" + err.message);
+                  res.status(500).send("Error committing transaction");
+                });
+              }
+              console.log("Transaction committed successfully");
+              res.redirect(redirectUrl);
+            });
+          });
+        });
+      });
+    });
+  });
 };
 
 //Contact

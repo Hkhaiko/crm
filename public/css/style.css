@@ -316,12 +316,6 @@ input[type="file"] {
   border-radius: 10px; /* Add rounded corners */
 }
 
-/* Add some styling for the form */
-form {
-  max-width: 400px; /* Limit form width for better readability */
-  margin: auto; /* Center the form */
-}
-
 /* Style input fields */
 .form-control {
   font-size: 16px;
@@ -405,7 +399,7 @@ button {
 
 .header-background {
   background-color: #fff;
-  margin: 1% auto; /* Centrer la boîte modale verticalement */
+  margin: 0% auto; /* Centrer la boîte modale verticalement */
   padding: 20px;
   border-radius: 5px;
   width: 60vw;
@@ -424,7 +418,7 @@ button {
   padding: 20px;
   border-radius: 5px;
   width: 60vw;
-  height: 65vh;
+  height: 100vh;
   position: absolute;
   top: 61%;
   left: 50%;
@@ -549,6 +543,15 @@ button {
   margin-top: 3%;
 }
 
+.opportunities-box {
+  background-color: #fefefe;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  padding: 2%;
+  border-radius: 4%;
+  width: auto;
+  margin-top: 3%;
+}
+
 .project-box {
   background-color: #fefefe;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
@@ -621,7 +624,7 @@ button {
 }
 
 #delete-company-experience {
-  margin-left: 55%;
+  margin-left: 0%;
 }
 
 .flex-experience-form {

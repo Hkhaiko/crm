@@ -10,7 +10,6 @@ router.post(
   "/training-user-update/:id",
   trainingController.updatedTraningUserData
 );
-router.get("/display/:id", trainingController.test);
 router.get("/training-user/:id", trainingController.getTraningUserById);
 
 router.post("/test/:id", trainingController.updatedTraningUserData);

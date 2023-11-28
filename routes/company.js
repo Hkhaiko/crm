@@ -5,6 +5,12 @@ const router = express.Router();
 
 router.get("/company-profile/:id", companyController.getCompanyUserById);
 
+//Profile
+router.post(
+  "/delete-company-profile/:id", // Changment peut etre
+  companyController.deleteCompanyProfile
+);
+
 //Contact
 router.post("/add-company-contact/:id", companyController.createCompanyContact);
 router.post(

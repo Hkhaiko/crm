@@ -1,7 +1,5 @@
-// Fichier trainingController.js dans le répertoire controllers
 const db = require("../config/db");
 
-// Fonction pour créer un nouvel utilisateur
 exports.createTraningUser = (req, res) => {
   const updatedUserData = req.body; // Les données de l'utilisateur à partir du corps de la demande
   const date = updatedUserData.date;
@@ -11,18 +9,18 @@ exports.createTraningUser = (req, res) => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
   if (!email.match(emailRegex)) {
-    // L'e-mail ne correspond pas au format attendu, renvoyez une erreur
+    // The email does not match the expected format, return an error
     return res.status(400).send("email is wrong");
   }
 
   if (!date.match(dateRegex)) {
-    // La date n'a pas le format correct, renvoyez une erreur
+    // The date is not in the correct format, return an error
     return res
       .status(400)
       .send("Le format de la date est incorrect (dd/mm/yyyy)");
   }
 
-  // Exécutez une requête SQL pour insérer l'utilisateur dans la base de données
+  // Run a SQL query to insert the user into the database
   const sql =
     "INSERT INTO training (certificationCode, fullname, company, position, email, telephone, date, title, futureTopics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const values = [
@@ -55,56 +53,76 @@ exports.deleteTraningUsers = (req, res) => {
     "DELETE FROM pdf WHERE formation_id IN (SELECT formation_id FROM formation WHERE training_id = ?)";
   const sqlFormation = "DELETE FROM formation WHERE training_id = ?";
   const sqlCompany = "DELETE FROM company_experience WHERE training_id = ?";
+  const redirectUrl = "/dashboard";
+  const values = [trainingId];
 
-  const values = [trainingId, trainingId, trainingId, trainingId];
-  const redirectUrl = `/dashboard`;
-
-  db.query(sqlPdf, values, (err, result) => {
+  // Début de la transaction
+  db.beginTransaction((err) => {
     if (err) {
-      console.error("Error deleting pdf:" + err.message);
-      res.status(500).send("Error deleting pdf");
-    } else {
+      console.error("Error starting transaction:" + err.message);
+      return res.status(500).send("Error starting transaction");
+    }
+
+    // Deletion of PDF
+    db.query(sqlPdf, values, (err, result) => {
+      if (err) {
+        return db.rollback(() => {
+          console.error("Error deleting pdf:" + err.message);
+          res.status(500).send("Error deleting pdf");
+        });
+      }
       console.log("User pdf deleted");
-    }
-  });
 
-  db.query(sqlFormation, values, (err, result) => {
-    if (err) {
-      console.error("Error deleting Formation:" + err.message);
-      res.status(500).send("Error deleting Formation");
-    } else {
-      console.log("Formation successfully deleted");
-    }
-  });
+      // Suppression des Formations
+      db.query(sqlFormation, values, (err, result) => {
+        if (err) {
+          return db.rollback(() => {
+            console.error("Error deleting Formation:" + err.message);
+            res.status(500).send("Error deleting Formation");
+          });
+        }
+        console.log("Formation successfully deleted");
 
-  db.query(sqlCompany, values, (err, result) => {
-    if (err) {
-      console.error("Error deleting Company:" + err.message);
-      res.status(500).send("Error deleting Company");
-    } else {
-      console.log("Company successfully deleted");
-    }
-  });
+        // Deletion of Company Experiences
+        db.query(sqlCompany, values, (err, result) => {
+          if (err) {
+            return db.rollback(() => {
+              console.error("Error deleting Company:" + err.message);
+              res.status(500).send("Error deleting Company");
+            });
+          }
+          console.log("Company successfully deleted");
 
-  db.query(sql, values, (err, result) => {
-    if (err) {
-      console.error("Error deleting Traningser:" + err.message);
-      res.status(500).send("Error deleting TraningUser");
-    } else {
-      console.log("User successfully deleted");
-      res.redirect(redirectUrl);
-    }
+          // Removal of Main Training
+          db.query(sql, values, (err, result) => {
+            if (err) {
+              return db.rollback(() => {
+                console.error("Error deleting Traningser:" + err.message);
+                res.status(500).send("Error deleting TraningUser");
+              });
+            }
+
+            // If all operations were successful, we validate the transaction
+            db.commit((err) => {
+              if (err) {
+                return db.rollback(() => {
+                  console.error("Error committing transaction:" + err.message);
+                  res.status(500).send("Error committing transaction");
+                });
+              }
+
+              console.log("Transaction committed successfully");
+              res.redirect(redirectUrl);
+            });
+          });
+        });
+      });
+    });
   });
 };
 
-exports.test = (req, res) => {
-  // Exécutez une requête SQL pour sélectionner tous les utilisateurs de la base de données
-  res.render("display", { test: "teaeaz" });
-};
-
-// Get All trainingUsers
 exports.getTraningUsers = (req, res) => {
-  // Exécutez une requête SQL pour sélectionner tous les utilisateurs de la base de données
+  // Run a SQL query to select all users from the database
   const sql = "SELECT * FROM training";
   db.query(sql, (err, results) => {
     if (err) {
@@ -116,7 +134,7 @@ exports.getTraningUsers = (req, res) => {
       const training = results;
       console.log(training);
       console.log("Utilisateurs lus avec succès");
-      res.status(200).json(results); // Renvoie les résultats au format JSON
+      res.status(200).json(results);
       res.render("trainingUser", { training });
     }
   });
@@ -124,11 +142,10 @@ exports.getTraningUsers = (req, res) => {
 
 exports.updatedTraningUserData = (req, res) => {
   const trainingId = req.params.id;
+  const updatedUserData = req.body;
   const redirectUrl = `/training-user/${encodeURIComponent(trainingId)}`;
 
-  const updatedUserData = req.body; // Les données mises à jour de l'utilisateur à partir du corps de la demande
-  console.log(updatedUserData);
-  // Exécutez une requête SQL pour mettre à jour l'utilisateur dans la base de données
+  // Run a SQL query to update the user in the database
   const sql =
     "UPDATE training SET certificationCode = ?, fullName = ?, company = ?, position = ?, email = ?, telephone = ?, date = ?, title = ?, futureTopics = ? WHERE training_id = ?";
   const values = [
@@ -170,7 +187,7 @@ exports.getTraningUserById = (req, res, next) => {
   let companyResults;
   let formationResults;
 
-  // Utilisez Promises ou async/await pour gérer les requêtes de manière asynchrone
+  // Use Promises or async/await to handle requests asynchronously
   Promise.all([
     new Promise((resolve, reject) => {
       db.query(sqlFormation, values, (err, results) => {
@@ -204,7 +221,7 @@ exports.getTraningUserById = (req, res, next) => {
     }),
   ])
     .then(() => {
-      // Une fois que toutes les requêtes sont terminées, vous pouvez appeler res.render
+      // Once all requests have completed, you can call res.render
       const data = {
         trainingFormation: formationResults,
         trainingCompany: companyResults,
@@ -218,6 +235,5 @@ exports.getTraningUserById = (req, res, next) => {
       console.error(
         "Erreur lors de la lecture des utilisateurs : " + err.message
       );
-      // Gérez l'erreur ici en fonction de votre besoin
     });
 };

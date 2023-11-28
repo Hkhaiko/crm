@@ -170,7 +170,7 @@ app.get("/dashboard", (req, res) => {
   });
 });
 
-//==========Company========
+//==========Company Dashboard ========
 
 app.get("/company-dashboard", (req, res) => {
   const sql = "SELECT * FROM company_profile";
@@ -183,6 +183,7 @@ app.get("/company-dashboard", (req, res) => {
       res.render("error"); // Créez une vue error.ejs appropriée
     } else {
       const companyProfile = results;
+      console.log(companyProfile);
       res.render("companyDashboard", { companyProfile });
     }
   });

@@ -8,7 +8,11 @@
   </head>
   <body>
     <div class="header-background">
-      <img src="../public/img/unisexeAvatar.jpg" alt="Avatar" class="avatar" />
+      <img
+        src="../public/img/company-enterprise-icon.png"
+        alt="Avatar"
+        class="avatar"
+      />
       <h1 class="full-name"><%= data.companyProfileResult[0].name %></h1>
     </div>
 
@@ -267,17 +271,15 @@
     //Modal
     const addContactModal = document.getElementById("add-contact-modal");
     const addProjectModal = document.getElementById("add-project-modal");
-    const addOpportunitiesModal = document.getElementById("add--modal");
+    const addOpportunitiesModal = document.getElementById(
+      "add-opportunities-modal"
+    );
     const closeModalContact = document.getElementById("close-modal-contact");
     const closeModalProject = document.getElementById("close-modal-project");
 
     //Add element
     addContactButton.addEventListener("click", () => {
       addContactModal.style.display = "block";
-    });
-
-    addProjectButton.addEventListener("click", () => {
-      addProjectModal.style.display = "block";
     });
 
     addOpportunitiesButton.addEventListener("click", () => {
@@ -288,11 +290,19 @@
     contactButton.addEventListener("click", () => {
       contactBox.style.display = "block";
       projectBox.style.display = "none";
+      opportunitiesBox.style.display = "none";
     });
 
     projectButton.addEventListener("click", () => {
       projectBox.style.display = "block";
       contactBox.style.display = "none";
+      opportunitiesBox.style.display = "none";
+    });
+
+    opportunitesButton.addEventListener("click", () => {
+      projectBox.style.display = "none";
+      contactBox.style.display = "none";
+      opportunitiesBox.style.display = "block";
     });
 
     //Close modal

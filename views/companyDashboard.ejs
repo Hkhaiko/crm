@@ -3,14 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" href="/public/css/style.css" />
+    <title>Company dashboard</title>
   </head>
   <body>
-    <td>
-      <a href="/company-profile/<%= companyProfile[0].company_profile_id %>"
-        >See</a
-      >
-      <h1><%= companyProfile.name %></h1>
-    </td>
+    <h1>Company Dashboard</h1>
+    <td></td>
+    <table>
+      <thead>
+        <tr>
+          <th>Certification Code</th>
+          <th>Fullname</th>
+          <th>Profile</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% companyProfile.forEach(companyProfile => { %>
+        <tr class="table-row">
+          <td><%= companyProfile.company_profile_id %></td>
+          <td><%= companyProfile.name %></td>
+          <td>
+            <a href="/company-profile/<%= companyProfile.company_profile_id %>"
+              >See</a
+            >
+          </td>
+          <td>
+            <form
+              action="/delete-company-profile/<%= companyProfile.company_profile_id%>"
+              method="post"
+            >
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+          <% }); %>
+        </tr>
+      </tbody>
+    </table>
   </body>
 </html>
