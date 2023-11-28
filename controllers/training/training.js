@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require("../../config/db");
 
 exports.createTraningUser = (req, res) => {
   const updatedUserData = req.body; // Les données de l'utilisateur à partir du corps de la demande

@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require("../../config/db");
 
 // Fonction pour créer un nouvel utilisateur
 exports.createUser = (req, res) => {

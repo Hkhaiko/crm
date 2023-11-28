@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require("../../config/db");
 
 exports.addCompanyExperience = (req, res) => {
   const companyExperienceData = req.body;

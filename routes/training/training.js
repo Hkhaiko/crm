@@ -1,7 +1,7 @@
 // Fichier trainingRoutes.js dans le répertoire routes
 const express = require("express");
 const router = express.Router();
-const trainingController = require("../controllers/training");
+const trainingController = require("../../controllers/training/training");
 
 router.post("/training", trainingController.createTraningUser);
 router.post("/delete-training/:id", trainingController.deleteTraningUsers);

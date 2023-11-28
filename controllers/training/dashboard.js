@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require("../../config/db");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const readXlsxFile = require("read-excel-file/node");

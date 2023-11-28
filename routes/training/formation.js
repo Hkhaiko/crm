@@ -1,5 +1,5 @@
 const express = require("express");
-const formationController = require("../controllers/formation");
+const formationController = require("../../controllers/training/formation");
 const multer = require("multer");
 
 const router = express.Router();

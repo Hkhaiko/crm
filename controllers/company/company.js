@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require("../../config/db");
 
 exports.getCompanyUserById = (req, res) => {
   const sqlContact = `SELECT * FROM company_contact WHERE company_profile_id = ?`;

@@ -1,7 +1,7 @@
 //authRoutes.js
 const express = require("express");
 const passport = require("passport");
-const dashboardController = require("../controllers/dashboard");
+const dashboardController = require("../../controllers/training/dashboard");
 
 const router = express.Router();
 

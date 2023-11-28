@@ -1,6 +1,6 @@
 const express = require("express");
-const dashboardController = require("../controllers/dashboard");
-const excelController = require("../controllers/dashboard");
+const dashboardController = require("../../controllers/training/dashboard");
+const excelController = require("../../controllers/training/dashboard");
 const multer = require("multer");
 
 const router = express.Router();

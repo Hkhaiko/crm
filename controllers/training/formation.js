@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require("../../config/db");
 const multer = require("multer");
 
 exports.addFormation = (req, res) => {
