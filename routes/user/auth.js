@@ -12,7 +12,7 @@ router.post("/login", dashboardController.checkLogin);
 router.post("/register", dashboardController.createUser);
 
 // Route add new client to dashboard
-router.post("/addClient", dashboardController.addClient);
+router.post("/add-client", dashboardController.addClient);
 
 // Route de déconnexion
 router.get("/logout", (req, res) => {

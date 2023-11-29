@@ -129,7 +129,7 @@ app.get("/display", (req, res) => {
   res.render("display", { test: "" });
 });
 
-//==================TRAINING===================
+//Training
 
 app.get("/training-user/:id", (req, res) => {
   // Effectuez une requête SQL pour récupérer les informations des personnes depuis votre base de données
@@ -170,7 +170,7 @@ app.get("/dashboard", (req, res) => {
   });
 });
 
-//==========Company Dashboard ========
+//Company Dashboard
 
 app.get("/company-dashboard", (req, res) => {
   const sql = "SELECT * FROM company_profile";
@@ -193,7 +193,7 @@ app.get("/company-profile/:id", (req, res) => {
   res.render("company_profile");
 });
 
-//=========SERVER=========
+//Server
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

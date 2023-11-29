@@ -28,4 +28,7 @@ router.post(
   companyController.createCompanyOpportunities
 );
 
+//Dashboard company
+router.post("/add-company-dashboard", companyController.createCompany);
+
 module.exports = router;

@@ -125,6 +125,12 @@ td {
   overflow: hidden; /* Masque le texte dépassant de la cellule */
   text-overflow: ellipsis; /* Ajoute des points de suspension (...) pour le texte dépassant */
   max-width: 150px; /* Définit la largeur maximale avant d'ajouter les points de suspension */
+  text-align: center;
+}
+
+td button {
+  margin: 0 auto; /* Ajoutez cette règle pour centrer le bouton horizontalement */
+  display: block; /* Assurez-vous que le bouton occupe toute la largeur disponible */
 }
 
 tbody tr:nth-child(odd) {
@@ -174,6 +180,19 @@ strong {
 }
 
 #addClientBoutton {
+  color: #000000;
+  background-color: #fff;
+  width: 122px;
+  height: 40px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px #000;
+  transition: all 0.2s ease-in-out;
+  cursor: -webkit-pointer;
+  cursor: pointer;
+}
+
+#addCompanyBoutton {
   color: #000000;
   background-color: #fff;
   width: 122px;

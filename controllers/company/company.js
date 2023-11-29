@@ -279,3 +279,24 @@ exports.createCompanyOpportunities = (req, res) => {
     }
   });
 };
+
+//Comapny Dashboard
+exports.createCompany = (req, res) => {
+  const companyData = req.body;
+  console.log(companyData);
+
+  const redirectUrl = `/company-dashboard`;
+  const sql = "INSERT INTO company_profile (name) VALUES (?)";
+  const values = [companyData.name];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.log("Error :" + err.message);
+      res.status(500).send("Error creating contact");
+    } else {
+      console.log("Contact successfully created");
+      console.log(result);
+      res.redirect(redirectUrl);
+    }
+  });
+};

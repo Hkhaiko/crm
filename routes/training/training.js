@@ -1,4 +1,3 @@
-// Fichier trainingRoutes.js dans le répertoire routes
 const express = require("express");
 const router = express.Router();
 const trainingController = require("../../controllers/training/training");
@@ -11,7 +10,5 @@ router.post(
   trainingController.updatedTraningUserData
 );
 router.get("/training-user/:id", trainingController.getTraningUserById);
-
-router.post("/test/:id", trainingController.updatedTraningUserData);
 
 module.exports = router;

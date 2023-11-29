@@ -4,16 +4,53 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/public/css/style.css" />
+    <script src="../public/js/company_dashboard.js"></script>
     <title>Company dashboard</title>
   </head>
   <body>
     <h1>Company Dashboard</h1>
-    <td></td>
+    <div class="head-back">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search"
+        class="official-input"
+      />
+      <button id="addCompanyBoutton" class="btn btn-primary">
+        Add company
+      </button>
+    </div>
+    <div
+      id="addCompanyModal"
+      class="modal modal-dialog-scrollable"
+      style="display: none"
+    >
+      <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>Add client</h2>
+        <form
+          action="/add-company-dashboard"
+          method="POST"
+          class="official-form"
+        >
+          <label for="name">Name :</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="official-input"
+            required
+          /><br />
+
+          <input type="submit" value="Add company" id="addClientDashboard" />
+        </form>
+      </div>
+    </div>
     <table>
       <thead>
         <tr>
-          <th>Certification Code</th>
-          <th>Fullname</th>
+          <th>Id</th>
+          <th>Name</th>
           <th>Profile</th>
           <th>Delete</th>
         </tr>
