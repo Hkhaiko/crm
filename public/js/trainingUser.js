@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const popupInformation = document.getElementById("popup-information");
   const importCertificateButton = document.getElementById(
-    "import-pdf-certifiacte-button"
+    "import-pdf-certificate-button"
   );
 
   // Si la box ne contient pas d'expérience, masquez-la
@@ -108,6 +108,8 @@ document.addEventListener("DOMContentLoaded", function () {
     addExperienceModal.style.display = "none";
   });
 
+  let fileFilled = false;
+
   importCertificateButton.addEventListener("click", function (event) {
     event.preventDefault(); // Empêche le comportement par défaut du formulaire
 
@@ -116,15 +118,21 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("importe-cetificate-pdf")
     );
 
+    for (const value of formData.values()) {
+      if (value instanceof File) {
+        if (value.size > 0) {
+          fileFilled = true;
+        }
+        console.log(fileFilled);
+      }
+    }
+
     fetch("/import-certificate-pdf", {
       method: "POST",
       body: formData,
     })
-      .then((data) => {
-        console.log(data);
-        if (data.bodyUsed === false) {
-          console.log("no file");
-        } else {
+      .then(() => {
+        if (fileFilled) {
           popupInformation.style.display = "block";
           setTimeout(() => {
             popupInformation.style.display = "none";
@@ -132,7 +140,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       })
       .catch((error) => {
-        console.log("test error");
         // La requête a échoué, affichez un message d'erreur si nécessaire
         console.error(
           "There has been a problem with your fetch operation:",

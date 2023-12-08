@@ -10,18 +10,15 @@ const authRoutes = require("./routes/user/auth");
 const dashboardRoutes = require("./routes/training/dashboard");
 const companyExperienceRoutes = require("./routes/training/company_experience");
 const formationRoutes = require("./routes/training/formation");
-const comapanyProfile = require("./routes/company/company");
+const comapanyProfileRoutes = require("./routes/company/company");
 
 const cors = require("cors");
-const bodyParser = require("body-parser");
-
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 app.use(express.static("public"));
 
 // Configuration de la session
@@ -110,7 +107,7 @@ app.use("/", userRoutes);
 app.use("/", dashboardRoutes);
 app.use("/", companyExperienceRoutes);
 app.use("/", formationRoutes);
-app.use("/", comapanyProfile);
+app.use("/", comapanyProfileRoutes);
 
 // Routes
 app.get("/", (req, res) => {
@@ -191,6 +188,10 @@ app.get("/company-dashboard", (req, res) => {
 
 app.get("/company-profile/:id", (req, res) => {
   res.render("company_profile");
+});
+
+app.get("/main-dashboard/", (req, res) => {
+  res.render("main_dashboard");
 });
 
 //Server

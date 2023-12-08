@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="../public/js/trainingUser.js"></script>
     <link rel="stylesheet" href="/public/css/style.css" />
-    <title>training User</title>
+    <title>Training User</title>
   </head>
   <body>
     <div class="header-background">
@@ -14,9 +14,6 @@
     </div>
 
     <!-- Redirect Dashboard -->
-    <a href="/dashboard">
-      <button id="button-to-dashboard" class="official-form">Dashboard</button>
-    </a>
 
     <div class="main-background" id="main-profile">
       <button class="main-boutton" role="button" id="experience-button">
@@ -86,7 +83,7 @@
           </div>
         </div>
         <div id="pdf-panel" style="display: none">
-          <h2>Generate certificate</h2>
+          <h2>Import certificate</h2>
           <form
             action="/import-certificate-pdf"
             method="POST"
@@ -108,7 +105,7 @@
               <% } %>
             </select>
             <input type="file" name="pdfFile" id="pdf-file" accept=".pdf" />
-            <button type="submit" id="import-pdf-certifiacte-button">
+            <button type="submit" id="import-pdf-certificate-button">
               Import certificate
             </button>
           </form>
@@ -437,7 +434,7 @@
       </div>
     </div>
 
-    <script>
+    <!-- <script>
       document.addEventListener("DOMContentLoaded", function () {
         const editButtons = document.querySelectorAll(".js-edit");
         const saveButtons = document.querySelectorAll(".js-save");
@@ -579,6 +576,7 @@
             body: formData,
           })
             .then((data) => {
+              console.log(formData);
               popupInformation.style.display = "block";
               setTimeout(() => {
                 popupInformation.style.display = "none";
@@ -593,6 +591,6 @@
             });
         });
       });
-    </script>
+    </script> -->
   </body>
 </html>

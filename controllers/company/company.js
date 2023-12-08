@@ -1,16 +1,26 @@
 const db = require("../../config/db");
 
+//Get main page
+
+const extractTypeFromUrl = (url) => {
+  const parts = url.split("/");
+  const lastPart = parts[parts.length - 1];
+  return lastPart;
+};
+
 exports.getCompanyUserById = (req, res) => {
   const sqlContact = `SELECT * FROM company_contact WHERE company_profile_id = ?`;
   const sqlProject = `SELECT * FROM company_project WHERE company_profile_id = ?`;
   const sqlOpportunities = `SELECT * FROM company_opportunities WHERE company_profile_id = ?`;
   const sqlCompanyProfile = `SELECT * FROM company_profile WHERE company_profile_id = ?`;
   const values = req.params.id;
+
   let contactResults;
   let projectResults;
   let opportunitesResults;
   let comapanyProfileResults;
 
+  const contentTypeResults = extractTypeFromUrl(req.url);
   // Utilisez Promises ou async/await pour gérer les requêtes de manière asynchrone
   Promise.all([
     new Promise((resolve, reject) => {
@@ -61,6 +71,7 @@ exports.getCompanyUserById = (req, res) => {
         projectResult: projectResults,
         opportunitesResult: opportunitesResults,
         companyProfileResult: comapanyProfileResults,
+        contentTypeResult: contentTypeResults,
       };
       console.log("CONSOLE DATA ");
       console.log(data);
@@ -227,14 +238,15 @@ exports.createCompanyProject = (req, res) => {
 };
 
 exports.deleteCompanyProject = (req, res) => {
-  const company_profile_id = req.body.company_profile_id;
+  const company_profile_id = req.body;
   const company_project_id = req.body.company_project_id;
+  console.log("test");
   const sqlDeleteProject =
     "DELETE FROM company_project WHERE company_project_id = ?";
 
   const values = company_project_id;
-
-  console.log();
+  console.log(company_profile_id);
+  console.log("test", values);
   const redirectUrl = `/company-profile/${encodeURIComponent(
     company_profile_id
   )}`;
@@ -244,9 +256,8 @@ exports.deleteCompanyProject = (req, res) => {
       console.error("Error deleting project:" + err.message);
       res.status(500).send("Error deleting project");
     } else {
-      console.log(res);
       console.log("Project successfully deleted");
-      res.redirect(redirectUrl);
+      res.json({ success: true });
     }
   });
 };

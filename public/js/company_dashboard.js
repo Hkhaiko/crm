@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const addCompanyButton = document.getElementById("addCompanyBoutton");
   const addCompanyModal = document.getElementById("addCompanyModal");
+
   const closeModal = document.getElementById("closeModal");
   const table = document.querySelector("table");
   const searchInput = document.querySelector("#searchInput");

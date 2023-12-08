@@ -4,6 +4,18 @@ const companyController = require("../../controllers/company/company");
 const router = express.Router();
 
 router.get("/company-profile/:id", companyController.getCompanyUserById);
+router.get(
+  "/company-profile/:id/contact",
+  companyController.getCompanyUserById
+);
+router.get(
+  "/company-profile/:id/project",
+  companyController.getCompanyUserById
+);
+router.get(
+  "/company-profile/:id/opportunities",
+  companyController.getCompanyUserById
+);
 
 //Profile
 router.post(
