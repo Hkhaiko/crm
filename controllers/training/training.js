@@ -1,5 +1,11 @@
 const db = require("../../config/db");
 
+const extractTypeFromUrl = (url) => {
+  const parts = url.split("/");
+  const lastPart = parts[parts.length - 1];
+  return lastPart;
+};
+
 exports.createTraningUser = (req, res) => {
   const updatedUserData = req.body; // Les données de l'utilisateur à partir du corps de la demande
   const date = updatedUserData.date;
@@ -143,7 +149,9 @@ exports.getTraningUsers = (req, res) => {
 exports.updatedTraningUserData = (req, res) => {
   const trainingId = req.params.id;
   const updatedUserData = req.body;
-  const redirectUrl = `/training-user/${encodeURIComponent(trainingId)}`;
+  const redirectUrl = `/training-user/${encodeURIComponent(
+    trainingId
+  )}/experience`;
 
   // Run a SQL query to update the user in the database
   const sql =
@@ -186,6 +194,7 @@ exports.getTraningUserById = (req, res) => {
   let trainingResults;
   let companyResults;
   let formationResults;
+  let contentTypeResults = extractTypeFromUrl(req.url);
 
   // Use Promises or async/await to handle requests asynchronously
   Promise.all([
@@ -226,6 +235,7 @@ exports.getTraningUserById = (req, res) => {
         trainingFormation: formationResults,
         trainingCompany: companyResults,
         trainingProfile: trainingResults,
+        contentTypeResult: contentTypeResults,
       };
       console.log("CONSOLE DATA ");
       console.log(data);

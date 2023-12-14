@@ -11,6 +11,7 @@ const dashboardRoutes = require("./routes/training/dashboard");
 const companyExperienceRoutes = require("./routes/training/company_experience");
 const formationRoutes = require("./routes/training/formation");
 const comapanyProfileRoutes = require("./routes/company/company");
+const mainDashboardRoutes = require("./routes/main_dashboard/main_dashboard");
 
 const cors = require("cors");
 const app = express();
@@ -27,6 +28,7 @@ app.use(
     secret: "MaCleSecreteSuperSecurisee1234", // Remplacez par une clé secrète réelle
     saveUninitialized: true,
     resave: false,
+    //cookie: { maxAge: 30 *60 * 1000 }, //30min (in milliseconds)   //Define how much time we want the session to stay open
   })
 );
 
@@ -34,15 +36,40 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+const determineUserRole = (email) => {
+  return new Promise((resolve, reject) => {
+    const sql = "SELECT isAdmin FROM user WHERE email = ?";
+    const value = [email];
+
+    db.query(sql, value, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        // Vérifiez si la requête a renvoyé des résultats
+        if (results.length > 0) {
+          // Récupérez la valeur de la colonne isAdmin
+          const isAdmin = results[0].isAdmin;
+
+          // Résolvez la Promesse avec la valeur isAdmin
+          console.log(isAdmin);
+          resolve(isAdmin === 1);
+        } else {
+          // Aucun résultat trouvé, l'utilisateur n'existe peut-être pas
+          reject("User not found");
+        }
+      }
+    });
+  });
+};
+
 // Utilitaire de vérification de l'authentification
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "email", // Champ de formulaire pour l'adresse e-mail
-      passwordField: "password", // Champ de formulaire pour le mot de passe
+      usernameField: "email",
+      passwordField: "password",
     },
     (email, password, done) => {
-      // Recherchez l'utilisateur correspondant à l'adresse e-mail dans la base de données
       const sql = "SELECT * FROM user WHERE email = ?";
       db.query(sql, [email], (err, results) => {
         if (err) {
@@ -108,6 +135,7 @@ app.use("/", dashboardRoutes);
 app.use("/", companyExperienceRoutes);
 app.use("/", formationRoutes);
 app.use("/", comapanyProfileRoutes);
+app.use("/", mainDashboardRoutes);
 
 // Routes
 app.get("/", (req, res) => {
@@ -128,71 +156,27 @@ app.get("/display", (req, res) => {
 
 //Training
 
-app.get("/training-user/:id", (req, res) => {
-  // Effectuez une requête SQL pour récupérer les informations des personnes depuis votre base de données
-  const sql = "SELECT * FROM company_experience";
+// app.get("/training-user/:id", (req, res) => {
+//   // Effectuez une requête SQL pour récupérer les informations des personnes depuis votre base de données
+//   const sql = "SELECT * FROM company_experience";
 
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error(
-        "Erreur lors de la récupération des données depuis la base de données:",
-        err
-      );
-      // Gérez l'erreur ici, par exemple, redirigez l'utilisateur vers une page d'erreur
-      res.render("error"); // Créez une vue error.ejs appropriée
-    } else {
-      const companyExperience = results; // Les données des personnes sont stockées dans results
-      // Transmettez les données des personnes à votre modèle EJS pour le rendu
-      res.render("training_user", { companyExperience });
-    }
-  });
-});
-
-app.get("/dashboard", (req, res) => {
-  // Effectuez une requête SQL pour récupérer les informations des personnes depuis votre base de données
-  const sql = "SELECT * FROM training"; // Remplacez "personnes" par le nom de votre table
-
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error(
-        "Erreur lors de la récupération des données depuis la base de données:",
-        err
-      );
-      // Gérez l'erreur ici, par exemple, redirigez l'utilisateur vers une page d'erreur
-      res.render("error"); // Créez une vue error.ejs appropriée
-    } else {
-      const training = results;
-      res.render("dashboard", { training });
-    }
-  });
-});
+//   db.query(sql, (err, results) => {
+//     if (err) {
+//       console.error(
+//         "Erreur lors de la récupération des données depuis la base de données:",
+//         err
+//       );
+//       // Gérez l'erreur ici, par exemple, redirigez l'utilisateur vers une page d'erreur
+//       res.render("error"); // Créez une vue error.ejs appropriée
+//     } else {
+//       const companyExperience = results; // Les données des personnes sont stockées dans results
+//       // Transmettez les données des personnes à votre modèle EJS pour le rendu
+//       res.render("training_user", { companyExperience });
+//     }
+//   });
+// });
 
 //Company Dashboard
-
-app.get("/company-dashboard", (req, res) => {
-  const sql = "SELECT * FROM company_profile";
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error(
-        "Erreur lors de la récupération des données depuis la base de données:",
-        err
-      );
-      res.render("error"); // Créez une vue error.ejs appropriée
-    } else {
-      const companyProfile = results;
-      console.log(companyProfile);
-      res.render("company_dashboard", { companyProfile });
-    }
-  });
-});
-
-app.get("/company-profile/:id", (req, res) => {
-  res.render("company_profile");
-});
-
-app.get("/main-dashboard/", (req, res) => {
-  res.render("main_dashboard");
-});
 
 //Server
 

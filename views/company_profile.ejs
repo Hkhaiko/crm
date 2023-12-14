@@ -30,7 +30,6 @@
           Completed project
         </button></a
       >
-
       <a
         href="/company-profile/<%= data.companyProfileResult[0].company_profile_id %>/opportunities"
       >
@@ -89,7 +88,7 @@
             <input
               type="hidden"
               name="company_profile_id"
-              value="<%= data.companyProfileResult[i].company_profile_id %>"
+              value="<%= data.companyProfileResult[0].company_profile_id %>"
             />
             <input
               type="hidden"
@@ -126,20 +125,31 @@
           <div class="description">
             <%- data.opportunitesResult[i].history %>
           </div>
-          <form>
+          <form
+            action="/delete-company-opportunities"
+            method="POST"
+            id="delete-company-project-form"
+          >
             <input
               type="hidden"
               name="company_profile_id"
-              value="<%= data.companyProfileResult[i].company_profile_id %>"
+              value="<%= data.companyProfileResult[0].company_profile_id %>"
             />
             <input
               type="hidden"
-              name="company_project_id"
-              value="<%= data.projectResult[i].company_project_id %>"
+              name="company_opportunities_id"
+              value="<%= data.opportunitesResult[i].company_opportunities_id %>"
             />
-            <button type="submit" id="delete-company-experience">Delete</button>
+            <button
+              type="submit"
+              class="delete-company-experience"
+              id="delete-company-project-button"
+            >
+              Delete
+            </button>
           </form>
         </div>
+
         <%}; %>
         <button class="main-boutton" id="add-opportunities-button">
           Add opportunities
@@ -279,10 +289,10 @@
       id="add-opportunities-modal"
     >
       <div class="project-modal">
-        <span class="close" id="close-modal-project">&times;</span>
+        <span class="close" id="close-modal-opportunities">&times;</span>
         <h2>Add Opportunites</h2>
         <form
-          action="/add-opportunites-project/<%=
+          action="/add-company-opportunities/<%=
         data.companyProfileResult[0].company_profile_id %>"
           method="post"
           class="is-editing"
@@ -302,7 +312,7 @@
           <input
             type="text"
             id="start-date"
-            name="start_date"
+            name="consultant"
             class="official-input"
             required
           /><br />
@@ -311,7 +321,7 @@
           <input
             type="text"
             id="end-date"
-            name="end_date"
+            name="certification"
             class="official-input"
             required
           /><br />
@@ -320,7 +330,7 @@
           <input
             type="text"
             id="description"
-            name="description"
+            name="history"
             class="official-input"
             required
           /><br />
@@ -334,7 +344,6 @@
         </form>
       </div>
     </div>
-    <button id="myButton">Cliquez-moi</button>
   </body>
 </html>
 
@@ -365,24 +374,22 @@
     );
     const closeModalContact = document.getElementById("close-modal-contact");
     const closeModalProject = document.getElementById("close-modal-project");
+    const closeModalOpportunities = document.getElementById(
+      "close-modal-opportunities"
+    );
 
     //Add element
-    addContactButton.addEventListener("click", () => {
-      addContactModal.style.display = "block";
-      console.log("rezq");
-    });
+    if (addContactButton) {
+      addContactButton.addEventListener("click", () => {
+        addContactModal.style.display = "block";
+      });
+    }
 
     if (addOpportunitiesButton) {
       addOpportunitiesButton.addEventListener("click", () => {
         addOpportunitiesModal.style.display = "block";
       });
     }
-
-    const myButton = document.getElementById("myButton");
-
-    myButton.addEventListener("click", function () {
-      console.log("Le bouton a été cliqué !");
-    });
 
     if (addProjectButton) {
       addProjectButton.addEventListener("click", () => {
@@ -395,6 +402,14 @@
       addContactModal.style.display = "none";
     });
 
+    closeModalProject.addEventListener("click", () => {
+      addProjectModal.style.display = "none";
+    });
+
+    closeModalOpportunities.addEventListener("click", () => {
+      addOpportunitiesModal.style.display = "none";
+    });
+
     window.onclick = (event) => {
       if (event.target === addContactModal) {
         addContactModal.style.display = "none";
@@ -403,39 +418,5 @@
         addProjectModal.style.display = "none";
       }
     };
-
-    closeModalProject.addEventListener("click", () => {
-      addProjectModal.style.display = "none";
-    });
-
-    if (deleteProjectButton) {
-      deleteProjectButton.addEventListener("click", function (event) {
-        event.preventDefault(); // Empêche le comportement par défaut du formulaire
-        let formData = new FormData(
-          document.getElementById("delete-company-project-form")
-        );
-
-        fetch("/delete-company-project", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: new URLSearchParams(formData).toString(),
-        })
-          .then(() => {
-            setTimeout(() => {
-              window.location.reload();
-            }, 150);
-            window.addEventListener("load", updateUI);
-          })
-          .catch((error) => {
-            // Handle error
-            console.error(
-              "There has been a problem with your fetch operation:",
-              error
-            );
-          });
-      });
-    }
   });
 </script>

@@ -1,67 +1,5 @@
 const db = require("../../config/db");
-const bcrypt = require("bcrypt");
-const passport = require("passport");
 const readXlsxFile = require("read-excel-file/node");
-
-// const isAuthenticated = (req, res, next) => {
-//     if (req.isAuthenticated()) {
-//       return next();
-//     }
-//     res.redirect('/login');
-//   };
-
-// // Utilisation de la fonction `isAuthenticated` pour protéger une route
-// router.get('/protected', isAuthenticated, (req, res) => {
-//   res.send('Ceci est la page protégée du tableau de bord.');
-// });
-
-exports.checkLogin = (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      const errorMessage = "Invalid email or password";
-      return res.render("login", { loginErrorMessage: errorMessage });
-    }
-    req.logIn(user, (err) => {
-      if (err) {
-        //L'erreur est ICI !!
-        console.log("login error");
-        return next(err);
-      }
-      return res.redirect("/dashboard");
-    });
-  })(req, res, next);
-};
-
-exports.addClient = (req, res) => {
-  const trainingClient = req.body;
-  const sql =
-    "INSERT INTO training (certificationCode, fullName, company, position, email, telephone, date, title, futureTopics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-  const excelData = [
-    trainingClient.certificationCode,
-    trainingClient.fullName,
-    trainingClient.company,
-    trainingClient.position,
-    trainingClient.email,
-    trainingClient.telephone,
-    trainingClient.date,
-    trainingClient.title,
-    trainingClient.futureTopics,
-  ];
-
-  db.query(sql, excelData, (err, result) => {
-    if (err) {
-      console.log("Error :" + err.message);
-      res.status(500).send("Error creating client");
-    } else {
-      res.redirect("/dashboard");
-      console.log(result);
-      console.log("Created client successfully");
-    }
-  });
-};
 
 exports.importExcel = (req, res) => {
   const sql = "SELECT * FROM training";
@@ -139,29 +77,21 @@ exports.importExcel = (req, res) => {
     });
 };
 
-exports.createUser = (req, res) => {
-  const updatedUserData = req.body;
-  const password = req.body.password;
+exports.getTrainingDashboard = (req, res) => {
+  // Effectuez une requête SQL pour récupérer les informations des personnes depuis votre base de données
+  const sql = "SELECT * FROM training"; // Remplacez "personnes" par le nom de votre table
 
-  // Hachez le mot de passe avant de l'enregistrer dans la base de données
-  bcrypt.hash(password, 10, (err, hash) => {
+  db.query(sql, (err, results) => {
     if (err) {
-      // Gérez l'erreur, par exemple, en renvoyant une réponse d'erreur
-      return res.status(500).send("Erreur lors du hachage du mot de passe.");
+      console.error(
+        "Erreur lors de la récupération des données depuis la base de données:",
+        err
+      );
+      // Gérez l'erreur ici, par exemple, redirigez l'utilisateur vers une page d'erreur
+      res.render("error"); // Créez une vue error.ejs appropriée
+    } else {
+      const training = results;
+      res.render("dashboard", { training });
     }
-    // À ce stade, "hash" contient le mot de passe haché
-    // Enregistrez le nom d'utilisateur et le mot de passe haché dans la base de données
-    const sql = "INSERT INTO user (name, email, password) VALUES (?, ?, ?)";
-    const excelData = [updatedUserData.name, updatedUserData.email, hash];
-
-    db.query(sql, excelData, (err, result) => {
-      if (err) {
-        console.error("Error password: " + err.message);
-        res.status(500).send("Error password");
-      } else {
-        console.log("Created successfully");
-        res.status(201).redirect("/login");
-      }
-    });
   });
 };

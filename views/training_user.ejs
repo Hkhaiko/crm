@@ -3,128 +3,51 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="../public/js/trainingUser.js"></script>
+    <script src="/public/js/trainingUser.js"></script>
     <link rel="stylesheet" href="/public/css/style.css" />
     <title>Training User</title>
   </head>
   <body>
     <div class="header-background">
-      <img src="../public/img/unisexeAvatar.jpg" alt="Avatar" class="avatar" />
+      <img src="/public/img/unisexeAvatar.jpg" alt="Avatar" class="avatar" />
       <h1 class="full-name"><%= data.trainingProfile[0].fullName %></h1>
     </div>
 
     <!-- Redirect Dashboard -->
 
     <div class="main-background" id="main-profile">
-      <button class="main-boutton" role="button" id="experience-button">
-        Experience
-      </button>
-      <button class="main-boutton" role="button" id="formation-button">
-        Formation
-      </button>
+      <a
+        href="/training-user/<%= data.trainingProfile[0].training_id %>/experience"
+        ><button class="main-boutton" role="button" id="contact-button">
+          Experience
+        </button></a
+      >
+
+      <a
+        href="/training-user/<%= data.trainingProfile[0].training_id %>/formation"
+        ><button class="main-boutton" role="button" id="contact-button">
+          Formation
+        </button></a
+      >
 
       <div id="popup-information" style="display: none">
         <p>Import succeeds !</p>
       </div>
 
-      <!-- Formation -->
-
-      <!-- Formation box -->
-
-      <div class="flex-formation-pdf">
-        <div class="formation-container" style="display: none">
-          <h2 id="formation-title">Formation :</h2>
-          <p id="hasNoFormationText" style="display: none">
-            You don't have formation ... let's add one
-          </p>
-          <div class="formation-content">
-            <% for(let i=0; i < data.trainingFormation.length ; i++) {%>
-            <div class="formation-box">
-              <div class="formation-title" id="formation-title">
-                <%- data.trainingFormation[i].title %>
-              </div>
-              <div id="trainer-name">
-                <%- data.trainingFormation[i].trainer %>
-              </div>
-              <div class="start-date">
-                <%- data.trainingFormation[i].start_date %> <%-
-                data.trainingFormation[i].end_date %>
-              </div>
-              <form
-                action="/delete-formation"
-                method="post"
-                id="delete-company-experience"
-              >
-                <input
-                  type="hidden"
-                  name="formation_id"
-                  value="<%= data.trainingFormation[i].formation_id %>"
-                />
-                <input
-                  type="hidden"
-                  name="training_id"
-                  value="<%= data.trainingFormation[0].training_id %>"
-                />
-                <button type="submit" id="delete-company-formation">
-                  Delete
-                </button>
-                <button id="pdf-button" class="official-form">
-                  <a
-                    href="/download-formation-pdf/<%= data.trainingFormation[i].formation_id %>"
-                    >Télécharger</a
-                  >
-                </button>
-              </form>
-            </div>
-            <%}; %>
-            <button class="main-boutton" id="add-formation">
-              Add formation
-            </button>
-          </div>
-        </div>
-        <div id="pdf-panel" style="display: none">
-          <h2>Import certificate</h2>
-          <form
-            action="/import-certificate-pdf"
-            method="POST"
-            enctype="multipart/form-data"
-            id="importe-cetificate-pdf"
-            class="official-form"
-          >
-            <label for="pdfFile">Select certificate :</label>
-            <input
-              type="hidden"
-              name="training_id"
-              value="<%= data.trainingProfile[0].training_id %>"
-            />
-            <select name="formation_id">
-              <% for (i=0; i < data.trainingFormation.length ; i++) { %>
-              <option value="<%=  data.trainingFormation[i].formation_id  %>">
-                <%= data.trainingFormation[i].title %>
-              </option>
-              <% } %>
-            </select>
-            <input type="file" name="pdfFile" id="pdf-file" accept=".pdf" />
-            <button type="submit" id="import-pdf-certificate-button">
-              Import certificate
-            </button>
-          </form>
-        </div>
-      </div>
-
       <!-- FLEX EXPERIENCE AND FORM -->
       <div class="flex-experience-form">
         <!-- Experience box -->
-
+        <% if (data.contentTypeResult === 'experience') { %>
         <div class="experience-container">
           <h2 id="experience-title">Experience</h2>
-          <p id="hasNoExperienceText" style="display: none">
+          <p id="has-no-experience-text" style="display: none">
             You don't have experience ... let's add one
           </p>
+          <p id="has-no-formation-text" style="display: none"></p>
           <div class="experience-content">
             <% for(let i=0; i < data.trainingCompany.length ; i++) {%>
             <div class="experience-box">
-              <div class="job-title" id="job-title">
+              <div class="job-title" id="job-title-experience">
                 <%- data.trainingCompany[i].job_title %>
               </div>
               <div class="company-name">
@@ -163,7 +86,6 @@
             </button>
           </div>
         </div>
-
         <div class="container">
           <form
             class="is-readonly"
@@ -284,10 +206,93 @@
             </button>
           </form>
         </div>
+        <% } else if (data.contentTypeResult === 'formation') { %>
+        <div class="flex-formation-pdf">
+          <div class="formation-container">
+            <h2>Formation :</h2>
+            <p id="has-no-formation-text" style="display: none">
+              You don't have formation ... let's add one
+            </p>
+            <p id="has-no-experience-text" style="display: none"></p>
+            <div class="formation-content">
+              <% for(let i=0; i < data.trainingFormation.length ; i++) {%>
+              <div class="formation-box">
+                <div class="formation-title" id="formation-title">
+                  <%- data.trainingFormation[i].title %>
+                </div>
+                <div id="trainer-name">
+                  <%- data.trainingFormation[i].trainer %>
+                </div>
+                <div class="start-date">
+                  <%- data.trainingFormation[i].start_date %> <%-
+                  data.trainingFormation[i].end_date %>
+                </div>
+                <form
+                  action="/delete-formation"
+                  method="post"
+                  id="delete-company-experience"
+                >
+                  <input
+                    type="hidden"
+                    name="formation_id"
+                    value="<%= data.trainingFormation[i].formation_id %>"
+                  />
+                  <input
+                    type="hidden"
+                    name="training_id"
+                    value="<%= data.trainingFormation[0].training_id %>"
+                  />
+                  <button type="submit" id="delete-company-formation">
+                    Delete
+                  </button>
+                  <button id="pdf-button" class="official-form">
+                    <a
+                      href="/download-formation-pdf/<%= data.trainingFormation[i].formation_id %>"
+                      >Télécharger</a
+                    >
+                  </button>
+                </form>
+              </div>
+              <%}; %>
+              <button class="main-boutton" id="add-formation-button">
+                Add formation
+              </button>
+            </div>
+          </div>
+          <div id="pdf-panel">
+            <h2>Import certificate</h2>
+            <form
+              action="/import-certificate-pdf"
+              method="POST"
+              enctype="multipart/form-data"
+              id="importe-cetificate-pdf"
+              class="official-form"
+            >
+              <label for="pdfFile">Select certificate :</label>
+              <input
+                type="hidden"
+                name="training_id"
+                value="<%= data.trainingProfile[0].training_id %>"
+              />
+              <select name="formation_id">
+                <% for (i=0; i < data.trainingFormation.length ; i++) { %>
+                <option value="<%=  data.trainingFormation[i].formation_id  %>">
+                  <%= data.trainingFormation[i].title %>
+                </option>
+                <% } %>
+              </select>
+              <input type="file" name="pdfFile" id="pdf-file" accept=".pdf" />
+              <button type="submit" id="import-pdf-certificate-button">
+                Import certificate
+              </button>
+            </form>
+          </div>
+        </div>
+        <% }%>
       </div>
     </div>
 
-    <!-- Form Add Experience   -->
+    <!-- Experience Modal   -->
 
     <div
       class="modal modal-dialog-scrollable"

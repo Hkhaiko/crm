@@ -1,0 +1,87 @@
+{
+  "todo": [
+    {
+      "assignedTo": {
+        "name": "Hkhaiko"
+      },
+      "creation_time": "2023-12-13T12:09:57.762Z",
+      "description": {
+        "content": "Define session time cookie how many milisecond in app.js\n",
+        "mime": "text/markdown"
+      },
+      "id": "5",
+      "references": [],
+      "title": "Define session time"
+    },
+    {
+      "assignedTo": {
+        "name": "Hkhaiko"
+      },
+      "creation_time": "2023-12-12T07:32:28.652Z",
+      "description": {
+        "content": "Improve download button it's possible to click when there arre nothing to download",
+        "mime": "text/markdown"
+      },
+      "id": "3",
+      "references": [],
+      "title": "Download"
+    },
+    {
+      "assignedTo": {
+        "name": "Hkhaiko"
+      },
+      "creation_time": "2023-12-12T07:33:10.714Z",
+      "description": {
+        "content": "Improve code structure/ architecture of file \n\ntraining ect..",
+        "mime": "text/markdown"
+      },
+      "id": "4",
+      "references": [],
+      "title": "Improve code structure"
+    },
+    {
+      "assignedTo": {
+        "name": "Hkhaiko"
+      },
+      "creation_time": "2023-12-08T09:44:32.410Z",
+      "description": {
+        "content": "Move register redirection from company to user\n",
+        "mime": "text/markdown"
+      },
+      "id": "2",
+      "references": [],
+      "title": "Move checkLogin"
+    },
+    {
+      "assignedTo": {
+        "name": "Hkhaiko"
+      },
+      "category": "EJS Script  JS",
+      "creation_time": "2023-12-08T07:41:39.061Z",
+      "description": {
+        "content": "Edit company_profile.ejs button management to switch case.",
+        "mime": "text/markdown"
+      },
+      "details": {
+        "content": "Chat GPT / CODE:\n\n```js\ndocument.addEventListener(\"DOMContentLoaded\", function () {\n  // ... (existing code)\n\n  // Event delegation for buttons\n  const buttonsContainer = document.getElementById(\"buttons-container\");\n  buttonsContainer.addEventListener(\"click\", function (event) {\n    const targetId = event.target.id;\n\n    switch (targetId) {\n      case \"add-contact-button\":\n        addContactModal.style.display = \"block\";\n        console.log(\"rezq\");\n        break;\n      case \"add-opportunities-button\":\n        if (addOpportunitiesModal) {\n          addOpportunitiesModal.style.display = \"block\";\n        }\n        break;\n      case \"add-project-button\":\n        if (addProjectModal) {\n          addProjectModal.style.display = \"block\";\n        }\n        break;\n      // Add more cases for other buttons as needed\n    }\n  });\n\n  // Reusable function for closing modals\n  function closeModal(modal) {\n    if (modal) {\n      modal.style.display = \"none\";\n    }\n  }\n\n  // Close modal on button click\n  closeModalContact.addEventListener(\"click\", () => closeModal(addContactModal));\n  closeModalProject.addEventListener(\"click\", () => closeModal(addProjectModal));\n\n  // Close modal on window click\n  window.onclick = (event) => {\n    if (event.target === addContactModal || event.target === addProjectModal) {\n      closeModal(event.target);\n    }\n  };\n\n  // ... (additional code)\n});\n```",
+        "mime": "text/markdown"
+      },
+      "id": "1",
+      "references": [],
+      "title": "Switch case"
+    }
+  ],
+  "in-progress": [
+    {
+      "assignedTo": {
+        "name": "Hkhaiko"
+      },
+      "creation_time": "2023-12-13T13:15:57.975Z",
+      "id": "6",
+      "references": [],
+      "title": "Is admin / client single page"
+    }
+  ],
+  "testing": [],
+  "done": []
+}

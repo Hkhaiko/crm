@@ -3,12 +3,10 @@ const multer = require("multer");
 
 exports.addFormation = (req, res) => {
   const formationData = req.body;
-  console.log(formationData);
-  console.log(formationData.training_id);
 
   const redirectUrl = `/training-user/${encodeURIComponent(
     formationData.training_id
-  )}`;
+  )}/formation`;
   const sql =
     "INSERT INTO formation (title, trainer, start_date, end_date, training_id) VALUES (?, ?, ?, ?, ?)";
   const values = [
@@ -18,7 +16,6 @@ exports.addFormation = (req, res) => {
     formationData.formation_end_date,
     formationData.training_id,
   ];
-  console.log(formationData.training_id);
 
   db.query(sql, values, (err, result) => {
     if (err) {
@@ -36,13 +33,10 @@ exports.deleteFormation = (req, res) => {
   const formationData = req.body;
   const redirectUrl = `/training-user/${encodeURIComponent(
     formationData.training_id
-  )}`;
+  )}/formation`;
   const sqlPdf = "DELETE FROM pdf WHERE formation_id = ?";
   const sql = "DELETE FROM formation WHERE formation_id = ?";
   const values = formationData.formation_id;
-  console.log("Delete formation controllers");
-  console.log(formationData.formation_id);
-  console.log(values);
 
   db.query(sqlPdf, values, (err, result) => {
     if (err) {
@@ -87,10 +81,8 @@ exports.importFormationPdf = (req, res) => {
 
   const redirectUrl = `/training-user/${encodeURIComponent(
     formationData.training_id
-  )}`;
+  )}/formation`;
   const fileBuffer = req.file.buffer;
-
-  console.log(formationData.formation_id);
 
   const fs = require("fs");
   const filePath = "C:/xampp/htdocs/pdf/" + req.file.originalname;

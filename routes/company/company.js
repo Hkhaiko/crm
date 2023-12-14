@@ -1,9 +1,9 @@
 const express = require("express");
 const companyController = require("../../controllers/company/company");
+const authController = require("../../controllers/user/auth");
 
 const router = express.Router();
 
-router.get("/company-profile/:id", companyController.getCompanyUserById);
 router.get(
   "/company-profile/:id/contact",
   companyController.getCompanyUserById
@@ -36,11 +36,21 @@ router.post("/delete-company-project", companyController.deleteCompanyProject);
 
 //Opportunites
 router.post(
-  "/add-company-project/:id",
+  "/add-company-opportunities/:id",
   companyController.createCompanyOpportunities
+);
+
+router.post(
+  "/delete-company-opportunities",
+  companyController.deleteCompanyOpportunities
 );
 
 //Dashboard company
 router.post("/add-company-dashboard", companyController.createCompany);
+router.get(
+  "/company-dashboard",
+  authController.ensureAuthenticated,
+  companyController.getCompanyDashboard
+);
 
 module.exports = router;

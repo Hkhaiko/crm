@@ -3,14 +3,9 @@ const db = require("../../config/db");
 exports.addCompanyExperience = (req, res) => {
   const companyExperienceData = req.body;
   const traning_id = req.params;
-  console.log(traning_id);
-  console.log("Console company controller addCompanyExperienece()");
-  console.log(companyExperienceData);
-  console.log(companyExperienceData.training_id);
-
   const redirectUrl = `/training-user/${encodeURIComponent(
     companyExperienceData.training_id
-  )}`;
+  )}/experience`;
   const sql =
     "INSERT INTO company_experience (company_name, job_title, start_date, end_date, description, training_id) VALUES (?, ?, ?, ?, ?, ?)";
   const values = [
@@ -21,8 +16,6 @@ exports.addCompanyExperience = (req, res) => {
     companyExperienceData.description,
     companyExperienceData.training_id,
   ];
-  console.log(companyExperienceData.training_id);
-
   db.query(sql, values, (err, result) => {
     if (err) {
       console.log("Error :" + err.message);
@@ -39,10 +32,9 @@ exports.deleteCompanyExperience = (req, res) => {
   const companyExperienceData = req.body;
   const redirectUrl = `/training-user/${encodeURIComponent(
     companyExperienceData.training_id
-  )}`;
+  )}/experience`;
   const sql = "DELETE FROM company_experience WHERE company_experience_id = ?";
   const values = companyExperienceData.company_experience_id;
-  console.log(companyExperienceData.company_experience_id);
 
   db.query(sql, values, (err, result) => {
     if (err) {

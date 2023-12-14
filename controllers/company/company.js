@@ -18,7 +18,7 @@ exports.getCompanyUserById = (req, res) => {
   let contactResults;
   let projectResults;
   let opportunitesResults;
-  let comapanyProfileResults;
+  let companyProfileResults;
 
   const contentTypeResults = extractTypeFromUrl(req.url);
   // Utilisez Promises ou async/await pour gérer les requêtes de manière asynchrone
@@ -58,8 +58,8 @@ exports.getCompanyUserById = (req, res) => {
         if (err) {
           reject(err);
         } else {
-          comapanyProfileResults = results;
-          resolve(comapanyProfileResults);
+          companyProfileResults = results;
+          resolve(companyProfileResults);
         }
       });
     }),
@@ -70,7 +70,7 @@ exports.getCompanyUserById = (req, res) => {
         contactResult: contactResults,
         projectResult: projectResults,
         opportunitesResult: opportunitesResults,
-        companyProfileResult: comapanyProfileResults,
+        companyProfileResult: companyProfileResults,
         contentTypeResult: contentTypeResults,
       };
       console.log("CONSOLE DATA ");
@@ -156,36 +156,14 @@ exports.deleteCompanyProfile = (req, res) => {
 };
 
 //Contact
-exports.deleteCompanyContact = (req, res) => {
-  const company_profile_id = req.params.id;
-  const company_contact_id = req.body.company_contact_id;
-  const sqlDeleteContact =
-    "DELETE FROM company_contact WHERE company_contact_id = ?";
-
-  const values = company_contact_id;
-  const redirectUrl = `/company-profile/${encodeURIComponent(
-    company_profile_id
-  )}`;
-  console.log(company_contact_id);
-  console.log(company_profile_id);
-  console.log("test");
-  db.query(sqlDeleteContact, values, (err, result) => {
-    if (err) {
-      console.error("Error deleting Traningser:" + err.message);
-      res.status(500).send("Error deleting TraningUser");
-    } else {
-      console.log("User successfully deleted");
-      res.redirect(redirectUrl);
-    }
-  });
-};
-
 exports.createCompanyContact = (req, res) => {
   const contactData = req.body;
   const company_id = req.params.id;
   console.log(contactData);
 
-  const redirectUrl = `/company-profile/${encodeURIComponent(company_id)}`;
+  const redirectUrl = `/company-profile/${encodeURIComponent(
+    company_id
+  )}/contact`;
   const sql =
     "INSERT INTO company_contact (name, position, telephone, email, company_profile_id) VALUES (?, ?, ?, ?, ?)";
   const values = [
@@ -208,13 +186,36 @@ exports.createCompanyContact = (req, res) => {
   });
 };
 
+exports.deleteCompanyContact = (req, res) => {
+  const company_profile_id = req.params.id;
+  const company_contact_id = req.body.company_contact_id;
+  const sqlDeleteContact =
+    "DELETE FROM company_contact WHERE company_contact_id = ?";
+
+  const values = company_contact_id;
+  const redirectUrl = `/company-profile/${encodeURIComponent(
+    company_profile_id
+  )}/contact`;
+
+  db.query(sqlDeleteContact, values, (err, result) => {
+    if (err) {
+      console.error("Error deleting Traningser:" + err.message);
+      res.status(500).send("Error deleting TraningUser");
+    } else {
+      console.log("User successfully deleted");
+      res.redirect(redirectUrl);
+    }
+  });
+};
 //Project
 exports.createCompanyProject = (req, res) => {
   const projectData = req.body;
   const company_id = req.params.id;
   console.log(projectData);
 
-  const redirectUrl = `/company-profile/${encodeURIComponent(company_id)}`;
+  const redirectUrl = `/company-profile/${encodeURIComponent(
+    company_id
+  )}/project`;
   const sql =
     "INSERT INTO company_project (title, start_date, end_date, description, company_profile_id) VALUES (?, ?, ?, ?, ?)";
   const values = [
@@ -238,18 +239,18 @@ exports.createCompanyProject = (req, res) => {
 };
 
 exports.deleteCompanyProject = (req, res) => {
-  const company_profile_id = req.body;
+  const company_profile_id = req.body.company_profile_id;
   const company_project_id = req.body.company_project_id;
-  console.log("test");
   const sqlDeleteProject =
     "DELETE FROM company_project WHERE company_project_id = ?";
 
   const values = company_project_id;
-  console.log(company_profile_id);
-  console.log("test", values);
+  console.log(values);
   const redirectUrl = `/company-profile/${encodeURIComponent(
     company_profile_id
-  )}`;
+  )}/project`;
+
+  console.log(redirectUrl);
 
   db.query(sqlDeleteProject, values, (err, result) => {
     if (err) {
@@ -257,7 +258,7 @@ exports.deleteCompanyProject = (req, res) => {
       res.status(500).send("Error deleting project");
     } else {
       console.log("Project successfully deleted");
-      res.json({ success: true });
+      res.redirect(redirectUrl);
     }
   });
 };
@@ -268,7 +269,9 @@ exports.createCompanyOpportunities = (req, res) => {
   const company_id = req.params.id;
   console.log(projectData);
 
-  const redirectUrl = `/company-profile/${encodeURIComponent(company_id)}`;
+  const redirectUrl = `/company-profile/${encodeURIComponent(
+    company_id
+  )}/opportunities`;
   const sql =
     "INSERT INTO company_opportunities (title, consultant, certification, history, company_profile_id) VALUES (?, ?, ?, ?, ?)";
   const values = [
@@ -279,13 +282,40 @@ exports.createCompanyOpportunities = (req, res) => {
     company_id,
   ];
 
+  console.log(values);
+
   db.query(sql, values, (err, result) => {
     if (err) {
       console.log("Error :" + err.message);
-      res.status(500).send("Error creating contact");
+      res.status(500).send("Error creating opportunities");
     } else {
-      console.log("Contact successfully created");
+      console.log("Opportunities successfully created");
       console.log(result);
+      res.redirect(redirectUrl);
+    }
+  });
+};
+
+exports.deleteCompanyOpportunities = (req, res) => {
+  const company_profile_id = req.body.company_profile_id;
+  const company_project_id = req.body.company_opportunities_id;
+  const sqlDeleteOpportunities =
+    "DELETE FROM company_opportunities WHERE company_opportunities_id = ?";
+
+  const values = company_project_id;
+  console.log(values);
+  const redirectUrl = `/company-profile/${encodeURIComponent(
+    company_profile_id
+  )}/opportunities`;
+
+  console.log(redirectUrl);
+
+  db.query(sqlDeleteOpportunities, values, (err, result) => {
+    if (err) {
+      console.error("Error deleting project:" + err.message);
+      res.status(500).send("Error deleting project");
+    } else {
+      console.log("Project successfully deleted");
       res.redirect(redirectUrl);
     }
   });
@@ -308,6 +338,25 @@ exports.createCompany = (req, res) => {
       console.log("Contact successfully created");
       console.log(result);
       res.redirect(redirectUrl);
+    }
+  });
+};
+
+//Company dashboard view
+
+exports.getCompanyDashboard = (req, res) => {
+  const sql = "SELECT * FROM company_profile";
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(
+        "Erreur lors de la récupération des données depuis la base de données:",
+        err
+      );
+      res.render("error"); // Créez une vue error.ejs appropriée
+    } else {
+      const companyProfile = results;
+      console.log(companyProfile);
+      res.render("company_dashboard", { companyProfile });
     }
   });
 };

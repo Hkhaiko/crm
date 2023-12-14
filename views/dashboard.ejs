@@ -142,7 +142,11 @@
           <td><%= training.date %></td>
           <td><%= training.title %></td>
           <td><%= training.futureTopics %></td>
-          <td><a href="/training-user/<%= training.training_id %>">See</a></td>
+          <td>
+            <a href="/training-user/<%= training.training_id %>/experience"
+              >See</a
+            >
+          </td>
           <td>
             <form
               action="/delete-training/<%= training.training_id %>"
