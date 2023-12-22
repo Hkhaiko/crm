@@ -95,3 +95,32 @@ exports.getTrainingDashboard = (req, res) => {
     }
   });
 };
+
+exports.addClient = (req, res) => {
+  const trainingClient = req.body;
+  const sql =
+    "INSERT INTO training (certificationCode, fullName, company, position, email, telephone, date, title, futureTopics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  const data = [
+    trainingClient.certificationCode,
+    trainingClient.fullName,
+    trainingClient.company,
+    trainingClient.position,
+    trainingClient.email,
+    trainingClient.telephone,
+    trainingClient.date,
+    trainingClient.title,
+    trainingClient.futureTopics,
+  ];
+
+  console.log(req.query);
+
+  db.query(sql, data, (err, result) => {
+    if (err) {
+      console.log("Error :" + err.message);
+      res.status(500).send("Error creating client");
+    } else {
+      res.redirect("/dashboard");
+      console.log("Created client successfully");
+    }
+  });
+};

@@ -12,6 +12,8 @@ const companyExperienceRoutes = require("./routes/training/company_experience");
 const formationRoutes = require("./routes/training/formation");
 const comapanyProfileRoutes = require("./routes/company/company");
 const mainDashboardRoutes = require("./routes/main_dashboard/main_dashboard");
+const registerRedirectRoutes = require("./routes/register/register_redirect");
+const trainingFormRoutes = require("./routes/register/training_form");
 
 const cors = require("cors");
 const app = express();
@@ -23,44 +25,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 // Configuration de la session
+
 app.use(
   session({
     secret: "MaCleSecreteSuperSecurisee1234", // Remplacez par une clé secrète réelle
     saveUninitialized: true,
     resave: false,
-    //cookie: { maxAge: 30 *60 * 1000 }, //30min (in milliseconds)   //Define how much time we want the session to stay open
+    cookie: { maxAge: 30 * 60 * 1000 }, //30min (in milliseconds)   //Define how much time we want the session to stay open
   })
 );
 
 // Initialisation de Passport.js
 app.use(passport.initialize());
 app.use(passport.session());
-
-const determineUserRole = (email) => {
-  return new Promise((resolve, reject) => {
-    const sql = "SELECT isAdmin FROM user WHERE email = ?";
-    const value = [email];
-
-    db.query(sql, value, (err, results) => {
-      if (err) {
-        reject(err);
-      } else {
-        // Vérifiez si la requête a renvoyé des résultats
-        if (results.length > 0) {
-          // Récupérez la valeur de la colonne isAdmin
-          const isAdmin = results[0].isAdmin;
-
-          // Résolvez la Promesse avec la valeur isAdmin
-          console.log(isAdmin);
-          resolve(isAdmin === 1);
-        } else {
-          // Aucun résultat trouvé, l'utilisateur n'existe peut-être pas
-          reject("User not found");
-        }
-      }
-    });
-  });
-};
 
 // Utilitaire de vérification de l'authentification
 passport.use(
@@ -136,50 +113,33 @@ app.use("/", companyExperienceRoutes);
 app.use("/", formationRoutes);
 app.use("/", comapanyProfileRoutes);
 app.use("/", mainDashboardRoutes);
+app.use("/", registerRedirectRoutes);
+app.use("/", trainingFormRoutes);
 
 // Routes
 app.get("/", (req, res) => {
-  res.send("Welcome to your CRM Mix Application !");
+  console.log(req);
+
+  if (req.session.views) {
+    req.session.views++;
+    res.setHeader("Content-Type", "text/html");
+    res.write("<p>views: " + req.session.views + "</p>");
+    res.end();
+  } else {
+    req.session.views = 1;
+    res.end("welcome to the session demo. refresh!");
+  }
 });
 
 app.get("/login", (req, res) => {
   res.render("login", { loginErrorMessage: "" });
 });
 
-app.get("/register", (req, res) => {
-  res.render("register");
-});
-
 app.get("/display", (req, res) => {
   res.render("display", { test: "" });
 });
 
-//Training
-
-// app.get("/training-user/:id", (req, res) => {
-//   // Effectuez une requête SQL pour récupérer les informations des personnes depuis votre base de données
-//   const sql = "SELECT * FROM company_experience";
-
-//   db.query(sql, (err, results) => {
-//     if (err) {
-//       console.error(
-//         "Erreur lors de la récupération des données depuis la base de données:",
-//         err
-//       );
-//       // Gérez l'erreur ici, par exemple, redirigez l'utilisateur vers une page d'erreur
-//       res.render("error"); // Créez une vue error.ejs appropriée
-//     } else {
-//       const companyExperience = results; // Les données des personnes sont stockées dans results
-//       // Transmettez les données des personnes à votre modèle EJS pour le rendu
-//       res.render("training_user", { companyExperience });
-//     }
-//   });
-// });
-
-//Company Dashboard
-
 //Server
-
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Express server running on port: ${port}`);
