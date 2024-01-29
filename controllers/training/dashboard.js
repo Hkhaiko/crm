@@ -99,7 +99,7 @@ exports.getTrainingDashboard = (req, res) => {
 exports.addClient = (req, res) => {
   const trainingClient = req.body;
   const sql =
-    "INSERT INTO training (certificationCode, fullName, company, position, email, telephone, date, title, futureTopics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO training (certificationCode, fullName, company, position, email, telephone, date, title, futureTopics,  user_origin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const data = [
     trainingClient.certificationCode,
     trainingClient.fullName,
@@ -110,7 +110,10 @@ exports.addClient = (req, res) => {
     trainingClient.date,
     trainingClient.title,
     trainingClient.futureTopics,
+    trainingClient.trainingType,
   ];
+
+  console.log(data);
 
   console.log(req.query);
 

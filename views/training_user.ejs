@@ -3,62 +3,107 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="chemin/vers/download.min.js"></script>
     <script src="/public/js/trainingUser.js"></script>
-    <link rel="stylesheet" href="/public/css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:400,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="/public/css/new_style.css" />
     <title>Training User</title>
   </head>
   <body>
-    <div class="header-background">
-      <img src="/public/img/unisexeAvatar.jpg" alt="Avatar" class="avatar" />
+    <div class="nav-bar">
+      <div class="nav-icons">
+        <img src="/public/img/mmix_logo.png" alt="Avatar" class="mmix-logo" />
+
+        <div class="nav-item">
+          <a href="/dashboard">
+            <span class="nav-icon-dashboard material-icons">&#xe99b;</span>
+          </a>
+          <span class="nav-icon-text">Dashboard</span>
+        </div>
+        <div class="nav-item">
+          <a href="/admin">
+            <span class="nav-icon-admin material-icons">&#xef3d;</span>
+          </a>
+          <span class="nav-icon-text">Admin</span>
+        </div>
+        <div class="nav-item">
+          <a href="">
+            <span class="nav-icon-settings material-icons">&#xe8b8;</span>
+          </a>
+          <span class="nav-icon-text">Settings</span>
+        </div>
+        <div class="nav-item">
+          <form action="/logout" method="post">
+            <button type="submit" class="nav-item">
+              <span class="nav-icon-logout material-icons">&#xe9ba;</span>
+              <p class="logout-color">Logout</p>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="head-container">
+      <img
+        src="/public/img/unisexeAvatar.jpg"
+        alt="Avatar"
+        class="img-avatar"
+      />
       <h1 class="full-name"><%= data.trainingProfile[0].fullName %></h1>
     </div>
 
-    <!-- Redirect Dashboard -->
-
-    <div class="main-background" id="main-profile">
-      <a
-        href="/training-user/<%= data.trainingProfile[0].training_id %>/experience"
-        ><button class="main-boutton" role="button" id="contact-button">
-          Experience
-        </button></a
-      >
-
-      <a
-        href="/training-user/<%= data.trainingProfile[0].training_id %>/formation"
-        ><button class="main-boutton" role="button" id="contact-button">
-          Formation
-        </button></a
-      >
-
-      <div id="popup-information" style="display: none">
-        <p>Import succeeds !</p>
+    <div class="main-container">
+      <div class="flex-profile-button">
+        <a
+          href="/training-user/<%= data.trainingProfile[0].training_id
+        %>/experience"
+        >
+          <button
+            class="main-profile-button"
+            role="button"
+            id="experience-button"
+          >
+            Experience
+          </button>
+        </a>
+        <a
+          href="/training-user/<%= data.trainingProfile[0].training_id
+        %>/formation"
+        >
+          <button
+            class="main-profile-button"
+            role="button"
+            id="formation-button"
+          >
+            Formation
+          </button>
+        </a>
       </div>
 
-      <!-- FLEX EXPERIENCE AND FORM -->
-      <div class="flex-experience-form">
-        <!-- Experience box -->
+      <div class="main-flex">
         <% if (data.contentTypeResult === 'experience') { %>
         <div class="experience-container">
-          <h2 id="experience-title">Experience</h2>
-          <p id="has-no-experience-text" style="display: none">
-            You don't have experience ... let's add one
-          </p>
+          <div class="no-experience-content">
+            <h2 id="experience-title" style="display: none">Experience</h2>
+            <p id="has-no-experience-text" style="display: none">
+              You don't have experience ... let's add one !
+            </p>
+          </div>
+
           <p id="has-no-formation-text" style="display: none"></p>
           <div class="experience-content">
             <% for(let i=0; i < data.trainingCompany.length ; i++) {%>
             <div class="experience-box">
               <div class="job-title" id="job-title-experience">
                 <%- data.trainingCompany[i].job_title %>
-              </div>
-              <div class="company-name">
-                <%- data.trainingCompany[i].company_name %>
-              </div>
-              <div class="start-date">
-                <%- data.trainingCompany[i].start_date %> <%-
-                data.trainingCompany[i].end_date %>
-              </div>
-              <div class="description">
-                <%- data.trainingCompany[i].description %>
               </div>
               <form
                 action="/delete-company-experience"
@@ -76,27 +121,47 @@
                   value="<%= data.trainingCompany[0].training_id %>"
                 />
                 <button type="submit" id="delete-company-experience">
-                  Delete
+                  <span
+                    id="delete-experience-icon"
+                    class="profile-info-button material-icons"
+                    >&#xe872;</span
+                  >
                 </button>
               </form>
+
+              <div class="company-name">
+                <%- data.trainingCompany[i].company_name %>
+              </div>
+              <div class="start-date">
+                <%- data.trainingCompany[i].start_date %> <%-
+                data.trainingCompany[i].end_date %>
+              </div>
+              <div class="description">
+                <%- data.trainingCompany[i].description %>
+              </div>
             </div>
             <%}; %>
+
             <button class="main-boutton" id="add-experience">
-              Add Experience
+              <span class="add-experience-button-experience material-icons"
+                >&#xe147;</span
+              >
             </button>
           </div>
         </div>
-        <div class="container">
+
+        <div class="profile-info-container">
+          <p class="profile-info-title">Participant information</p>
           <form
-            class="is-readonly"
+            class="grid-profile-info is-readonly"
             action="/training-user-update/<%= data.trainingProfile[0].training_id %>"
             method="post"
           >
-            <div class="form-group">
+            <div class="grid-form-group">
               <label for="certificationCode">Certification Code</label>
               <input
                 type="text"
-                class="form-control is-disabled"
+                class="profile-info-input is-disabled"
                 id="certificationCode"
                 placeholder="<%= data.trainingProfile[0].certificationCode %>"
                 value="<%- data.trainingProfile[0].certificationCode %>"
@@ -104,11 +169,11 @@
                 disabled
               />
             </div>
-            <div class="form-group">
+            <div class="grid-form-group">
               <label for="fullName">Fullname</label>
               <input
                 type="text"
-                class="form-control is-disabled"
+                class="profile-info-input is-disabled"
                 id="fullName"
                 placeholder="<%= data.trainingProfile[0].fullName %>"
                 value="<%- data.trainingProfile[0].fullName %>"
@@ -116,11 +181,11 @@
                 disabled
               />
             </div>
-            <div class="form-group">
+            <div class="grid-form-group">
               <label for="company">Company</label>
               <input
                 type="text"
-                class="form-control is-disabled"
+                class="profile-info-input is-disabled"
                 id="company"
                 placeholder="<%= data.trainingProfile[0].company %>"
                 value="<%- data.trainingProfile[0].company %>"
@@ -128,11 +193,11 @@
                 disabled
               />
             </div>
-            <div class="form-group">
+            <div class="grid-form-group">
               <label for="position">Position</label>
               <input
                 type="text"
-                class="form-control is-disabled"
+                class="profile-info-input is-disabled"
                 id="position"
                 placeholder="<%= data.trainingProfile[0].position %>"
                 value="<%- data.trainingProfile[0].position %>"
@@ -140,11 +205,11 @@
                 disabled
               />
             </div>
-            <div class="form-group">
+            <div class="grid-form-group">
               <label for="email">Email</label>
               <input
                 type="text"
-                class="form-control is-disabled"
+                class="profile-info-input is-disabled"
                 id="email"
                 placeholder="<%= data.trainingProfile[0].email %>"
                 value="<%- data.trainingProfile[0].email %>"
@@ -152,11 +217,11 @@
                 disabled
               />
             </div>
-            <div class="form-group">
+            <div class="grid-form-group">
               <label for="telephone">Telephone</label>
               <input
                 type="text"
-                class="form-control is-disabled"
+                class="profile-info-input is-disabled"
                 id="telephone"
                 placeholder="<%= data.trainingProfile[0].telephone %>"
                 value="<%- data.trainingProfile[0].telephone %>"
@@ -164,11 +229,11 @@
                 disabled
               />
             </div>
-            <div class="form-group">
+            <div class="grid-form-group">
               <label for="date">Date</label>
               <input
                 type="text"
-                class="form-control is-disabled"
+                class="profile-info-input is-disabled"
                 id="date"
                 placeholder="<%= data.trainingProfile[0].date %>"
                 value="<%- data.trainingProfile[0].date %>"
@@ -176,11 +241,11 @@
                 disabled
               />
             </div>
-            <div class="form-group">
+            <div class="grid-form-group">
               <label for="title">Title</label>
               <input
                 type="text"
-                class="form-control is-disabled"
+                class="profile-info-input is-disabled"
                 id="title"
                 placeholder="<%= data.trainingProfile[0].title %>"
                 value="<%- data.trainingProfile[0].title %>"
@@ -188,11 +253,11 @@
                 disabled
               />
             </div>
-            <div class="form-group">
+            <div class="grid-form-group">
               <label for="futureTopics">Future Topics</label>
               <input
                 type="text"
-                class="form-control is-disabled"
+                class="profile-info-input is-disabled"
                 id="futureTopics"
                 placeholder="<%= data.trainingProfile[0].futureTopics %>"
                 value="<%- data.trainingProfile[0].futureTopics %>"
@@ -200,95 +265,158 @@
                 disabled
               />
             </div>
-            <button type="button" class="btn btn-default btn-edit js-edit">
-              Edit
-              <input type="submit" value="Save" id="submit-save" />
-            </button>
+            <div class="button-icon-info">
+              <button
+                type="button"
+                class="profile-info-button btn-edit js-edit"
+              >
+                <span class="profile-icon material-icons">&#xe3c9;</span>
+              </button>
+              <button
+                type="submit"
+                class="profile-info-button btn-edit js-edit"
+              >
+                <span class="profile-icon material-icons">&#xe161;</span>
+              </button>
+            </div>
           </form>
-        </div>
-        <% } else if (data.contentTypeResult === 'formation') { %>
-        <div class="flex-formation-pdf">
-          <div class="formation-container">
-            <h2>Formation :</h2>
-            <p id="has-no-formation-text" style="display: none">
-              You don't have formation ... let's add one
-            </p>
-            <p id="has-no-experience-text" style="display: none"></p>
-            <div class="formation-content">
-              <% for(let i=0; i < data.trainingFormation.length ; i++) {%>
-              <div class="formation-box">
-                <div class="formation-title" id="formation-title">
-                  <%- data.trainingFormation[i].title %>
+          <% } else if (data.contentTypeResult === 'formation') { %>
+          <div class="main-flex">
+            <div class="formation-container">
+              <div class="no-formation-content">
+                <h2 id="no-formation-title" style="display: none">Formation</h2>
+                <p id="has-no-formation-text" style="display: none">
+                  You don't have formation ... let's add one !‎ ‎ ‎ ‎
+                </p>
+              </div>
+
+              <p id="has-no-experience-text" style="display: none"></p>
+              <div class="formation-content">
+                <% for(let i=0; i < data.trainingFormation.length ; i++) {%>
+                <div class="experience-box">
+                  <div class="formation-title" id="formation-title">
+                    <%- data.trainingFormation[i].title %>
+                  </div>
+                  <div class="trainer-name">
+                    <%- data.trainingFormation[i].trainer %>
+                  </div>
+                  <div class="start-date">
+                    <%- data.trainingFormation[i].start_date %> <%-
+                    data.trainingFormation[i].end_date %>
+                  </div>
+                  <form
+                    action="/delete-formation"
+                    method="post"
+                    id="delete-company-experience"
+                  >
+                    <input
+                      type="hidden"
+                      name="formation_id"
+                      value="<%= data.trainingFormation[i].formation_id %>"
+                    />
+                    <input
+                      type="hidden"
+                      name="training_id"
+                      value="<%= data.trainingFormation[0].training_id %>"
+                    />
+                    <button type="submit" id="delete-company-experience">
+                      <span
+                        id="delete-experience-icon"
+                        class="profile-info-button material-icons"
+                        >&#xe872;</span
+                      >
+                    </button>
+                  </form>
+
+                  <form
+                    action="/download-formation-pdf"
+                    method="POST"
+                    id="download-form"
+                  >
+                    <input
+                      type="hidden"
+                      name="formation_id"
+                      value="<%= data.trainingFormation[i].formation_id %>"
+                    />
+                    <button type="submit" id="pdf-download-button">
+                      Download
+
+                      <span class="download-btn material-icons">&#xf090;</span>
+                    </button>
+                  </form>
                 </div>
-                <div id="trainer-name">
-                  <%- data.trainingFormation[i].trainer %>
-                </div>
-                <div class="start-date">
-                  <%- data.trainingFormation[i].start_date %> <%-
-                  data.trainingFormation[i].end_date %>
-                </div>
-                <form
-                  action="/delete-formation"
-                  method="post"
-                  id="delete-company-experience"
-                >
-                  <input
-                    type="hidden"
-                    name="formation_id"
-                    value="<%= data.trainingFormation[i].formation_id %>"
-                  />
+                <%}; %>
+
+                <button class="main-boutton" id="add-formation-button">
+                  <span class="add-experience-button material-icons"
+                    >&#xe147;</span
+                  >
+                </button>
+              </div>
+            </div>
+            <div class="pdf-panel">
+              <p class="profile-info-title">Import certificate</p>
+
+              <% if (data.pdfResult[0] && data.pdfResult[0].path) { %>
+              <div id="pdf-result" hidden><%= data.pdfResult[0].path %></div>
+              <% } %>
+
+              <form
+                action="/import-certificate-pdf"
+                method="POST"
+                enctype="multipart/form-data"
+                id="importe-cetificate-pdf"
+              >
+                <div class="certificate-import-area">
+                  <label for="pdfFile">Select certificate </label>
                   <input
                     type="hidden"
                     name="training_id"
-                    value="<%= data.trainingFormation[0].training_id %>"
+                    value="<%= data.trainingProfile[0].training_id %>"
                   />
-                  <button type="submit" id="delete-company-formation">
-                    Delete
-                  </button>
-                  <button id="pdf-button" class="official-form">
-                    <a
-                      href="/download-formation-pdf/<%= data.trainingFormation[i].formation_id %>"
-                      >Télécharger</a
+                  <select id="select-pdf" name="formation_id">
+                    <% for (i=0; i < data.trainingFormation.length ; i++) { %>
+                    <option
+                      value="<%=  data.trainingFormation[i].formation_id  %>"
                     >
-                  </button>
-                </form>
-              </div>
-              <%}; %>
-              <button class="main-boutton" id="add-formation-button">
-                Add formation
-              </button>
+                      <%= data.trainingFormation[i].title %>
+                    </option>
+                    <% } %>
+                  </select>
+                  <input
+                    type="file"
+                    name="pdfFile"
+                    id="pdf-file"
+                    accept=".pdf"
+                  />
+                </div>
+
+                <button type="submit" id="import-pdf-certificate-button">
+                  Import certificate
+                </button>
+              </form>
             </div>
           </div>
-          <div id="pdf-panel">
-            <h2>Import certificate</h2>
-            <form
-              action="/import-certificate-pdf"
-              method="POST"
-              enctype="multipart/form-data"
-              id="importe-cetificate-pdf"
-              class="official-form"
-            >
-              <label for="pdfFile">Select certificate :</label>
-              <input
-                type="hidden"
-                name="training_id"
-                value="<%= data.trainingProfile[0].training_id %>"
-              />
-              <select name="formation_id">
-                <% for (i=0; i < data.trainingFormation.length ; i++) { %>
-                <option value="<%=  data.trainingFormation[i].formation_id  %>">
-                  <%= data.trainingFormation[i].title %>
-                </option>
-                <% } %>
-              </select>
-              <input type="file" name="pdfFile" id="pdf-file" accept=".pdf" />
-              <button type="submit" id="import-pdf-certificate-button">
-                Import certificate
-              </button>
-            </form>
-          </div>
+          <% }%>
         </div>
-        <% }%>
+      </div>
+    </div>
+
+    <div class="main-background" id="main-profile">
+      <div id="popup-information" style="display: none">
+        <p>Import succeeds !</p>
+      </div>
+
+      <div id="popup-no-formation" style="display: none">
+        <p>You need to add formation</p>
+      </div>
+
+      <div id="popup-no-certificat-upload" style="display: none">
+        <p>You need to upload certificate</p>
+      </div>
+
+      <div id="popup-certificat-download" style="display: none">
+        <p>Certificate downloaded !</p>
       </div>
     </div>
 
@@ -301,7 +429,7 @@
     >
       <div class="experience-modal">
         <span class="close" id="close-modal-experience">&times;</span>
-        <h2>Add experience</h2>
+        <p class="modal-title">Add experience</p>
         <form
           action="/add-company-experience"
           method="post"
@@ -309,7 +437,7 @@
           id="editUserForm"
           class="official-form"
         >
-          <label for="company_name">Company:</label>
+          <label for="company_name">Company</label>
           <input
             type="text"
             id="company_name"
@@ -318,7 +446,7 @@
             required
           /><br />
 
-          <label for="job_title">Job title :</label>
+          <label for="job_title">Job title</label>
           <input
             type="text"
             id="job_title"
@@ -327,7 +455,7 @@
             required
           /><br />
 
-          <label for="description"> Description :</label>
+          <label for="description"> Description</label>
           <input
             type="text"
             id="description"
@@ -336,7 +464,7 @@
             required
           /><br />
 
-          <label for="start_date"> Start date :</label>
+          <label for="start_date"> Start date</label>
           <input
             type="date"
             id="start_date"
@@ -345,7 +473,7 @@
             required
           /><br />
 
-          <label for="end_date"> End date :</label>
+          <label for="end_date"> End date</label>
           <input
             type="date"
             id="end_date"
@@ -363,7 +491,7 @@
           <input
             type="submit"
             value="Save"
-            class="main-boutton"
+            class="save-btn"
             id="add_experience"
           />
         </form>
@@ -379,7 +507,7 @@
     >
       <div class="experience-modal">
         <span class="close" id="close-formation-modal">&times;</span>
-        <h2>Add formation</h2>
+        <p class="modal-title">Add formation</p>
         <form
           action="/add-formation"
           method="post"
@@ -387,16 +515,13 @@
           class="official-form"
           id="editUserForm"
         >
-          <label for="title">Title:</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            class="official-input"
-            required
-          /><br />
+          <label for="title">Formation</label>
+          <select name="standard" class="official-input">
+            <option value="ISO-9001">ISO-9001 Management</option>
+            <option value="ISO-27001">ISO-27001 IT security</option>
+          </select>
 
-          <label for="trainer">Trainer :</label>
+          <label for="trainer">Trainer</label>
           <input
             type="text"
             id="formation-trainer"
@@ -405,7 +530,7 @@
             required
           /><br />
 
-          <label for="start_date"> Start date :</label>
+          <label for="start_date"> Start date</label>
           <input
             type="date"
             id="formation-start-date"
@@ -414,7 +539,7 @@
             required
           /><br />
 
-          <label for="end_date"> End date :</label>
+          <label for="end_date">End date</label>
           <input
             type="date"
             id="formation-end-date"
@@ -432,7 +557,7 @@
           <input
             type="submit"
             value="Save"
-            class="main-boutton"
+            class="save-btn"
             id="add_formation"
           />
         </form>

@@ -11,7 +11,7 @@ const upload = multer({ storage: storage });
 
 router.get(
   "/dashboard",
-  authController.ensureAuthenticated,
+  authController.ensureAuthenticatedAndAdmin,
   dashboardController.getTrainingDashboard
 );
 

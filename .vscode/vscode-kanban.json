@@ -17,19 +17,6 @@
       "assignedTo": {
         "name": "Hkhaiko"
       },
-      "creation_time": "2023-12-12T07:32:28.652Z",
-      "description": {
-        "content": "Improve download button it's possible to click when there arre nothing to download",
-        "mime": "text/markdown"
-      },
-      "id": "3",
-      "references": [],
-      "title": "Download"
-    },
-    {
-      "assignedTo": {
-        "name": "Hkhaiko"
-      },
       "creation_time": "2023-12-12T07:33:10.714Z",
       "description": {
         "content": "Improve code structure/ architecture of file \n\ntraining ect..",
@@ -83,10 +70,19 @@
       "assignedTo": {
         "name": "Hkhaiko"
       },
-      "creation_time": "2023-12-22T11:14:07.881Z",
-      "id": "9",
+      "creation_time": "2023-12-27T07:09:54.857Z",
+      "id": "10",
       "references": [],
-      "title": "Manager dashboard"
+      "title": "Upgrade data visualisation"
+    },
+    {
+      "assignedTo": {
+        "name": "Hkhaiko"
+      },
+      "creation_time": "2024-01-17T13:08:36.738Z",
+      "id": "11",
+      "references": [],
+      "title": "Can't create 2 account same email"
     }
   ],
   "in-progress": [],
@@ -105,10 +101,32 @@
       "assignedTo": {
         "name": "Hkhaiko"
       },
+      "creation_time": "2023-12-12T07:32:28.652Z",
+      "description": {
+        "content": "Improve download button it's possible to click when there arre nothing to download",
+        "mime": "text/markdown"
+      },
+      "id": "3",
+      "references": [],
+      "title": "Download"
+    },
+    {
+      "assignedTo": {
+        "name": "Hkhaiko"
+      },
       "creation_time": "2023-12-13T13:15:57.975Z",
       "id": "6",
       "references": [],
       "title": "Is admin / client single page"
+    },
+    {
+      "assignedTo": {
+        "name": "Hkhaiko"
+      },
+      "creation_time": "2023-12-22T11:14:07.881Z",
+      "id": "9",
+      "references": [],
+      "title": "Manager dashboard"
     }
   ]
 }

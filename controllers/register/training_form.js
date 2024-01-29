@@ -12,16 +12,14 @@ exports.createUser = (req, res) => {
       console.log(" Credentials created successfully");
     }
   });
-
-  // ICI je fais une requete pour créer l'user
 };
 
 exports.addClient = (req, res) => {
   const trainingClient = req.body;
   const sql =
-    "INSERT INTO training (certificationCode, fullName, company, position, email, telephone, date, title, futureTopics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO training (certificationCode, fullName, company, position, email, telephone, date, title, futureTopics, user_origin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const sqlGetTraining = `SELECT * from training where email = ?`;
-  const sqlUser = `INSERT INTO user (name, email, password, training_id, isAdmin) VALUES (?, ?, ?, ?, ?)`;
+  const sqlUserCreation = `INSERT INTO user (name, email, password, training_id, isAdmin) VALUES (?, ?, ?, ?, ?)`;
   const credentialsEmail = req.session.credentials.email;
   const credentialsUser = req.session.credentials;
 
@@ -38,6 +36,7 @@ exports.addClient = (req, res) => {
     trainingClient.date,
     trainingClient.title,
     trainingClient.futureTopics,
+    trainingClient.trainingType,
   ];
 
   db.query(sql, data, (err, result) => {
@@ -50,7 +49,7 @@ exports.addClient = (req, res) => {
     }
   });
 
-  const firstPromise = new Promise((resolve, reject) => {
+  const getTrainingPromise = new Promise((resolve, reject) => {
     db.query(sqlGetTraining, credentialsEmail, (err, result) => {
       if (err) {
         console.log("Error :" + err.message);
@@ -64,7 +63,7 @@ exports.addClient = (req, res) => {
     });
   });
 
-  firstPromise.then((results) => {
+  getTrainingPromise.then((results) => {
     const training_id = results[0].training_id.toString();
     const userValues = [
       credentialsUser.name,
@@ -73,12 +72,13 @@ exports.addClient = (req, res) => {
       training_id,
       "0",
     ];
-    db.query(sqlUser, userValues, (err, result) => {
+    console.log(use);
+    db.query(sqlUserCreation, userValues, (err, result) => {
       if (err) {
         console.log("Error :" + err.message);
         res.status(500).send("Error creating client");
       } else {
-        console.log("User client successfully");
+        console.log("User successfully create");
 
         res.redirect(`/training-user/${training_id}/experience`);
       }

@@ -5,7 +5,7 @@ const authController = require("../../controllers/user/auth");
 
 router.get(
   "/main-dashboard",
-  authController.ensureAuthenticated,
+  authController.ensureAuthenticatedAndAdmin,
   mainDashboardController.getMainDashboard
 );
 

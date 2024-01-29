@@ -4,39 +4,46 @@ const bcrypt = require("bcrypt");
 
 exports.ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
-    return next();
+    const user_id = req.params.id;
+
+    if (isNaN(user_id)) {
+      // Gérer le cas où user_id n'est pas un nombre
+      return res.status(404).send("Page not found"); // A changer avec une page perso
+    }
+
+    if (user_id == req.user.training_id) {
+      console.log("t'es bon la !");
+      return next();
+    } else {
+      return res.status(404).send("Page not found");
+    }
   }
   return res.redirect("/login"); // Redirige l'utilisateur vers la page de connexion s'il n'est pas authentifié
 };
 
-const findById = (userId) => {
-  const sql = `SELECT training_id from user where user_id = ?`;
-  const value = userId;
+exports.ensureAuthenticatedAndAdmin = (req, res, next) => {
+  const user_id = req.params.id;
 
-  db.query(sql, value, (err, result) => {
-    if (err) {
-      console.error("Error password: " + err.message);
-    } else {
-      console.log(result);
-      return result;
-    }
-  });
-};
-
-const sessionIdGenerator = () => {
-  const length = 60;
-  const possibleCharacters =
-    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  let sessionId = "";
-
-  for (let i = 0; i < length; i++) {
-    sessionId += possibleCharacters.charAt(
-      Math.floor(Math.random() * possibleCharacters.length)
-    );
+  if (!req.isAuthenticated()) {
+    return res.redirect("/login"); // Redirige l'utilisateur vers la page de connexion s'il n'est pas authentifié
   }
-  return sessionId;
+
+  const isAdminStatus = req.user.isAdmin;
+  if (isAdminStatus === 0) {
+    if (user_id == req.user.training_id) {
+      console.log("test intérieur: ", user_id);
+      console.log("t'es bon la !");
+      return next();
+    }
+    // A changer avec une page perso
+  } else {
+    console.log("you are admin"); // Log pour confirmer l'accès admin
+  }
+
+  return next();
 };
 
+//LOGIN
 exports.checkLogin = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     const isAdmin = user.isAdmin;
@@ -56,8 +63,12 @@ exports.checkLogin = (req, res, next) => {
       }
       if (isAdmin) {
         return res.redirect("/main-dashboard");
+      } else {
+        if (user.training_id != null) {
+          console.log("company"); //modifie ici
+        }
+        return res.redirect(`/training-user/${user.training_id}/experience`);
       }
-      return res.redirect(`/training-user/${user.training_id}/experience`);
     });
   })(req, res, next);
 };
@@ -66,19 +77,12 @@ exports.checkLogin = (req, res, next) => {
 exports.createUser = (req, res) => {
   const updatedUserData = req.body;
   const password = req.body.password;
-  const sessionId = sessionIdGenerator();
+  console.log(password);
   bcrypt.hash(password, 10, (err, hash) => {
     if (err) {
       // Gérez l'erreur, par exemple, en renvoyant une réponse d'erreur
       return res.status(500).send("Erreur lors du hachage du mot de passe.");
     }
-    //ICI ON VEUT le training_id de notre profile
-    const sql = "INSERT INTO user (name, email, password) VALUES (?, ?, ?)";
-    const sqlCredentials =
-      "INSERT INTO user_credentials_temp (email, password, session_id) VALUES (?, ?, ?)";
-
-    const userData = [updatedUserData.name, updatedUserData.email, hash];
-    const credentialsValue = [updatedUserData.email, hash, sessionId];
 
     if (!req.session.credentials) {
       req.session.credentials = {
@@ -88,80 +92,73 @@ exports.createUser = (req, res) => {
       };
     }
 
-    console.log("======================AUTHHHHHHHHHH++++++++++++++==");
-    console.log(req.session);
-    db.query(sqlCredentials, credentialsValue, (err, result) => {
-      if (err) {
-        console.log("Error :", err);
-      } else {
-        console.log(" Credentials created successfully");
-      }
-    });
-
     req.session.save((err) => {
       // ICI je save mes credentials dans l'url /register-redirect
       if (err) return next(err);
-      db.query(sql, userData, (err, result) => {
-        if (err) {
-          res.redirect("register-redirect");
-        } else {
-          console.log("Created successfully");
-          res.status(201).redirect("/login");
-        }
-      });
+      res.redirect("register-redirect");
     });
   });
 };
 
-exports.detectRole = (req, res) => {
-  const sql = `SELECT email from user where user_id = ?`;
-  const value = [];
-
-  db.query(sql, values, (err, result) => {
+exports.logout = (req, res) => {
+  req.session.destroy(function (err) {
     if (err) {
-      console.error("Error getting email: " + err.message);
+      console.error(err);
+      res.status(500).send("Erreur de déconnexion");
     } else {
-      console.log("email get successfully");
+      req.session = null; // Détruire la session
+      res.redirect("/login"); // Redirection vers la page de déconnexion réussie
     }
   });
-
-  determineUserRole(email)
-    .then((isAdmin) => {
-      // Utilisez la valeur isAdmin pour adapter le rendu ou la logique de votre page
-      if (isAdmin) {
-        res.render("admin-dashboard", { user: req.user });
-      } else {
-        res.render("client-dashboard", { user: req.user });
-      }
-    })
-    .catch((error) => {
-      console.error("Error determining user role:", error);
-      res.status(500).send("Internal Server Error");
-    });
 };
 
-exports.getTrainingId = (req, res) => {};
+// exports.detectRole = (req, res) => {
+//   const sql = `SELECT email from user where user_id = ?`;
+//   const value = [];
 
-const determineUserRole = (email) => {
-  return new Promise((resolve, reject) => {
-    const sql = "SELECT isAdmin FROM user WHERE email = ?";
-    const value = [email];
+//   db.query(sql, values, (err, result) => {
+//     if (err) {
+//       console.error("Error getting email: " + err.message);
+//     } else {
+//       console.log("email get successfully");
+//     }
+//   });
 
-    db.query(sql, value, (err, results) => {
-      if (err) {
-        reject(err);
-      } else {
-        if (results.length > 0) {
-          const isAdmin = results[0].isAdmin;
-          console.log(isAdmin);
-          resolve(isAdmin === 1);
-        } else {
-          reject("User not found");
-        }
-      }
-    });
-  });
-};
+//   determineUserRole(email)
+//     .then((isAdmin) => {
+//       // Utilisez la valeur isAdmin pour adapter le rendu ou la logique de votre page
+//       if (isAdmin) {
+//         res.render("admin-dashboard", { user: req.user });
+//       } else {
+//         res.render("client-dashboard", { user: req.user });
+//       }
+//     })
+//     .catch((error) => {
+//       console.error("Error determining user role:", error);
+//       res.status(500).send("Internal Server Error");
+//     });
+// };
+
+// const determineUserRole = (email) => {
+//   return new Promise((resolve, reject) => {
+//     const sql = "SELECT isAdmin FROM user WHERE email = ?";
+//     const value = [email];
+
+//     db.query(sql, value, (err, results) => {
+//       if (err) {
+//         reject(err);
+//       } else {
+//         if (results.length > 0) {
+//           const isAdmin = results[0].isAdmin;
+//           console.log(isAdmin);
+//           resolve(isAdmin === 1);
+//         } else {
+//           reject("User not found");
+//         }
+//       }
+//     });
+//   });
+// };
 
 exports.getRegister = (req, res) => {
   res.render("register");

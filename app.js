@@ -14,6 +14,10 @@ const comapanyProfileRoutes = require("./routes/company/company");
 const mainDashboardRoutes = require("./routes/main_dashboard/main_dashboard");
 const registerRedirectRoutes = require("./routes/register/register_redirect");
 const trainingFormRoutes = require("./routes/register/training_form");
+const companyFormRoutes = require("./routes/register/company_form");
+
+const adminRoutes = require("./routes/user/admin");
+const bodyParser = require("body-parser");
 
 const cors = require("cors");
 const app = express();
@@ -23,6 +27,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Configuration de la session
 
@@ -115,6 +122,9 @@ app.use("/", comapanyProfileRoutes);
 app.use("/", mainDashboardRoutes);
 app.use("/", registerRedirectRoutes);
 app.use("/", trainingFormRoutes);
+app.use("/", companyFormRoutes);
+
+app.use("/", adminRoutes);
 
 // Routes
 app.get("/", (req, res) => {

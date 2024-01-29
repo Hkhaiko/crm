@@ -4,10 +4,9 @@ form {
   border: none;
 }
 
-/* Style de la page */
 body {
-  background-color: #f0f0f0;
-  font-family: Arial, sans-serif;
+  background-color: #f2f2f7;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 h1 {
@@ -47,6 +46,7 @@ h1 {
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 /* Style des étiquettes et des champs de formulaire */
 label {
   display: block;
@@ -65,17 +65,13 @@ label {
 }
 
 /* Style de la page */
-body {
-  background-color: #f0f0f0;
-  font-family: Arial, sans-serif;
-}
 
 /* Style du bouton de soumission */
 button[type="submit"] {
   background-color: #007bff;
   color: #fff;
   border: none;
-  border-radius: 3px;
+  border-radius: 2px;
   padding: 10px 20px;
   font-size: 18px;
   cursor: pointer;
@@ -156,11 +152,11 @@ strong {
 .modal-content {
   background-color: #fff; /* Couleur de fond de la boîte modale */
   margin: 1% auto; /* Centrer la boîte modale verticalement */
-  padding: 20px;
+  padding: 30px;
   border: 1px solid #333; /* Bordure de la boîte modale */
-  border-radius: 5px;
+  border-radius: 6px;
   width: 70%;
-  max-width: 400px; /* Largeur maximale de la boîte modale */
+  max-width: 200px; /* Largeur maximale de la boîte modale */
   position: relative;
 }
 
@@ -272,6 +268,11 @@ input[type="date"] {
 
 .error-login-message {
   color: red;
+  margin-bottom: 4%;
+}
+
+.admin-message {
+  color: rgb(11, 155, 11);
   margin-bottom: 4%;
 }
 
@@ -401,19 +402,18 @@ button {
 }
 
 .full-name {
-  font-size: 80px;
-  margin-top: 4%;
+  font-size: 70px;
   margin-right: 20%;
   margin-left: 5%;
 }
 
 .avatar {
   vertical-align: middle;
-  width: 180px;
-  height: 180px;
-  border-radius: 180%;
+  width: 130px;
+  height: 130px;
+  border-radius: 130%;
   margin-left: 6%;
-  margin-top: 1%;
+  margin-top: -1%;
 }
 
 .header-background {
@@ -421,8 +421,8 @@ button {
   margin: 0% auto; /* Centrer la boîte modale verticalement */
   padding: 20px;
   border-radius: 5px;
-  width: 60vw;
-  height: 20vh;
+  width: 50vw;
+  height: 15vh;
   position: absolute;
   top: 13%;
   left: 50%;
@@ -436,8 +436,8 @@ button {
   margin: 2% auto; /* Centrer la boîte modale verticalement */
   padding: 20px;
   border-radius: 5px;
-  width: 60vw;
-  height: 100vh;
+  width: 50vw;
+  height: 40vh;
   position: absolute;
   top: 61%;
   left: 50%;
@@ -495,32 +495,21 @@ button {
 }
 
 .main-boutton {
-  align-items: center;
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 0.25rem;
   box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
-  box-sizing: border-box;
-  color: rgba(0, 0, 0, 0.85);
+  color: rgba(0, 0, 0, 0.741);
   cursor: pointer;
   display: inline-flex;
   font-size: 16px;
   font-weight: 600;
   justify-content: center;
-  line-height: 1.25;
-  margin: 0;
-  min-height: 3rem;
-  padding: calc(0.875rem - 1px) calc(1.5rem - 1px);
-  position: relative;
+  align-items: center;
+  padding: 0.875rem 1.5rem;
   text-decoration: none;
-  transition: all 250ms;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: baseline;
+  transition: all 50ms;
   width: 100%;
-  margin: 0.5%;
-  margin-top: 0;
 }
 
 .main-boutton:hover,
@@ -575,7 +564,7 @@ button {
   background-color: #fefefe;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   padding: 2%;
-  border-radius: 4%;
+  border-radius: 6px;
   width: auto;
   margin-top: 3%;
 }
@@ -584,7 +573,7 @@ button {
   background-color: #fefefe;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   padding: 2%;
-  border-radius: 4%;
+  border-radius: 6px;
   width: 45%;
   margin-top: 3%;
 }
@@ -593,7 +582,7 @@ button {
   background-color: #fefefe;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   padding: 2%;
-  border-radius: 4%;
+  border-radius: 6px;
   width: 35%;
   margin-top: 3%;
 }
@@ -601,8 +590,9 @@ button {
 .start-date,
 .end-date,
 .description {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
+  margin-bottom: 10px;
 }
 
 #experience-title {
@@ -663,7 +653,7 @@ button {
 #trainer-name {
   font-size: 23px;
   font-weight: 450;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 #popup-information {
@@ -674,6 +664,22 @@ button {
   transform: translate(-50%, -50%);
   background-color: #007bff; /* Couleur de fond verte */
   padding: 35px;
+  font-size: 130%;
+  border-radius: 10px;
+  color: #fff; /* Couleur du texte en blanc */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Ombre légère */
+}
+
+#popup-no-formation,
+#popup-no-certificat-upload,
+#popup-certificat-download {
+  display: none;
+  position: fixed;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #007bff; /* Couleur de fond verte */
+  padding: 20px;
   font-size: 130%;
   border-radius: 10px;
   color: #fff; /* Couleur du texte en blanc */
@@ -725,4 +731,19 @@ button {
 
 .dashboard-link {
   text-decoration: none;
+}
+
+#admin-email {
+  margin-top: 4%;
+}
+
+.radio-button {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  margin-top: 25px;
+}
+
+.flex-button {
+  display: flex;
 }

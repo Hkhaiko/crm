@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/public/css/style.css" />
+    <title>Main Dashboard</title>
+  </head>
+  <body>
+    <h1>Company Form</h1>
+
+    <form action="/add-company" method="POST" class="official-form">
+      <label for="certificationCode">Name of your company :</label>
+      <input
+        type="text"
+        id="company-name"
+        name="name"
+        class="official-input"
+        required
+      /><br />
+
+      <input type="submit" value="Register" id="addClientDashboard" />
+    </form>
+  </body>
+</html>

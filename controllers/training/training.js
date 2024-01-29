@@ -8,27 +8,10 @@ const extractTypeFromUrl = (url) => {
 
 exports.createTraningUser = (req, res) => {
   const updatedUserData = req.body; // Les données de l'utilisateur à partir du corps de la demande
-  const date = updatedUserData.date;
-  const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-
-  const email = updatedUserData.email;
-  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
-  if (!email.match(emailRegex)) {
-    // The email does not match the expected format, return an error
-    return res.status(400).send("email is wrong");
-  }
-
-  if (!date.match(dateRegex)) {
-    // The date is not in the correct format, return an error
-    return res
-      .status(400)
-      .send("Le format de la date est incorrect (dd/mm/yyyy)");
-  }
 
   // Run a SQL query to insert the user into the database
   const sql =
-    "INSERT INTO training (certificationCode, fullname, company, position, email, telephone, date, title, futureTopics) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO training (certificationCode, fullname, company, position, email, telephone, date, title, futureTopics, user_origin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const values = [
     updatedUserData.certificationCode,
     updatedUserData.fullname,
@@ -39,7 +22,10 @@ exports.createTraningUser = (req, res) => {
     updatedUserData.date,
     updatedUserData.title,
     updatedUserData.futureTopics,
+    updatedUserData.trainingType,
   ];
+
+  console.log(values);
 
   db.query(sql, values, (err, result) => {
     if (err) {
@@ -188,12 +174,15 @@ exports.getTraningUserById = (req, res) => {
   const sqlCompany = `SELECT * FROM company_experience WHERE training_id = ?`;
   const sqlFormation = `SELECT * FROM formation WHERE training_id = ?`;
   const sqlTraning = `SELECT * FROM training WHERE training_id = ?`;
+  const sqlPdf = `SELECT pdf.path FROM pdf JOIN formation ON pdf.formation_id = formation.formation_id
+  WHERE formation.training_id = ?`;
   const values = req.params.id;
   const redirectUrl = `/training-user/${encodeURIComponent(values)}`;
 
   let trainingResults;
   let companyResults;
   let formationResults;
+  let pdfResults;
   let contentTypeResults = extractTypeFromUrl(req.url);
 
   // Use Promises or async/await to handle requests asynchronously
@@ -228,6 +217,16 @@ exports.getTraningUserById = (req, res) => {
         }
       });
     }),
+    new Promise((resolve, reject) => {
+      db.query(sqlPdf, values, (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          pdfResults = results;
+          resolve(pdfResults);
+        }
+      });
+    }),
   ])
     .then(() => {
       // Once all requests have completed, you can call res.render
@@ -236,6 +235,7 @@ exports.getTraningUserById = (req, res) => {
         trainingCompany: companyResults,
         trainingProfile: trainingResults,
         contentTypeResult: contentTypeResults,
+        pdfResult: pdfResults,
       };
       console.log("CONSOLE DATA ");
       console.log(data);

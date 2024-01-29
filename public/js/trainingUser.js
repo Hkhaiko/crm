@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const formationBox = document.querySelector(".formation-box");
 
   const hasNoExperienceText = document.getElementById("has-no-experience-text");
+  const experienceTitle = document.getElementById("experience-title");
+  const formationTitle = document.getElementById("no-formation-title");
 
   const hasNoFormationText = document.getElementById("has-no-formation-text");
 
@@ -22,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 
   const titleElementFormation = document.getElementById("formation-title");
+  const trainerName = document.getElementById("trainer-name");
 
   const experienceContainer = document.querySelector(".experience-container");
   const editForm = document.querySelector(".container");
@@ -31,31 +34,47 @@ document.addEventListener("DOMContentLoaded", function () {
   const addFormationModal = document.getElementById("add-formation-modal");
   const addFormation = document.getElementById("add-formation");
 
-  const downLoadButton = document.getElementById("pdf-button");
+  const downLoadButton = document.getElementById("pdf-download-button");
 
   const popupInformation = document.getElementById("popup-information");
+  const popupNoFormation = document.getElementById("popup-no-formation");
+  const popupNoCertificat = document.getElementById(
+    "popup-no-certificat-upload"
+  );
+  const popupDownload = document.getElementById("popup-certificat-download");
+
+  const pdfResult = document.getElementById("pdf-result");
+
   const importCertificateButton = document.getElementById(
     "import-pdf-certificate-button"
   );
 
+  const participantInfo = document.querySelector(".profile-info-container");
+
   // EXPERIENCE SHOW/HIDE text experience
-  if (jobTitleElementExperience) {
-    const isEmpty = jobTitleElementExperience.innerText;
-    if (!isEmpty || isEmpty === null) {
-      experienceBox.style.display = "none";
+  if (participantInfo) {
+    if (jobTitleElementExperience) {
+      const isEmpty = jobTitleElementExperience.innerText;
+      if (!isEmpty || isEmpty === null) {
+        experienceBox.style.display = "none";
+      }
+    } else {
+      hasNoExperienceText.style.display = "block";
+      experienceTitle.style.display = "block";
     }
-  } else {
-    hasNoExperienceText.style.display = "block";
   }
 
   // FORMATION SHOW/HIDE text formation
-  if (titleElementFormation) {
-    const isEmptyFormation = titleElementFormation.innerText;
-    if (!isEmptyFormation || isEmptyFormation === null) {
-      formationBox.style.display = "none";
+  if (participantInfo === null) {
+    if (titleElementFormation) {
+      const isEmptyFormation = titleElementFormation.innerText;
+      if (!isEmptyFormation || isEmptyFormation === null) {
+        formationBox.style.display = "none";
+      }
+    } else {
+      hasNoFormationText.style.display = "block";
+      formationTitle.style.display = "block";
     }
-  } else {
-    hasNoFormationText.style.display = "block";
   }
 
   //Add element formation
@@ -109,39 +128,68 @@ document.addEventListener("DOMContentLoaded", function () {
     importCertificateButton.addEventListener("click", function (event) {
       event.preventDefault(); // Empêche le comportement par défaut du formulaire
 
-      // Récupérez le formulaire et créez un objet FormData
-      let formData = new FormData(
-        document.getElementById("importe-cetificate-pdf")
-      );
+      console.log("testddq");
 
-      for (const value of formData.values()) {
-        if (value instanceof File) {
-          if (value.size > 0) {
-            fileFilled = true;
-          }
-          console.log(fileFilled);
+      if (trainerName != null) {
+        // Récupérez le formulaire et créez un objet FormData
+        let formData = new FormData(
+          document.getElementById("importe-cetificate-pdf")
+        );
+        for (const [key, value] of formData.entries()) {
+          console.log(`${key}: ${value}`);
         }
-      }
 
-      fetch("/import-certificate-pdf", {
-        method: "POST",
-        body: formData,
-      })
-        .then(() => {
-          if (fileFilled) {
-            popupInformation.style.display = "block";
-            setTimeout(() => {
-              popupInformation.style.display = "none";
-            }, 1500);
+        for (const value of formData.values()) {
+          if (value instanceof File) {
+            if (value.size > 0) {
+              fileFilled = true;
+            }
           }
+        }
+
+        fetch("/import-certificate-pdf", {
+          method: "POST",
+          body: formData,
         })
-        .catch((error) => {
-          // La requête a échoué, affichez un message d'erreur si nécessaire
-          console.error(
-            "There has been a problem with your fetch operation:",
-            error
-          );
-        });
+          .then(() => {
+            if (fileFilled) {
+              popupInformation.style.display = "block";
+              setTimeout(() => {
+                popupInformation.style.display = "none";
+                window.location.reload();
+              }, 1500);
+            }
+          })
+          .catch((error) => {
+            // La requête a échoué, affichez un message d'erreur si nécessaire
+            console.error(
+              "There has been a problem with your fetch operation:",
+              error
+            );
+          });
+      } else {
+        popupNoFormation.style.display = "block";
+        setTimeout(() => {
+          popupNoFormation.style.display = "none";
+        }, 2500);
+      }
+    });
+  }
+
+  if (downLoadButton) {
+    downLoadButton.addEventListener("click", (event) => {
+      console.log(pdfResult);
+      if (pdfResult === null) {
+        popupNoCertificat.style.display = "block";
+        setTimeout(() => {
+          popupNoCertificat.style.display = "none";
+        }, 3000);
+      } else {
+        popupDownload.style.display = "block";
+        setTimeout(() => {
+          popupDownload.style.display = "none";
+        }, 3000);
+      }
     });
   }
 });

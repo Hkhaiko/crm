@@ -49,7 +49,7 @@ router.post(
 router.post("/add-company-dashboard", companyController.createCompany);
 router.get(
   "/company-dashboard",
-  authController.ensureAuthenticated,
+  authController.ensureAuthenticatedAndAdmin,
   companyController.getCompanyDashboard
 );
 

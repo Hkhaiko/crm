@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/public/css/style.css" />
+    <title>Admin Dashboard</title>
+  </head>
+  <body>
+    <h1>Admin Dashboard</h1>
+
+    <div class="flex-admin-dashboard"></div>
+
+    <form action="/update-admin-role" method="post" class="official-form">
+      <label for="email">Email :</label>
+      <input
+        type="text"
+        id="email"
+        name="email"
+        class="official-input"
+        required
+      /><br />
+
+      <label for="role">Select Role:</label>
+      <select id="role" name="role" class="official-input" required>
+        <option value="admin">Admin</option>
+        <option value="non-admin">Non-Admin</option></select
+      ><br />
+
+      <% if (adminMessage) { %>
+      <div class="admin-message"><%= adminMessage %></div>
+      <% } %>
+
+      <button type="submit">Change</button>
+    </form>
+
+    <form
+      action="/send-email"
+      method="post"
+      class="official-form"
+      id="admin-email"
+    >
+      <h3>Email sender</h3>
+      <select name="standard" class="official-input">
+        <option value="ISO-9001">ISO-9001 Management</option>
+        <option value="ISO-27001">ISO-27001 IT security</option>
+      </select>
+      <label for="text-area">
+        Use tags @name and @iso-name to personalize your message !</label
+      >
+      <textarea
+        name="message"
+        form="admin-email"
+        id="text-area"
+        class="official-form"
+      ></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </body>
+</html>

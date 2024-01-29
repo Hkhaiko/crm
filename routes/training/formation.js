@@ -10,8 +10,8 @@ router.post("/add-formation", formationController.addFormation);
 
 router.post("/delete-formation", formationController.deleteFormation);
 
-router.get(
-  "/download-formation-pdf/:formation_id",
+router.post(
+  "/download-formation-pdf",
   formationController.downloadFormationPDF
 );
 
