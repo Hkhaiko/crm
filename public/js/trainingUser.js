@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 
   const titleElementFormation = document.getElementById("formation-title");
-  const trainerName = document.getElementById("trainer-name");
+  const trainerName = document.querySelector(".trainer-name");
 
   const experienceContainer = document.querySelector(".experience-container");
   const editForm = document.querySelector(".container");
@@ -40,6 +40,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const popupNoFormation = document.getElementById("popup-no-formation");
   const popupNoCertificat = document.getElementById(
     "popup-no-certificat-upload"
+  );
+  const popupNoCertificatSelect = document.getElementById(
+    "popup-no-certificat-select"
   );
   const popupDownload = document.getElementById("popup-certificat-download");
 
@@ -128,8 +131,6 @@ document.addEventListener("DOMContentLoaded", function () {
     importCertificateButton.addEventListener("click", function (event) {
       event.preventDefault(); // Empêche le comportement par défaut du formulaire
 
-      console.log("testddq");
-
       if (trainerName != null) {
         // Récupérez le formulaire et créez un objet FormData
         let formData = new FormData(
@@ -152,23 +153,29 @@ document.addEventListener("DOMContentLoaded", function () {
           body: formData,
         })
           .then(() => {
+            console.log("then 1");
             if (fileFilled) {
-              popupInformation.style.display = "block";
+              popupInformation.style.display = "flex";
               setTimeout(() => {
-                popupInformation.style.display = "none";
+                popupInformation.display = "none";
                 window.location.reload();
               }, 1500);
+            } else {
+              popupNoCertificatSelect.style.display = "flex";
+              setTimeout(() => {
+                popupNoCertificatSelect.style.display = "none";
+              }, 2500);
             }
           })
           .catch((error) => {
-            // La requête a échoué, affichez un message d'erreur si nécessaire
+            console.log("ciicidj,sa");
             console.error(
               "There has been a problem with your fetch operation:",
               error
             );
           });
       } else {
-        popupNoFormation.style.display = "block";
+        popupNoFormation.style.display = "flex";
         setTimeout(() => {
           popupNoFormation.style.display = "none";
         }, 2500);
@@ -180,12 +187,12 @@ document.addEventListener("DOMContentLoaded", function () {
     downLoadButton.addEventListener("click", (event) => {
       console.log(pdfResult);
       if (pdfResult === null) {
-        popupNoCertificat.style.display = "block";
+        popupNoCertificat.style.display = "flex";
         setTimeout(() => {
           popupNoCertificat.style.display = "none";
         }, 3000);
       } else {
-        popupDownload.style.display = "block";
+        popupDownload.style.display = "flex";
         setTimeout(() => {
           popupDownload.style.display = "none";
         }, 3000);

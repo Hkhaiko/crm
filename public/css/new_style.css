@@ -147,7 +147,6 @@ body {
   display: flex;
   justify-content: center;
   margin-top: 20px;
-  margin-bottom: 119px;
 }
 
 .add-experience-button {
@@ -211,8 +210,8 @@ body {
 
 .profile-info-title {
   margin-top: 10px;
-  margin-left: 12px;
-  font-size: 20px;
+  margin-left: 13px;
+  font-size: 21px;
   font-weight: 600;
 }
 
@@ -335,6 +334,7 @@ body {
   background-color: #f1f3f9;
   border-radius: 6px;
   width: 340px;
+  height: 198px;
   margin-bottom: 18px;
   position: relative;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -421,10 +421,18 @@ body {
   width: 100px;
   height: 30px;
   border-radius: 6px;
-  margin-top: 20px;
+  margin-top: 25px;
   margin-bottom: 13px;
   margin-left: 18px;
   cursor: pointer;
+}
+
+#pdf-download-button:hover {
+  background-color: #cad3eb;
+}
+
+#import-pdf-certificate-button:hover {
+  background-color: #cad3eb;
 }
 
 .download-btn {
@@ -434,6 +442,9 @@ body {
 }
 
 #import-pdf-certificate-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: white;
   border-color: gray;
   font-weight: 500;
@@ -441,12 +452,8 @@ body {
   margin-top: 18px;
   border-radius: 6px;
   padding: 6px;
-  font-size: 15px;
+  font-size: 14px;
   cursor: pointer;
-}
-
-#import-pdf-certificate-button:hover {
-  background-color: white;
 }
 
 #importe-cetificate-pdf {
@@ -456,10 +463,13 @@ body {
 #select-pdf {
   border-radius: 6px;
   padding: 2px;
-  margin-left: 4px;
+  margin-top: 15px;
+  margin-left: 10px;
 }
 
 #pdf-file {
+  margin-top: 10px;
+  margin-left: 10px;
 }
 
 input[type="file"]::file-selector-button {
@@ -467,6 +477,7 @@ input[type="file"]::file-selector-button {
   border-color: #ced7ef32;
   border-radius: 4px;
   padding: 3px;
+  margin-right: 31px;
   transition: 20ms;
 }
 
@@ -474,14 +485,56 @@ input[type="file"]::file-selector-button:hover {
   background-color: #cad3eb;
 }
 
+input[type="file"]::placeholder {
+  font-size: 16px;
+  color: #000;
+  content: "Select File";
+}
+
 .certificate-import-area {
   margin-top: 10px;
-  width: 260px;
+  width: 295px;
   height: 100px;
-  padding-top: 5px;
+  padding-top: 10px;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
+}
+
+.popup-info {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 40px;
+  border-radius: 4px;
+  margin-top: 485px;
+  margin-left: 295px;
+  border: 2px solid #000;
+}
+
+#popup-information,
+#popup-no-formation,
+#popup-no-certificat-upload,
+#popup-certificat-download,
+#popup-no-certificat-select p {
+  font-size: 15px;
+}
+
+#popup-information,
+#popup-certificat-download {
+  background-color: #2ec19267;
+  border-color: #13523e67;
+  color: #17624a;
+}
+
+#popup-no-formation,
+#popup-no-certificat-upload,
+#popup-no-certificat-select {
+  border-color: #973939;
+  color: #440707;
+  background-color: #ebb1b1;
 }
 
 /*Remove all related anchor effect */

@@ -61,6 +61,38 @@
     </div>
 
     <div class="main-container">
+      <div class="popup-info" id="popup-information" style="display: none">
+        <p>Import succeeds !</p>
+      </div>
+
+      <div class="popup-info" id="popup-no-formation" style="display: none">
+        <p>You need to add formation</p>
+      </div>
+
+      <div
+        class="popup-info"
+        id="popup-no-certificat-upload"
+        style="display: none"
+      >
+        <p>You need to upload certificate</p>
+      </div>
+
+      <div
+        class="popup-info"
+        id="popup-no-certificat-select"
+        style="display: none"
+      >
+        <p>You need to select certificate</p>
+      </div>
+
+      <div
+        class="popup-info"
+        id="popup-certificat-download"
+        style="display: none"
+      >
+        <p>Certificate downloaded !</p>
+      </div>
+
       <div class="flex-profile-button">
         <a
           href="/training-user/<%= data.trainingProfile[0].training_id
@@ -368,7 +400,9 @@
                 id="importe-cetificate-pdf"
               >
                 <div class="certificate-import-area">
-                  <label for="pdfFile">Select certificate </label>
+                  <label id="select-pdf" for="pdfFile"
+                    >Select certificate
+                  </label>
                   <input
                     type="hidden"
                     name="training_id"
@@ -393,6 +427,7 @@
 
                 <button type="submit" id="import-pdf-certificate-button">
                   Import certificate
+                  <span class="download-btn material-icons">&#xf090;</span>
                 </button>
               </form>
             </div>
@@ -402,23 +437,7 @@
       </div>
     </div>
 
-    <div class="main-background" id="main-profile">
-      <div id="popup-information" style="display: none">
-        <p>Import succeeds !</p>
-      </div>
-
-      <div id="popup-no-formation" style="display: none">
-        <p>You need to add formation</p>
-      </div>
-
-      <div id="popup-no-certificat-upload" style="display: none">
-        <p>You need to upload certificate</p>
-      </div>
-
-      <div id="popup-certificat-download" style="display: none">
-        <p>Certificate downloaded !</p>
-      </div>
-    </div>
+    <div class="main-background" id="main-profile"></div>
 
     <!-- Experience Modal   -->
 
